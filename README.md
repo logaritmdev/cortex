@@ -1,4 +1,5 @@
-# Cortex
+![Cortex](https://github.com/logaritmdev/cortex/raw/master/logo.png)
+
 Cortex is a WordPress plugin that eases the process of creating pages using blocks.
 
 ## What's a block ?
