@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: WP "
 "Blocks Builder\n"
 "POT-Creation-Date: "
-"2017-06-15 15:50-0400\n"
+"2017-06-28 09:46-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your "
 "Name <you@example.com>\n"
@@ -46,7 +46,7 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "Language: en_US\n"
 "X-Generator: Poedit "
-"2.0.1\n"
+"2.0.2\n"
 "X-Poedit-"
 "SearchPath-0: .\n"
 "X-Poedit-"
@@ -55,63 +55,78 @@ msgstr ""
 "node_modules\n"
 
 #: views/cortex-admin-blocks-page.twig:4
-#: admin/class-cortex-admin.php:169
-#: admin/class-cortex-admin.php:170
-#: admin/class-cortex-admin.php:211
+#: admin/class-cortex-admin.php:182
+#: admin/class-cortex-admin.php:183
+#: admin/class-cortex-admin.php:224
+#: includes/class-cortex-settings.php:85
+#: includes/class-cortex-settings.php:86
 msgid "Blocks"
 msgstr ""
 
 #: views/cortex-admin-blocks-page.twig:5
-#: includes/class-cortex.php:485
+#: includes/class-cortex.php:722
 msgid "Add New"
-msgstr ""
-
-#: views/cortex-admin-settings-field-post-types.twig:4
-#: admin/class-cortex-admin.php:225
-#: admin/class-cortex-admin.php:226
-msgid "Post Types"
 msgstr ""
 
 #: views/cortex-admin-settings-page.twig:5
 msgid "Cortex Settings"
 msgstr ""
 
-#: views/cortex-admin-settings-section-post-types.twig:1
-msgid ""
-"Select which templates "
-"are enabled."
+#: views/cortex-block-list-item-region.twig:7
+msgid "Empty layout region"
 msgstr ""
 
-#: views/cortex-block-list-item.twig:17
-#: views/cortex-block-list.twig:27
+#: views/cortex-block-list-item-region.twig:8
+msgid ""
+"Use the button below or "
+"drop a block to fill "
+"this region."
+msgstr ""
+
+#: views/cortex-block-list-item-region.twig:19
+#: views/cortex-block-list.twig:61
+msgid "Add Block"
+msgstr ""
+
+#: views/cortex-block-list-item.twig:16
+#: views/cortex-block-list.twig:26
+msgid "Show"
+msgstr ""
+
+#: views/cortex-block-list-item.twig:20
+#: views/cortex-block-list.twig:29
+msgid "Hide"
+msgstr ""
+
+#: views/cortex-block-list-item.twig:29
+#: views/cortex-block-list.twig:34
 msgid "Copy"
 msgstr ""
 
-#: views/cortex-block-list-item.twig:23
-#: views/cortex-block-list.twig:30
+#: views/cortex-block-list-item.twig:35
+#: views/cortex-block-list.twig:37
 msgid "Move"
 msgstr ""
 
-#: views/cortex-block-list-item.twig:28
-#: views/cortex-block-list.twig:33
+#: views/cortex-block-list-item.twig:40
+#: views/cortex-block-list.twig:40
 msgid "Remove"
 msgstr ""
 
-#: views/cortex-block-list-item.twig:32
-#: views/cortex-block-list.twig:36
+#: views/cortex-block-list-item.twig:44
+#: views/cortex-block-list.twig:43
 msgid "Edit"
 msgstr ""
 
-#: views/cortex-block-list.twig:49
+#: views/cortex-block-list.twig:57
 msgid ""
-"<h2>This document is "
-"empty.</h2><p>Start "
-"building this page by "
-"adding a few blocks.</p>"
+"This document is empty."
 msgstr ""
 
-#: views/cortex-block-list.twig:51
-msgid "Add Block"
+#: views/cortex-block-list.twig:58
+msgid ""
+"Start building this page "
+"by adding a few blocks."
 msgstr ""
 
 #: views/cortex-editor.twig:4
@@ -125,17 +140,21 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#: views/cortex-empty-block-template.twig:8
+msgid "Empty"
+msgstr ""
+
 #: views/cortex-library.twig:6
-#: views/cortex-library.twig:41
+#: views/cortex-library.twig:47
 msgid "Insert Block"
 msgstr ""
 
-#: views/cortex-library.twig:19
-msgid "All"
+#: views/cortex-library.twig:21
+msgid "All Blocks"
 msgstr ""
 
-#: views/cortex-library.twig:23
-msgid "Layouts"
+#: views/cortex-library.twig:22
+msgid "Layouts Blocks"
 msgstr ""
 
 #: views/cortex-meta-box-document.twig:10
@@ -146,15 +165,27 @@ msgstr ""
 msgid "Move Block"
 msgstr ""
 
-#: views/cortex-meta-box-template.twig:7
+#: views/cortex-meta-box-options.twig:9
 msgid "Location"
 msgstr ""
 
-#: views/cortex-meta-box-template.twig:9
+#: views/cortex-meta-box-options.twig:12
 msgid ""
 "The location where the "
 "block template will be "
 "created."
+msgstr ""
+
+#: views/cortex-meta-box-options.twig:33
+msgid "Folder"
+msgstr ""
+
+#: views/cortex-meta-box-options.twig:36
+msgid ""
+"The block template "
+"folder name, will "
+"default to the block "
+"name if empty."
 msgstr ""
 
 #: views/cortex-post-selector.twig:4
@@ -165,38 +196,87 @@ msgstr ""
 msgid "Select"
 msgstr ""
 
-#: admin/class-cortex-admin.php:86
+#: views/settings/cortex-block-status-group.twig:1
+msgid ""
+"Enable / disable certain "
+"blocks for the whole "
+"site."
+msgstr ""
+
+#: views/settings/cortex-licence-key-group.twig:1
+msgid ""
+"Cortex is free to use "
+"for development purposes "
+"but a licence key is "
+"required for production "
+"projects."
+msgstr ""
+
+#: views/settings/cortex-post-types-group.twig:1
+msgid ""
+"Select which post types "
+"are allowed to display "
+"blocks."
+msgstr ""
+
+#: views/settings/cortex-style-include-path-group.twig:1
+msgid ""
+"Defines paths that will "
+"be used with @import "
+"directive in LESS or "
+"SASS files. One path per "
+"line, relative to the "
+"theme directory."
+msgstr ""
+
+#: admin/class-cortex-admin.php:100
 msgid ""
 "This block will be "
 "removed from this "
 "document. Are you sure ?"
 msgstr ""
 
-#: admin/class-cortex-admin.php:87
+#: admin/class-cortex-admin.php:101
 msgid ""
 "Add New Block Template"
 msgstr ""
 
-#: admin/class-cortex-admin.php:88
+#: admin/class-cortex-admin.php:102
 msgid "Edit Block Template"
 msgstr ""
 
-#: admin/class-cortex-admin.php:151
-#: admin/class-cortex-admin.php:152
+#: admin/class-cortex-admin.php:165
+#: admin/class-cortex-admin.php:166
 msgid "Cortex"
 msgstr ""
 
-#: admin/class-cortex-admin.php:161
-#: admin/class-cortex-admin.php:162
+#: admin/class-cortex-admin.php:174
+#: admin/class-cortex-admin.php:175
 msgid "Settings"
 msgstr ""
 
-#: admin/class-cortex-admin.php:214
-#: admin/class-cortex-admin.php:215
+#: admin/class-cortex-admin.php:231
+#: admin/class-cortex-admin.php:235
 msgid "Options"
 msgstr ""
 
-#: admin/class-cortex-admin.php:279
+#: admin/class-cortex-admin.php:239
+msgid "Block"
+msgstr ""
+
+#: admin/class-cortex-admin.php:240
+msgid "Styles"
+msgstr ""
+
+#: admin/class-cortex-admin.php:241
+msgid "Scripts"
+msgstr ""
+
+#: admin/class-cortex-admin.php:242
+msgid "Preview"
+msgstr ""
+
+#: admin/class-cortex-admin.php:254
 msgid "Settings Saved"
 msgstr ""
 
@@ -244,42 +324,52 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: includes/class-cortex.php:483
+#: includes/class-cortex-settings.php:83
+#: includes/class-cortex-settings.php:84
+msgid "Post Types"
+msgstr ""
+
+#: includes/class-cortex-settings.php:87
+#: includes/class-cortex-settings.php:88
+msgid "Styles Include Path"
+msgstr ""
+
+#: includes/class-cortex.php:720
 msgid "Cortex Blocks"
 msgstr ""
 
-#: includes/class-cortex.php:484
+#: includes/class-cortex.php:721
 msgid "Cortex Block"
 msgstr ""
 
-#: includes/class-cortex.php:486
+#: includes/class-cortex.php:723
 msgid ""
 "Add New Cortex Block"
 msgstr ""
 
-#: includes/class-cortex.php:487
+#: includes/class-cortex.php:724
 msgid "Edit Cortex Block"
 msgstr ""
 
-#: includes/class-cortex.php:488
+#: includes/class-cortex.php:725
 msgid "New Cortex Block"
 msgstr ""
 
-#: includes/class-cortex.php:489
+#: includes/class-cortex.php:726
 msgid "View Cortex Block"
 msgstr ""
 
-#: includes/class-cortex.php:490
+#: includes/class-cortex.php:727
 msgid ""
 "Search Cortex Blocks"
 msgstr ""
 
-#: includes/class-cortex.php:491
+#: includes/class-cortex.php:728
 msgid ""
 "No Cortex Blocks found"
 msgstr ""
 
-#: includes/class-cortex.php:492
+#: includes/class-cortex.php:729
 msgid ""
 "No Cortex Blocks found "
 "in Trash"
