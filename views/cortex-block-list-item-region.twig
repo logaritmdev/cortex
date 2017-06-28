@@ -1,0 +1,22 @@
+<div class="cortex-block-list-item-region" data-layout="{{ layout }}" data-region="{{ region }}">
+
+	<div class="cortex-block-list-item-region-content cortex-sortable">
+
+		<div class="cortex-block-list-item-region-empty-message cortex-sortable-item">
+			<div class="cortex-block-list-item-region-empty-message-text cortex-sortable-handle">
+				<h2>{{ __('Empty layout region', 'cortex') }}</h2>
+				<p>{{ __('Use the button below or drop a block to fill this region.', 'cortex')  }}</p>
+			</div>
+		</div>
+
+		{% for block in blocks %}
+			{% include "cortex-block-list-item.twig" %}
+		{% endfor %}
+
+	</div>
+
+	<div class="cortex-block-list-item-region-button">
+		<a href="#" class="button button-small">{{ __('Add Block', 'cortex') }}</a>
+	</div>
+
+</div>

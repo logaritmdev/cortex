@@ -1,0 +1,13 @@
+.cortex-editor {
+
+}
+
+.cortex-editor-footer {
+	@include fixed(left 0 right 0 bottom 0);
+	@include flex-box;
+	@include flex-row(center, flex-end);
+	background: #fff;
+	border: none;
+	border-top: 1px solid #dddddd;
+	padding: 16px;
+}

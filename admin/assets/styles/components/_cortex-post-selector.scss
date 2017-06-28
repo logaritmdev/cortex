@@ -1,0 +1,50 @@
+.cortex-post-selector-content {
+	padding: 16px;
+}
+
+.cortex-post-selector-menu {
+	@include flex-box;
+	@include flex-row(center, flex-start)
+	border: 1px solid #dddddd;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	background: #fff;
+	font-size: 13px;
+	height: 54px;
+	padding-left: 16px;
+	padding-right: 16px;
+	position: relative;
+}
+
+.cortex-post-selector-menu-select {
+
+	@include flex(1, 0, auto);
+	@include flex-box;
+	@include flex-row(center, flex-start);
+
+	select {
+		margin-left: 8px;
+	}
+}
+
+.cortex-post-selector-menu-search {
+	input {
+		font-size: 16px;
+		font-weight: 300;
+		line-height: 1.5;
+		margin: 0;
+		max-width: 100%;
+		padding: 3px 5px;
+		width: 280px;
+	}
+}
+
+.cortex-post-selector-post-list {
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04) !important;
+	margin: 0px;
+	margin-top: 16px;
+}
+
+.cortex-post-selector-post-list-item-check {
+	text-align: right;
+	padding-left: 16px !important;
+}

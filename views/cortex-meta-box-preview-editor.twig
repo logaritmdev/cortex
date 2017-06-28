@@ -1,0 +1,23 @@
+<div id="cortex-preview-editor" class="cortex-preview-editor"></div>
+<textarea id="cortex-preview" name="cortex_preview" style="display:none">{{ template.get_preview_file_content() }}</textarea>
+<script type="text/javascript">
+
+	(function() {
+
+		var update = function() {
+			document.getElementById('cortex-preview').value = editor.getSession().getValue()
+		}
+
+		var value = document.getElementById('cortex-preview').value
+
+		var editor = ace.edit('cortex-preview-editor')
+		editor.setTheme('ace/theme/tomorrow_night')
+		editor.getSession().setMode('ace/mode/twig')
+		editor.getSession().setValue(value)
+		editor.getSession().on('change', update)
+
+		update()
+
+	})();
+
+</script>

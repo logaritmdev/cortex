@@ -1,0 +1,13 @@
+<div class="wrap">
+
+    {{ function('settings_errors') }}
+
+    <h1>{{ __('Cortex Settings', 'cortex') }}</h1>
+
+    <form method="post" action="options.php">
+        {{ function('settings_fields', 'cortex') }}
+        {{ function('do_settings_sections', 'cortex') }}
+        {{ function('submit_button') }}
+    </form>
+
+</div>

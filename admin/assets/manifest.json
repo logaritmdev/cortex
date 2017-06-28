@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "main.js": {
+      "files": [
+        "scripts/plugins/jquery-attach.js",
+        "scripts/components/cortex-modal.js",
+        "scripts/components/cortex-editor.js",
+        "scripts/components/cortex-library.js",
+        "scripts/components/cortex-block-list.js",
+        "scripts/components/cortex-block-list-item.js",
+        "scripts/components/cortex-post-selector.js",
+        "scripts/main.js"
+      ],
+      "main": true
+    },
+    "main.css": {
+      "files": [
+        "styles/main.scss"
+      ],
+      "main": true
+    }
+  },
+  "config": {
+    "devUrl": "http://wordpress.dev"
+  },
+  "paths": {
+    "dist":   "../",
+    "source": "./"
+  }
+}

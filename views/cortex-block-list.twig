@@ -1,0 +1,69 @@
+<div class="cortex-block-list" data-document={{ document }}>
+
+	<div class="cortex-block-list-menu">
+		<div class="cortex-block-list-menu-button cortex-block-list-menu-button-insert">
+			<svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
+			    <path fill="#555d66" d="M42 18H24V0h-6v18H0v6h18v18h6V24h18"/>
+			</svg>
+		</div>
+		<div class="cortex-block-list-menu-button cortex-block-list-menu-button-layout">
+			<svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
+			    <path fill="#555d66" d="M40.2 0H1.8C1 0 0 1 0 1.8v38.5C0 41 1 42 1.8 42h38.5c1 0 1.8-1 1.8-1.8V1.8c0-1-1-1.8-1.8-1.8zM3.5 38.5V15.8h22.8v22.8H3.5zm35 0H28V15.8h10.5v22.7zm0-24.5h-35V3.5h35V14z"/>
+			</svg>
+		</div>
+	</div>
+
+	<div class="cortex-block-list-item cortex-sortable-item cortex-block-list-item-template">
+		<div class="cortex-block-list-item-menu">
+			<div class="cortex-block-list-item-menu-lf">
+				<div class="cortex-block-list-item-handle cortex-sortable-handle">
+					<div class="cortex-block-list-item-handle-bar"></div>
+					<div class="cortex-block-list-item-handle-bar"></div>
+					<div class="cortex-block-list-item-handle-bar"></div>
+				</div>
+				<div class="cortex-block-list-item-title"></div>
+				<div class="cortex-block-list-item-menu-button cortex-block-list-item-menu-button-show">
+					<a href="#">{{ __('Show', 'cortex') }}</a>
+				</div>
+				<div class="cortex-block-list-item-menu-button cortex-block-list-item-menu-button-hide">
+					<a href="#">{{ __('Hide', 'cortex') }}</a>
+				</div>
+			</div>
+			<div class="cortex-block-list-item-menu-rg">
+				<div class="cortex-block-list-item-menu-button cortex-block-list-item-menu-button-copy">
+					<a href="#copy">{{ __('Copy', 'cortex') }}</a>
+				</div>
+				<div class="cortex-block-list-item-menu-button cortex-block-list-item-menu-button-move">
+					<a href="#move">{{ __('Move', 'cortex') }}</a>
+				</div>
+				<div class="cortex-block-list-item-menu-button cortex-block-list-item-menu-button-remove">
+					<a href="#remove">{{ __('Remove', 'cortex') }}</a>
+				</div>
+				<div class="cortex-block-list-item-menu-button cortex-block-list-item-menu-button-update">
+					<a href="#update" class="button button-small">{{ __('Edit', 'cortex') }}</a>
+				</div>
+			</div>
+		</div>
+		<div class="cortex-block-list-item-preview"></div>
+	</div>
+
+	<div class="cortex-block-list-empty-message">
+		<div class="cortex-block-list-empty-message-head">
+			<svg width="48" height="48" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+				<path fill="#ddd" d="M12 16c0-2.2 1.8-4 4-4h12V4H16C9.4 4 4 9.4 4 16v12h8V16zM36 4h24v8H36zM4 36h8v24H4zM16 84c-2.2 0-4-1.8-4-4V68H4v12c0 6.6 5.4 12 12 12h12v-8H16zM84 36h8v24h-8zM80 4H68v8h12c2.2 0 4 1.8 4 4v12h8V16c0-6.6-5.4-12-12-12zM36 84h24v8H36zM84 80c0 2.2-1.8 4-4 4H68v8h12c6.6 0 12-5.4 12-12V68h-8v12z"/>
+			</svg>
+		</div>
+		<div class="cortex-block-list-empty-message-text">
+			<h2>{{ __('This document is empty.', 'cortex') }}</h2>
+			<p>{{ __('Start building this page by adding a few blocks.') }}</p>
+		</div>
+		<div class="cortex-block-list-empty-message-foot">
+			<button type="button" class="button">{{ __('Add Block', 'cortex') }}</button>
+		</div>
+	</div>
+
+	{% for block in blocks if block.template.active and block.parent_layout == 0 %}
+		{% include "cortex-block-list-item.twig" %}
+	{% endfor %}
+
+</div>

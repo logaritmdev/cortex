@@ -1,0 +1,61 @@
+{
+    "key": "group_5941f6d815978",
+    "title": "3 Columns Layout",
+    "fields": [
+        {
+            "key": "field_594bd6ae5c828",
+            "label": "Container",
+            "name": "container",
+            "type": "true_false",
+            "instructions": "Whether the columns are wrapped inside a container.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_594bd6d75c829",
+            "label": "Container Class",
+            "name": "container_class",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_594bd6ae5c828",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "container",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        }
+    ],
+    "location": [],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [],
+    "active": 1,
+    "description": ""
+}

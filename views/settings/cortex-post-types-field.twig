@@ -1,0 +1,7 @@
+<fieldset>
+	{% for value in values %}
+		<div>
+			<input type="checkbox" name="cortex_post_types[{{ value.slug }}]" value="1" {% if value.checked %} checked {% endif %}> <label for="cortex_post_types[{{ value.slug }}]">{{ value.name }}</label>
+		</div>
+	{% endfor %}
+</fieldset>

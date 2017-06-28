@@ -1,0 +1,11 @@
+<fieldset>
+	<table>
+		{% for value in values %}
+			<tr>
+				<td style="padding:0px 12px 0px 0px"><label><strong>{{ value.name }}</strong></label></td>
+				<td style="padding:0px 12px 0px 0px"><input type="radio" name="cortex_block_status[{{ value.slug }}]" value="enabled" {% if value.enabled %} checked {% endif %}> Enabled</td>
+				<td style="padding:0px 12px 0px 0px"><input type="radio" name="cortex_block_status[{{ value.slug }}]" value="disabled" {% if not value.enabled  %} checked {% endif %}> Disabled</td>
+			</tr>
+		{% endfor %}
+	</table>
+</fieldset>

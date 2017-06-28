@@ -1,0 +1,44 @@
+<div class="cortex-meta-box-document">
+
+	{% include "cortex-block-list.twig" %}
+	{% include "cortex-editor.twig" %}
+	{% include "cortex-library.twig" %}
+
+	<div class="cortex-modal cortex-post-selector cortex-post-selector-copy" data-id="cortex-copy-block">
+		<div class="cortex-modal-content">
+			<div class="cortex-modal-content-head">
+				<div class="cortex-modal-content-head-title">{{ __('Copy Block', 'cortex') }}</div>
+				<div class="cortex-modal-content-head-close">
+					<button type="button" class="media-modal-close cortex-modal-close">
+						<span class="media-modal-icon">
+							<span class="screen-reader-text">{{ __('Close', 'cortex') }}</span>
+						</span>
+					</button>
+				</div>
+			</div>
+			<div class="cortex-modal-content-body">
+				<div class="cortex-post-selector-content"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="cortex-modal cortex-post-selector cortex-post-selector-move" data-id="cortex-move-block">
+		<div class="cortex-modal-content">
+			<div class="cortex-modal-content-head">
+				<div class="cortex-modal-content-head-title">{{ __('Move Block', 'cortex') }}</div>
+				<div class="cortex-modal-content-head-close">
+					<button type="button" class="media-modal-close cortex-modal-close">
+						<span class="media-modal-icon">
+							<span class="screen-reader-text">{{ __('Close', 'cortex') }}</span>
+						</span>
+					</button>
+				</div>
+			</div>
+			<div class="cortex-modal-content-body">
+				<div class="cortex-post-selector-content"></div>
+			</div>
+		</div>
+	</div>
+
+
+</div>

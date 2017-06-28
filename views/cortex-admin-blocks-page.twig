@@ -1,0 +1,13 @@
+<div class="wrap">
+
+	<h1>
+		{{ __('Blocks', 'cortex') }}
+		<a href="{{  function('admin_url', 'post-new.php?post_type=acf-field-group&mode=cortex-block') }}" class="page-title-action">{{ __('Add New', 'cortex') }}</a>
+	</h1>
+
+	<form method="get">
+		{{ list.search_box('search', 'search') }}
+		{{ list.display() }}
+		<input type="hidden" name="page" value="cortex_admin_blocks_page">
+	</form>
+</div>

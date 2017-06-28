@@ -1,0 +1,175 @@
+.cortex-library-menu {
+	@include relative;
+	@include flex-box;
+	@include flex-row(center, flex-start)
+	border: 1px solid #dddddd;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	background: #fff;
+	font-size: 13px;
+	height: 54px;
+	margin-top: 16px;
+	margin-left: 16px;
+	margin-right: 16px;
+	padding-left: 10px;
+	padding-right: 10px;
+	z-index: 5;
+}
+
+.cortex-library-group {
+
+	@include flex-box;
+	@include flex-row(center, center);
+	@include relative;
+	cursor: pointer;
+	border: none;
+	border-right: 1px solid #dddddd;
+	color: #0073aa;
+	font-size: 14px;
+	height: 54px;
+	text-align: center;
+	padding-left: 16px;
+	padding-right: 16px;
+
+	@media (min-width:920px) {
+		min-width: 60px;
+	}
+
+	@media (min-width:1280px) {
+		min-width: 90px;
+	}
+
+	&.cortex-library-group-selected {
+
+		background: #fafafa;
+
+		&:after {
+			@include absolute(left 0 right 0 bottom 0);
+			background: #0073aa;
+			content: "";
+			display: block;
+			height: 2px;
+		}
+	}
+}
+
+.cortex-library-query {
+
+	@include flex(1, 0, auto)
+	@include flex-box;
+	@include flex-row(center, flex-end);
+
+	input {
+		font-size: 16px;
+		font-weight: 300;
+		line-height: 1.5;
+		margin: 0;
+		max-width: 100%;
+		padding: 3px 5px;
+		width: 280px;
+	}
+}
+
+.cortex-library-content {
+	@include absolute(top 16px left 0 right 0 bottom 0);
+	overflow: auto;
+}
+
+.cortex-library-grid {
+	@include flex-box;
+	@include flex-row(flex-start, flex-start);
+	@include flex-wrap(wrap);
+	padding: 8px;
+	padding-top: 90px;
+}
+
+.cortex-library-grid-cell {
+
+	box-sizing: border-box;
+	padding: 8px;
+	width: 100%;
+
+	@media (min-width:920px) {
+		width: 50%;
+	}
+
+	@media (min-width:1280px) {
+		width: 33.3333%;
+	}
+
+	@media (min-width:1600px) {
+		width: 25%;
+	}
+
+	&.cortex-library-grid-cell-hidden {
+		display: none;
+	}
+}
+
+.cortex-library-grid-item {
+	background: #ffffff;
+	border: 1px solid #dddddd;
+}
+
+.cortex-library-grid-item-body {
+	@include flex-box;
+	@include flex-row(flex-start, center);
+	padding: 20px;
+}
+
+.cortex-library-grid-item-icon {
+
+	@include flex(none);
+	background: #fafafa;
+	height: 128px;
+	width: 128px;
+
+	img {
+		display: block;
+		height: 100%;
+		width: 100%;
+	}
+}
+
+.cortex-library-grid-item-text {
+	@include flex(1, 1, 0%);
+	@include flex-box;
+	@include flex-col(center, flex-start);
+	@include flex-set(stretch);
+	padding: 0px;
+	padding-left: 20px;
+}
+
+.cortex-library-grid-item-name {
+	font-size: 18px;
+	font-weight: 500;
+	margin: 0px;
+	margin-bottom: 10px;
+}
+
+.cortex-library-grid-item-hint {
+	color: rgb(50, 55, 60);
+}
+
+.cortex-library-grid-item-foot {
+	@include flex-box;
+	@include flex-row(center, flex-end);
+	background: #fafafa;
+	border-top: 1px solid #dddddd;
+	padding: 20px;
+	padding-top: 16px;
+	padding-bottom: 16px;
+}
+
+#cortex_meta_box_document {
+	.inside {
+		padding: 0px;
+		margin: 0px;
+	}
+}
+
+.cortex-meta-box-document {
+	background: #fafafa;
+}
+
+
+

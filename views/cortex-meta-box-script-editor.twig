@@ -1,0 +1,23 @@
+<div id="cortex-script-editor" class="cortex-script-editor"></div>
+<textarea id="cortex-script" name="cortex_script" style="display:none">{{ template.get_script_file_content() }}</textarea>
+<script type="text/javascript">
+
+	(function() {
+
+		var update = function() {
+			document.getElementById('cortex-script').value = editor.getSession().getValue()
+		}
+
+		var value = document.getElementById('cortex-script').value
+
+		var editor = ace.edit('cortex-script-editor')
+		editor.setTheme('ace/theme/tomorrow_night')
+	    editor.getSession().setMode('ace/mode/javascript')
+	    editor.getSession().setValue(value)
+	    editor.getSession().on('change', update)
+
+	    update()
+
+	})();
+
+</script>

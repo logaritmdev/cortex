@@ -1,0 +1,57 @@
+<div class="inside acf-fields -left">
+
+	{% if options.mode == 'create' %}
+
+		<div class="acf-field acf-field-checkbox" data-name="cortex_block_template_path" data-type="select">
+
+			<div class="acf-label">
+
+				<label for="cortex_block_template_path">{{ __('Location', 'cortex') }}</label>
+
+				<p class="description">
+					{{ __('The location where the block template will be created.', 'cortex') }}
+				</p>
+
+			</div>
+
+			<div class="acf-input">
+				<ul class"acf-checkbox-list acf-bl">
+					{% for location in locations %}
+						<li><input type="radio" name="cortex_block_template_path" value="{{ location }}" checked="checked"><label>{{ location }}</label></li>
+					{% endfor %}
+				</ul>
+			</div>
+
+		</div>
+
+	{% endif %}
+
+	<div class="acf-field acf-field-text" data-name="cortex_block_template_name" data-type="text">
+
+		<div class="acf-label">
+
+			<label for="cortex_block_template_name">{{ __('Folder', 'cortex') }}</label>
+
+			<p class="description">
+				{{ __('The block template folder name, will default to the block name if empty.', 'cortex') }}
+			</p>
+
+		</div>
+
+		<div class="acf-input">
+			<input type="text" id="cortex_block_template_name" name="cortex_block_template_name" value="{{ function('basename', template.path) }}">
+		</div>
+
+	</div>
+
+	{% if options.mode == 'create' %}
+		<input type="hidden" name="cortex_create_block" value="1" />
+	{% endif %}
+
+	{% if options.mode == 'update' %}
+		<input type="hidden" name="cortex_update_block" value="1" />
+	{% endif %}
+
+	<input type="hidden" name="mode" value="cortex-block" />
+
+</div>

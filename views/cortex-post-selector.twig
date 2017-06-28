@@ -1,0 +1,51 @@
+{# <div class="cortex-post-selector-menu">
+
+	<div class="cortex-post-selector-menu-select">
+		{{ __('Post Type', 'cortex') }}:
+		<select>
+			{% for group in groups %}
+				<option value={{ group.slug }}>{{ group.name }}</option>
+			{% endfor %}
+		</select>
+	</div>
+
+	<div class="cortex-post-selector-menu-search">
+		<input type="search" class="wp-filter-search cortex-library-query-input" placeholder="{{ __('Search', 'cortex') }}" aria-describedby="live-search-desc">
+	</div>
+
+</div> #}
+
+<div class="cortex-post-selector-post-list-group">
+
+	{% for group in groups %}
+
+		<h3>{{ group.name }}</h3>
+
+		<table class="wp-list-table widefat fixed striped pages cortex-post-selector-post-list">
+			<thead>
+				<tr>
+					<th class="manage-column column-title column-primary">Title</th>
+					<th class="manage-column column-author"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for post in group.posts %}
+					<tr class="cortex-post-selector-post-list-item">
+						<td class="cortex-post-selector-post-list-item-title column-title">{{ post.title }}</td>
+						<td class="cortex-post-selector-post-list-item-check column-author">
+							<a href="#" data-document="{{ post.id }}">{{ __('Select', 'cortex') }}</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<th class="manage-column column-title column-primary">Title</th>
+					<th class="manage-column column-author"></th>
+				</tr>
+			</tfoot>
+		</table>
+
+	{% endfor %}
+
+</div>

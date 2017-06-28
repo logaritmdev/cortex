@@ -1,0 +1,183 @@
+@import "mixins/flex";
+@import "mixins/position";
+@import "components/cortex-modal";
+@import "components/cortex-library";
+@import "components/cortex-editor";
+@import "components/cortex-block-list";
+@import "components/cortex-block-list-item";
+@import "components/cortex-post-selector";
+
+#cortex_meta_box_document {
+
+	.inside {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.hndle {
+		border-bottom-color: #e5e5e5;
+	}
+}
+
+.cortex-meta-box-document {
+	background: #fafafa;
+}
+
+#cortex_block_editor {
+
+	.inside {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.cortex-block-editor {
+		height: 400px;
+	}
+}
+
+#cortex_style_editor {
+
+	.inside {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.cortex-style-editor {
+		height: 400px;
+	}
+}
+
+#cortex_script_editor {
+
+	.inside {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.cortex-script-editor {
+		height: 400px;
+	}
+}
+
+#cortex_preview_editor {
+
+	.inside {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.cortex-preview-editor {
+		height: 400px;
+	}
+}
+
+#cortex_create_block {
+	.inside {
+		padding: 0px;
+		margin: 0px;
+	}
+}
+
+#cortex_update_block {
+
+	.inside {
+		padding: 0px;
+		margin: 0px;
+	}
+}
+
+.post-type-cortex-block {
+
+	#wpcontent {
+		margin: 0px !important;
+		padding-bottom: 100px;
+	}
+
+	#wpadminbar {
+		display: none !important;
+	}
+
+	#adminmenumain {
+		display: none !important;
+	}
+
+	#footer-left,
+	#footer-upgrade {
+		display: none !important;
+	}
+
+	#screen-meta-links {
+		display: none !important;
+	}
+
+	.wp-header-end {
+		display: none !important;
+	}
+
+	.wp-heading-inline {
+		display: none !important;
+	}
+
+	.update-nag {
+		display: none;
+	}
+
+	.page-title-action {
+		display: none !important;
+	}
+
+	#postbox-container-1 {
+		@include absolute(left 0 right 0 bottom 0);
+	}
+
+	#poststuff {
+		margin: 0px !important;
+		padding: 0px !important;
+	}
+
+	#post-body.columns-1,
+	#post-body.columns-2,
+	#post-body.columns-3 {
+		margin: 0px !important;
+	}
+
+	#post-body-content {
+		display: none !important;
+	}
+
+	#submitdiv {
+		@include fixed(left 0 right 0 bottom 0);
+		border: none;
+		border-top: 1px solid #e5e5e5;
+		box-shadow: none;
+		margin: 0px;
+		z-index: 1000000;
+	}
+
+	#submitdiv h2,
+	#submitdiv h3,
+	#submitdiv .handlediv,
+	#submitdiv #minor-publishing {
+		display: none;
+	}
+
+	#submitdiv #major-publishing-actions {
+		border: none;
+		background: #fff;
+	}
+
+	#delete-action {
+		display: none;
+	}
+}
+
+.cortex-update-block-page {
+
+	#delete-action {
+		display: none;
+	}
+
+	.page-title-action {
+		display: none;
+	}
+}

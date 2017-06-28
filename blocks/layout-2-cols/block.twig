@@ -1,0 +1,12 @@
+{% if post.get_field('container') %}
+    <div class="{{ post.get_field('container_class') }}">
+{% endif %}
+
+<div class="block-layout-2-cols">
+    <div class="block-layout-2-cols-col block-layout-2-cols-col-1">{{ block.display_region('col_1') }}</div>
+    <div class="block-layout-2-cols-col block-layout-2-cols-col-2">{{ block.display_region('col_2') }}</div>
+</div>
+        
+{% if post.get_field('container') %}
+    </div>
+{% endif %}
