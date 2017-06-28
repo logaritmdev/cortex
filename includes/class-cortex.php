@@ -424,7 +424,7 @@ class Cortex {
 	 * @method create_block_template_folder
 	 * @since 0.1.0
 	 */
-	public static function create_block_template_folder($location, $name, $fields) {
+	public static function create_block_template_folder($location, $name, $slug, $fields) {
 
 		$path = '';
 
@@ -443,7 +443,7 @@ class Cortex {
 			return;
 		}
 
-		$slug = self::create_block_template_slug($name);
+		$slug = self::create_block_template_slug($slug);
 
 		$path = "$path/$slug";
 

@@ -649,7 +649,7 @@ class Cortex_Admin {
 						return;
 					}
 
-					$template = Cortex::create_block_template_folder($path, $name, $field_group);
+					$template = Cortex::create_block_template_folder($path, $field_group['title'], $name, $field_group);
 					update_post_meta($id, '_cortex_block_guid', $template->get_guid());
 					update_post_meta($id, '_cortex_block_date', $template->get_date());
 
