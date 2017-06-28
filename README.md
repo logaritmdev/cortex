@@ -17,6 +17,10 @@ From the `Cortex` menu, select `Blocks` and `Add New`. From there you'll be able
 
 ![How](https://github.com/logaritmdev/cortex/raw/master/doc/2.gif)
 
+Once completed you can go back to the page editor and use your newly created block.
+
+![Done](https://github.com/logaritmdev/cortex/raw/master/doc/3.gif)
+
 The block content will be saved in the `blocks` folder of your theme and the structure will look like this:
 
 ![Folder](https://github.com/logaritmdev/cortex/raw/master/doc/block.png)
