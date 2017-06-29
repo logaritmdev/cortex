@@ -28,7 +28,7 @@ msgstr ""
 #: admin/class-cortex-admin.php:183 admin/class-cortex-admin.php:224
 #: includes/class-cortex-settings.php:85 includes/class-cortex-settings.php:86
 msgid "Blocks"
-msgstr "Bloques"
+msgstr "Blocs"
 
 #: views/cortex-admin-blocks-page.twig:5 includes/class-cortex.php:722
 msgid "Add New"
@@ -36,7 +36,7 @@ msgstr "Ajouter"
 
 #: views/cortex-admin-settings-page.twig:5
 msgid "Cortex Settings"
-msgstr "Paramêtres Cortex"
+msgstr "Paramètres Cortex"
 
 #: views/cortex-block-list-item-region.twig:7
 msgid "Empty layout region"
@@ -45,12 +45,12 @@ msgstr "Région de mise en page vide"
 #: views/cortex-block-list-item-region.twig:8
 msgid "Use the button below or drop a block to fill this region."
 msgstr ""
-"Utilisez le bouton ci-dessous ou déplacez-y un bloque pour emplir cette "
+"Utilisez le bouton ci-dessous ou déplacez-y un bloc pour remplir cette "
 "région."
 
 #: views/cortex-block-list-item-region.twig:19 views/cortex-block-list.twig:61
 msgid "Add Block"
-msgstr "Ajouter un bloque"
+msgstr "Ajouter un bloc"
 
 #: views/cortex-block-list-item.twig:16 views/cortex-block-list.twig:26
 msgid "Show"
@@ -82,7 +82,7 @@ msgstr "Ce document est vide."
 
 #: views/cortex-block-list.twig:58
 msgid "Start building this page by adding a few blocks."
-msgstr "Construisez cette page en y ajoutant quelques bloques."
+msgstr "Construisez cette page en y ajoutant quelques blocs."
 
 #: views/cortex-editor.twig:4
 msgid "Edit Content"
@@ -100,23 +100,23 @@ msgstr "Vide"
 
 #: views/cortex-library.twig:6 views/cortex-library.twig:47
 msgid "Insert Block"
-msgstr "Insérer un bloque"
+msgstr "Insérer un bloc"
 
 #: views/cortex-library.twig:21
 msgid "All Blocks"
-msgstr "Tous les bloques"
+msgstr "Tous les blocs"
 
 #: views/cortex-library.twig:22
 msgid "Layouts Blocks"
-msgstr "Bloques de mise en page"
+msgstr "Blocs de mise en page"
 
 #: views/cortex-meta-box-document.twig:10
 msgid "Copy Block"
-msgstr "Copier le bloque"
+msgstr "Copier le bloc"
 
 #: views/cortex-meta-box-document.twig:28
 msgid "Move Block"
-msgstr "Déplacer le bloque"
+msgstr "Déplacer le bloc"
 
 #: views/cortex-meta-box-options.twig:9
 msgid "Location"
@@ -124,7 +124,7 @@ msgstr "Emplacement"
 
 #: views/cortex-meta-box-options.twig:12
 msgid "The location where the block template will be created."
-msgstr "L’emplacement où le modèle du bloque sera créé."
+msgstr "L’emplacement où le modèle du bloc sera créé."
 
 #: views/cortex-meta-box-options.twig:33
 msgid "Folder"
@@ -134,12 +134,12 @@ msgstr "Dossier"
 msgid ""
 "The block template folder name, will default to the block name if empty."
 msgstr ""
-"Le nom du dossier du modèle du bloque, utilisera le nom du bloque si laissé "
-"vide."
+"Le nom du dossier contenant le modèle du bloc. Utilisera le nom du bloc si "
+"laissé vide."
 
 #: views/cortex-post-selector.twig:4
 msgid "Post Type"
-msgstr "Post Type"
+msgstr "Type de post"
 
 #: views/cortex-post-selector.twig:36
 msgid "Select"
@@ -147,7 +147,7 @@ msgstr "Sélectionner"
 
 #: views/settings/cortex-block-status-group.twig:1
 msgid "Enable / disable certain blocks for the whole site."
-msgstr "Active / désactive certain bloques pour le site en entier."
+msgstr "Active / désactive certains blocs pour le site en entier."
 
 #: views/settings/cortex-licence-key-group.twig:1
 msgid ""
@@ -159,28 +159,28 @@ msgstr ""
 
 #: views/settings/cortex-post-types-group.twig:1
 msgid "Select which post types are allowed to display blocks."
-msgstr "Sélectionnez quel type de posts peuvent contenir des bloques."
+msgstr "Sélectionnez quel type de posts peuvent contenir des blocs."
 
 #: views/settings/cortex-style-include-path-group.twig:1
 msgid ""
 "Defines paths that will be used with @import directive in LESS or SASS "
 "files. One path per line, relative to the theme directory."
 msgstr ""
-"Défini les chemins qui seront utilisés avec les directives de type @import "
+"Définit les chemins qui seront utilisés avec les directives de type @import "
 "dans les fichiers LESS ou SASS. Un chemin par ligne, relatif au dossier du "
 "thème."
 
 #: admin/class-cortex-admin.php:100
 msgid "This block will be removed from this document. Are you sure ?"
-msgstr "Ce bloque sera retiré du document, êtes-vous certain ?"
+msgstr "Ce bloc sera retiré du document, êtes-vous certain ?"
 
 #: admin/class-cortex-admin.php:101
 msgid "Add New Block Template"
-msgstr "Ajouter un nouveau modèle de bloque"
+msgstr "Ajouter un nouveau modèle de bloc"
 
 #: admin/class-cortex-admin.php:102
 msgid "Edit Block Template"
-msgstr "Modifier le modèle du bloque"
+msgstr "Modifier le modèle du bloc"
 
 #: admin/class-cortex-admin.php:165 admin/class-cortex-admin.php:166
 msgid "Cortex"
@@ -188,7 +188,7 @@ msgstr "Cortex"
 
 #: admin/class-cortex-admin.php:174 admin/class-cortex-admin.php:175
 msgid "Settings"
-msgstr "Paramêtres"
+msgstr "Paramètres"
 
 #: admin/class-cortex-admin.php:231 admin/class-cortex-admin.php:235
 msgid "Options"
@@ -196,7 +196,7 @@ msgstr "Options"
 
 #: admin/class-cortex-admin.php:239
 msgid "Block"
-msgstr "Bloque"
+msgstr "Bloc"
 
 #: admin/class-cortex-admin.php:240
 msgid "Styles"
@@ -216,15 +216,15 @@ msgstr "Paramêtres sauvegardés"
 
 #: includes/class-cortex-block-template-list.php:23
 msgid "block"
-msgstr "bloque"
+msgstr "bloc"
 
 #: includes/class-cortex-block-template-list.php:24
 msgid "blocks"
-msgstr "bloques"
+msgstr "blocs"
 
 #: includes/class-cortex-block-template-list.php:36
 msgid "No blocks"
-msgstr "Aucun bloque"
+msgstr "Aucun bloc"
 
 #: includes/class-cortex-block-template-list.php:66
 msgid "Name"
@@ -268,36 +268,36 @@ msgstr "Chemins d’accès aux styles"
 
 #: includes/class-cortex.php:720
 msgid "Cortex Blocks"
-msgstr "Bloques Cortex"
+msgstr "Blocs Cortex"
 
 #: includes/class-cortex.php:721
 msgid "Cortex Block"
-msgstr "Bloque Cortex"
+msgstr "Bloc Cortex"
 
 #: includes/class-cortex.php:723
 msgid "Add New Cortex Block"
-msgstr "Ajouter un nouveau bloque Cortex"
+msgstr "Ajouter un nouveau bloc Cortex"
 
 #: includes/class-cortex.php:724
 msgid "Edit Cortex Block"
-msgstr "Modifier le bloque Cortex"
+msgstr "Modifier le bloc Cortex"
 
 #: includes/class-cortex.php:725
 msgid "New Cortex Block"
-msgstr "Nouveau bloque Cortex"
+msgstr "Nouveau bloc Cortex"
 
 #: includes/class-cortex.php:726
 msgid "View Cortex Block"
-msgstr "Voir le bloque Cortex"
+msgstr "Voir le bloc Cortex"
 
 #: includes/class-cortex.php:727
 msgid "Search Cortex Blocks"
-msgstr "Rechercher un bloque Cortex"
+msgstr "Rechercher un bloc Cortex"
 
 #: includes/class-cortex.php:728
 msgid "No Cortex Blocks found"
-msgstr "Aucun bloque Cortex trouvé"
+msgstr "Aucun bloc Cortex trouvé"
 
 #: includes/class-cortex.php:729
 msgid "No Cortex Blocks found in Trash"
-msgstr "Aucun bloque Cortex trouvé dans la corbeille"
+msgstr "Aucun bloc Cortex trouvé dans la corbeille"
