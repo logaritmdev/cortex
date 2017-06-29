@@ -798,10 +798,17 @@ class Cortex_Admin {
  * @hidden
  */
 function acf_reset_fields(&$fields) {
+
 	if (is_array($fields)) foreach ($fields as &$field) {
+
 		$field['ID'] = 0;
+
 		if (isset($field['sub_fields'])) {
 			acf_reset_fields($field['sub_fields']);
+		}
+
+		if (isset($field['layouts'])) foreach ($field['layouts'] as &$layout) {
+			acf_reset_fields($layout['sub_fields']);
 		}
 	}
 }
