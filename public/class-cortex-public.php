@@ -73,6 +73,8 @@ class Cortex_Public {
 			}
 
 			$block->get_template()->enqueue_styles();
+
+			$block->enqueue_styles();
 		}
 	}
 
@@ -94,6 +96,8 @@ class Cortex_Public {
 			}
 
 			$block->get_template()->enqueue_scripts();
+
+			$block->enqueue_scripts();
 		}
 	}
 
