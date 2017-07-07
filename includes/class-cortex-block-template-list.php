@@ -146,6 +146,10 @@ class CortexBlockTemplateList extends WP_List_Table {
 	 */
 	public function prepare_items() {
 
+		if (class_exists('acf') === false) {
+			return;
+		}
+
 		$filter = (isset($_REQUEST['filter'])) ? strtolower($_REQUEST['filter']) : false;
 		$search = (isset($_REQUEST['search'])) ? strtolower($_REQUEST['search']) : false;
 

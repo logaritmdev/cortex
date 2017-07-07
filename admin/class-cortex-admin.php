@@ -123,7 +123,7 @@ class Cortex_Admin {
 			array(
 				'name' => 'Timber Library',
 				'slug' => 'timber-library/timber.php',
-				'version' => '0.1.0'
+				'version' => '1.3.0'
 			)
 
 		);
@@ -472,6 +472,10 @@ class Cortex_Admin {
 	 * @since 0.1.0
 	 */
 	public function synchronize() {
+
+		if (class_exists('acf') === false) {
+			return;
+		}
 
 		$groups = array();
 
