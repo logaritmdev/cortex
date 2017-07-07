@@ -249,6 +249,24 @@ class CortexBlock {
 		return $context;
 	}
 
+	/**
+	 * Enqueue styles file.
+	 * @method enqueue_style
+	 * @since 0.1.0
+	 */
+	public function enqueue_styles() {
+
+	}
+
+	/**
+	 * Enqueue scripts file.
+	 * @method enqueue_scripts.
+	 * @since 0.1.0
+	 */
+	public function enqueue_scripts() {
+
+	}
+
 	//--------------------------------------------------------------------------
 	// Private API
 	//--------------------------------------------------------------------------

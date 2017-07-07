@@ -262,7 +262,7 @@ class Cortex_Admin {
 
 	/**
 	 * Renders the admin settings page.
-	 * @method synchronize
+	 * @method admin_settings_page
 	 * @since 0.1.0
 	 */
 	public function admin_settings_page() {
@@ -629,6 +629,8 @@ class Cortex_Admin {
 			if ($create_block ||
 				$update_block) {
 
+				acf_update_setting('json', false);
+
 				$field_group = $this->get_field_group($id);
 
 				if (empty($field_group['title'])) {
@@ -798,10 +800,17 @@ class Cortex_Admin {
  * @hidden
  */
 function acf_reset_fields(&$fields) {
+
 	if (is_array($fields)) foreach ($fields as &$field) {
+
 		$field['ID'] = 0;
+
 		if (isset($field['sub_fields'])) {
 			acf_reset_fields($field['sub_fields']);
+		}
+
+		if (isset($field['layouts'])) foreach ($field['layouts'] as &$layout) {
+			acf_reset_fields($layout['sub_fields']);
 		}
 	}
 }
