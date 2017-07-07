@@ -7,10 +7,10 @@
  */
 class CortexBlockTemplate {
 
-	public const CSS_FILE_PATH = 'assets/styles.css';
-	public const LESS_FILE_PATH = 'assets/styles.less';
-	public const SCSS_FILE_PATH = 'assets/styles.scss';
-	public const SCRIPT_FILE_PATH = 'assets/scripts.js';
+	const CSS_FILE_PATH = 'assets/styles.css';
+	const LESS_FILE_PATH = 'assets/styles.less';
+	const SCSS_FILE_PATH = 'assets/styles.scss';
+	const SCRIPT_FILE_PATH = 'assets/scripts.js';
 
 	//--------------------------------------------------------------------------
 	// Properties
