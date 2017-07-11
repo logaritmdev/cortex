@@ -24,15 +24,25 @@
 		<table class="wp-list-table widefat fixed striped pages cortex-post-selector-post-list">
 			<thead>
 				<tr>
-					<th class="manage-column column-title column-primary">Title</th>
-					<th class="manage-column column-author"></th>
+					<th width="90%" class="manage-column column-primary">{{ __('Title', 'cortex') }}</th>
+					<th width="10%" class="manage-column"></th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for post in group.posts %}
+
+					{% set language = fn('apply_filters', 'wpml_post_language_details', null, post.id) %}
+
 					<tr class="cortex-post-selector-post-list-item">
-						<td class="cortex-post-selector-post-list-item-title column-title">{{ post.title }}</td>
-						<td class="cortex-post-selector-post-list-item-check column-author">
+						<td class="cortex-post-selector-post-list-item-title">
+							<div class="cortex-post-selector-post-list-item-title-name">{{ post.title }}</div>
+							<div class="cortex-post-selector-post-list-item-title-lang">
+								{% if icl %}
+									<img src="{{ flags[language.language_code] }}"> {{ language.native_name }}
+								{% endif %}
+							</div>
+						</td>
+						<td class="cortex-post-selector-post-list-item-check">
 							<a href="#" data-document="{{ post.id }}">{{ __('Select', 'cortex') }}</a>
 						</td>
 					</tr>
@@ -40,8 +50,8 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<th class="manage-column column-title column-primary">Title</th>
-					<th class="manage-column column-author"></th>
+					<th class="manage-column column-primary">Title</th>
+					<th class="manage-column"></th>
 				</tr>
 			</tfoot>
 		</table>

@@ -212,11 +212,39 @@ class Cortex {
 	}
 
 	/**
+	 * Removes all blocks from the selected document.
+	 * @method remove_block
+	 * @since 0.1.0
+	 */
+	public static function clear_blocks($document) {
+		$blocks = self::get_blocks($document);
+		foreach ($blocks as $block) {
+			self::remove_block($document, $block);
+		}
+	}
+
+	/**
 	 * Moves a block from a document to another.
 	 * @method move_block;
 	 * @since 0.1.0
 	 */
 	public static function move_block($src_document, $dst_document, CortexBlock $block) {
+
+		$post = get_post($src_block_id);
+
+		$args = array(
+			'ID'             => $src_block_id,
+			'post_content'   => $post->post_content,
+			'post_excerpt'   => $post->post_excerpt,
+			'post_name'      => $post->post_name,
+			'post_parent'    => $dst_document,
+			'post_password'  => $post->post_password,
+			'post_status'    => $post->post_status,
+			'post_title'     => $post->post_title,
+			'post_type'      => $post->post_type,
+		);
+
+		wp_update_post($args);
 
 		$src_blocks = self::get_blocks($src_document);
 		$dst_blocks = self::get_blocks($dst_document);
@@ -248,7 +276,7 @@ class Cortex {
 			'post_content'   => $post->post_content,
 			'post_excerpt'   => $post->post_excerpt,
 			'post_name'      => $post->post_name,
-			'post_parent'    => $post->post_parent,
+			'post_parent'    => $dst_document,
 			'post_password'  => $post->post_password,
 			'post_status'    => $post->post_status,
 			'post_title'     => $post->post_title,
@@ -1050,7 +1078,9 @@ class Cortex {
 	 */
 	public function icl_make_duplicate($src_document, $lang, $post_data, $dst_document) {
 
-		$src_blocks = $this->get_blocks($src_document);
+		self::set_blocks($dst_document, array());
+
+		$src_blocks = self::get_blocks($src_document);
 
 		foreach ($src_blocks as $block) {
 			$this->copy_block(

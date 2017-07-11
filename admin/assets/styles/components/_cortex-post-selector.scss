@@ -1,4 +1,6 @@
 .cortex-post-selector-content {
+	@include absolute(top 0 left 0 right 0 bottom 0);
+	overflow: auto;
 	padding: 16px;
 }
 
@@ -42,6 +44,30 @@
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04) !important;
 	margin: 0px;
 	margin-top: 16px;
+}
+
+.cortex-post-selector-post-list-item {
+	padding: 12px 16px;
+}
+
+.cortex-post-selector-post-list-item-title-lang {
+
+	@include flex-box;
+	@include flex-row(center, flex-start);
+	font-size: 11px;
+	font-weight: normal;
+
+	img {
+		display: block;
+		height: 10px;
+		margin: 0px;
+		margin-right: 3px;
+		width: auto;
+	}
+}
+
+.cortex-post-selector-post-list-item:hover {
+	background: #eff8fc !important;
 }
 
 .cortex-post-selector-post-list-item-check {

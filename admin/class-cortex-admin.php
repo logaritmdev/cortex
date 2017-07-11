@@ -442,6 +442,18 @@ class Cortex_Admin {
 	public function get_documents() {
 
 		$groups = array();
+		$flags = array();
+
+		if (function_exists('icl_get_languages')) {
+
+			foreach (icl_get_languages() as $language) {
+
+				$code = $language['language_code'];
+				$flag = $language['country_flag_url'];
+
+				$flags[$code] = $flag;
+			}
+		}
 
 		foreach (Cortex::get_post_types() as $slug) {
 
@@ -452,7 +464,9 @@ class Cortex_Admin {
 				'offset'           => 0,
 				'post_type'        => $slug,
 				'post_status'      => 'any',
-				'suppress_filters' => true
+				'suppress_filters' => true,
+				'orderby'          => 'title',
+				'order'            => 'ASC'
 			);
 
 			$groups[] = array(
@@ -462,7 +476,7 @@ class Cortex_Admin {
 			);
 		}
 
-		Cortex::render('cortex-post-selector.twig', array('groups' => $groups));
+		Cortex::render('cortex-post-selector.twig', array('groups' => $groups, 'icl' => class_exists('SitePress'), 'flags' => $flags));
 		exit;
 	}
 
