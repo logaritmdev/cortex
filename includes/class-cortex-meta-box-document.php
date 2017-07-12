@@ -31,6 +31,8 @@ class CortexMetaBoxDocument extends CortexMetaBox {
 
 		$document = $post->ID;
 
+		$context['lang'] = isset($_GET['lang']) ? $_GET['lang'] : null;
+
 		$context['groups'] = Cortex::get_block_groups();
 		$context['blocks'] = Cortex::get_blocks($document);
 		$context['templates'] = Cortex::get_block_templates();

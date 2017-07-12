@@ -233,7 +233,13 @@ $.attach('.cortex-editor', function(i, element) {
 	 * @since 0.1.0
 	 */
 	element.on('edit', function(e, id, document) {
-		present(CORTEX.admin_url + 'post.php?&post=' + id + '&action=edit')
+
+		var lang = element.attr('data-lang')
+		if (lang) {
+			lang = '&lang=' + lang
+		}
+
+		present(CORTEX.admin_url + 'post.php?&post=' + id + '&action=edit' + lang)
 	})
 
 	element.on('present', onPresent)

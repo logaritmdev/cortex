@@ -266,6 +266,16 @@
 			}
 		}
 
+		/* List */
+
+		ul {
+			li {
+				list-style: disc;
+				list-style-position: outside;
+				margin-left: 20px;
+			}
+		}
+
 		/* Tables */
 
 		table {
