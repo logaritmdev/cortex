@@ -312,6 +312,8 @@ $.attach('.cortex-library', function(i, element) {
 
 			element.toggleClass('cortex-library-grid-cell-hidden', visible == false)
 		})
+
+		filter.val(group)
 	}
 
 	//--------------------------------------------------------------------------
