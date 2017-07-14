@@ -64,17 +64,13 @@ class Cortex_Public {
 
 		global $post;
 
-		foreach ($this->plugin->get_blocks($post->ID) as $block) {
+		if ($post) foreach (Cortex::get_blocks($post->ID) as $block) {
 
-			if ($block->get_parent_layout() ||
-				$block->get_parent_region() ||
-				$block->get_template()->is_active() === false) {
-				continue;
+			if ($block->get_template()->is_active()) {
+				$block->get_template()->enqueue_styles();
+				$block->enqueue_styles();
 			}
 
-			$block->get_template()->enqueue_styles();
-
-			$block->enqueue_styles();
 		}
 	}
 
@@ -87,17 +83,13 @@ class Cortex_Public {
 
 		global $post;
 
-		foreach ($this->plugin->get_blocks($post->ID) as $block) {
+		if ($post) foreach (Cortex::get_blocks($post->ID) as $block) {
 
-			if ($block->get_parent_layout() ||
-				$block->get_parent_region() ||
-				$block->get_template()->is_active() === false) {
-				continue;
+			if ($block->get_template()->is_active()) {
+				$block->get_template()->enqueue_scripts();
+				$block->enqueue_scripts();
 			}
 
-			$block->get_template()->enqueue_scripts();
-
-			$block->enqueue_scripts();
 		}
 	}
 
