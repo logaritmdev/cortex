@@ -308,7 +308,9 @@ class CortexBlock {
 	 */
 	public function display_region($region) {
 		foreach (Cortex::get_blocks($this->document) as $block) {
-			if ($block->get_template()->is_active() && $block->get_parent_region() === $region) {
+			if ($block->get_template()->is_active() &&
+				$block->get_parent_layout() === $this->id &&
+				$block->get_parent_region() === $region) {
 				$block->display();
 			}
 		}
