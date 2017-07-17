@@ -1083,7 +1083,7 @@ class Cortex {
 		$src_blocks = self::get_blocks($src_document);
 
 		foreach ($src_blocks as $block) {
-			$this->copy_block(
+			self::copy_block(
 				$src_document,
 				$dst_document,
 				$block

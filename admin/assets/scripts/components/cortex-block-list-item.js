@@ -111,6 +111,7 @@ $.attach('.cortex-block-list-item:not(.cortex-block-list-item-template)', functi
 
 		var parent = $(e.target).closest('.cortex-block-list-item-region')
 
+		$('.cortex-library').trigger('setgroup', 'all')
 		$('.cortex-library').trigger('present', [
 			parent.attr('data-layout'),
 			parent.attr('data-region')

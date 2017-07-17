@@ -220,7 +220,7 @@ class CortexBlock {
 		$context['template'] = $this->template;
 		$context['block'] = $this;
 
-		$this->render_template('block.twig', $context);
+		$this->render_template('block.twig', $this->render($context));
 	}
 
 	/**
@@ -265,6 +265,14 @@ class CortexBlock {
 	 */
 	public function enqueue_scripts() {
 
+	}
+
+	//--------------------------------------------------------------------------
+	// ACF Shortcuts
+	//--------------------------------------------------------------------------
+
+	protected function get_field($field) {
+		return get_field($field, $this->id);
 	}
 
 	//--------------------------------------------------------------------------
@@ -322,7 +330,6 @@ class CortexBlock {
 	 * @hidden
 	 */
 	private function render_template($file, $context) {
-		$context = $this->render($context);
 		$locations = Timber::$locations;
 		array_unshift(Timber::$locations, $this->template->get_path());
 		Timber::render($file, $context);
