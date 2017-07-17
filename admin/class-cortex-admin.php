@@ -710,6 +710,23 @@ class Cortex_Admin {
 		}
 	}
 
+
+	/**
+	 * Handles a delete post of type cortex-block.
+	 * @method save_block
+	 * @since 0.1.0
+	 */
+	public function delete_post($id) {
+
+		remove_action('delete_post', array($this, 'delete_post'));
+
+		foreach (Cortex::get_post_types() as $post_type) if (get_post_type() === $post_type) {
+			Cortex::clear_blocks($id);
+		}
+
+		add_action('delete_post', array($this, 'delete_post'));
+	}
+
 	/**
 	 * Display notices stored in session.
 	 * @method display_notices
@@ -727,6 +744,20 @@ class Cortex_Admin {
 		foreach (Cortex::session_take('cortex_errors', $default) as $message) {
 			echo sprintf('<div class="notice notice-error"><p>%s</p></div>', $message);
 		}
+	}
+
+	//--------------------------------------------------------------------------
+	// Duplicate Post Plugin Extension
+	//--------------------------------------------------------------------------
+
+	/**
+	 * Called when a page or post is duplicated.
+	 * @method dp_duplicate_post
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	public function dp_duplicate_post($new_post_id, $post, $status) {
+		Cortex::copy_blocks($post->ID, $new_post_id, true);
 	}
 
 	//--------------------------------------------------------------------------

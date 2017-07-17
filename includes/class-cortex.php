@@ -230,6 +230,8 @@ class Cortex {
 	 */
 	public static function move_block($src_document, $dst_document, CortexBlock $block) {
 
+		$src_block_id = $block->get_id();
+
 		$post = get_post($src_block_id);
 
 		$args = array(
@@ -264,11 +266,48 @@ class Cortex {
 	 */
 	public static function copy_block($src_document, $dst_document, CortexBlock $block) {
 
-		global $wpdb;
+		$dst_blocks = self::get_blocks($dst_document);
 
-        $parent_layout = 0;
+		$dst_block = self::duplicate_block($src_document, $dst_document, $block);
+		$dst_nodes = self::duplicate_nodes($src_document, $dst_document, $block, $dst_block);
+
+		self::set_blocks($dst_document, array_merge($dst_blocks, [$dst_block], $dst_nodes));
+	}
+
+	/**
+	 * Copies all the blocks from a specified document.
+	 * @method copy_block
+	 * @since 0.1.0
+	 */
+	public static function copy_blocks($src_document, $dst_document, $override = false) {
+
 		$src_blocks = self::get_blocks($src_document);
 		$dst_blocks = self::get_blocks($dst_document);
+
+		if ($override) {
+			$dst_blocks = array();
+		}
+
+		foreach ($src_blocks as $src_block) {
+
+			$dst_block = self::duplicate_block($src_document, $dst_document, $src_block);
+			$dst_nodes = self::duplicate_nodes($src_document, $dst_document, $src_block, $dst_block);
+
+			$dst_blocks = array_merge($dst_blocks, [$dst_block], $dst_nodes);
+		}
+
+		self::set_blocks($dst_document, $dst_blocks);
+	}
+
+	/**
+	 * Private function that duplicates a block and return it.
+	 * @method duplicate_block
+	 * @since 0.1.0
+	 */
+	private static function duplicate_block($src_document, $dst_document, CortexBlock $block) {
+
+		global $wpdb;
+
 		$src_block_id = $block->get_id();
 
 		$post = get_post($src_block_id);
@@ -285,8 +324,6 @@ class Cortex {
 		);
 
 		$id = wp_insert_post($args);
-
-        self::session_add('src_block_' . $src_block_id, $id);
 
 		$metas = $wpdb->get_results("SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id=$src_block_id");
 
@@ -307,17 +344,44 @@ class Cortex {
 			$wpdb->query($insert . implode(" UNION ALL ", $values));
 		}
 
-        $src_parent_layout = $block->get_parent_layout();
-        if ($src_parent_layout > 0){
-            $ids_src = self::session_get('src_block_' . $src_parent_layout);
-            $parent_layout = !empty($ids_src) && is_array($ids_src) ?
-                end($ids_src) : 0;
-        }
+		return new CortexBlock(
+			$id, $dst_document,
+			$block->get_template(),
+			$block->get_parent_layout(),
+			$block->get_parent_region()
+		);
+	}
 
-		$dst_blocks[] = new CortexBlock($id, $dst_document, $block->get_template(), $parent_layout, $block->get_parent_region());
+	/**
+	 * Private function that duplicates a layout recursively and returns it.
+	 * @method duplicate_nodes
+	 * @since 0.1.0
+	 */
+	private static function duplicate_nodes($src_document, $dst_document, CortexBlock $src_layout, CortexBlock $dst_layout) {
 
-		self::set_blocks($dst_document, $dst_blocks);
+		$src_blocks = self::get_blocks($src_document);
+		$dst_blocks = array();
 
+		$src_layout_id = $src_layout->get_id();
+		$dst_layout_id = $dst_layout->get_id();
+
+		foreach ($src_blocks as $src_block) {
+
+			if ($src_block->get_parent_layout() === $src_layout_id) {
+
+				$dst_block = self::duplicate_block($src_document, $dst_document, $src_block);
+				$dst_block->set_parent_layout($dst_layout_id);
+
+				$dst_blocks = array_merge($dst_blocks, [$dst_block], self::duplicate_nodes(
+					$src_document,
+					$dst_document,
+					$src_block,
+					$dst_block
+				));
+			}
+		}
+
+		return $dst_blocks;
 	}
 
 	/**
@@ -756,16 +820,16 @@ class Cortex {
 
 		register_post_type('cortex-block', array(
 			'labels'			=> array(
-			    'name'					=> __('Cortex Blocks', 'acf' ),
+				'name'					=> __('Cortex Blocks', 'acf' ),
 				'singular_name'			=> __('Cortex Block', 'acf' ),
-			    'add_new'				=> __('Add New' , 'acf' ),
-			    'add_new_item'			=> __('Add New Cortex Block' , 'acf' ),
-			    'edit_item'				=> __('Edit Cortex Block' , 'acf' ),
-			    'new_item'				=> __('New Cortex Block' , 'acf' ),
-			    'view_item'				=> __('View Cortex Block', 'acf' ),
-			    'search_items'			=> __('Search Cortex Blocks', 'acf' ),
-			    'not_found'				=> __('No Cortex Blocks found', 'acf' ),
-			    'not_found_in_trash'	=> __('No Cortex Blocks found in Trash', 'acf' ),
+				'add_new'				=> __('Add New' , 'acf' ),
+				'add_new_item'			=> __('Add New Cortex Block' , 'acf' ),
+				'edit_item'				=> __('Edit Cortex Block' , 'acf' ),
+				'new_item'				=> __('New Cortex Block' , 'acf' ),
+				'view_item'				=> __('View Cortex Block', 'acf' ),
+				'search_items'			=> __('Search Cortex Blocks', 'acf' ),
+				'not_found'				=> __('No Cortex Blocks found', 'acf' ),
+				'not_found_in_trash'	=> __('No Cortex Blocks found in Trash', 'acf' ),
 			),
 			'public'			=> false,
 			'show_ui'			=> true,
@@ -828,6 +892,7 @@ class Cortex {
 		$this->loader->add_action('admin_menu', $plugin_admin, 'configure_menu');
 		$this->loader->add_action('admin_head', $plugin_admin, 'configure_ui', 30);
 		$this->loader->add_action('save_post', $plugin_admin, 'save_post');
+		$this->loader->add_action('delete_post', $plugin_admin, 'delete_post');
 		$this->loader->add_action('wp_loaded', $plugin_admin, 'synchronize');
 		$this->loader->add_action('admin_notices', $plugin_admin, 'display_notices');
 
@@ -841,6 +906,10 @@ class Cortex {
 		$this->loader->add_action('wp_ajax_get_documents', $plugin_admin, 'get_documents');
 
 		$this->loader->add_filter('admin_body_class', $plugin_admin, 'configure_body_classes');
+
+		// Duplicate Post Plugin Extension
+		$this->loader->add_action('dp_duplicate_page', $plugin_admin, 'dp_duplicate_post', 10, 3);
+		$this->loader->add_action('dp_duplicate_post', $plugin_admin, 'dp_duplicate_post', 10, 3);
 	}
 
 	/**
@@ -1088,18 +1157,7 @@ class Cortex {
 	 * @sine 0.1.0
 	 */
 	public function icl_make_duplicate($src_document, $lang, $post_data, $dst_document) {
-
-		self::set_blocks($dst_document, array());
-
-		$src_blocks = self::get_blocks($src_document);
-
-		foreach ($src_blocks as $block) {
-			self::copy_block(
-				$src_document,
-				$dst_document,
-				$block
-			);
-		}
+		self::copy_blocks($src_document, $dst_document, true);
 	}
 
 	//--------------------------------------------------------------------------
