@@ -85,7 +85,7 @@ $.attach('.cortex-block-list', function(i, element) {
 			.toggleClass('cortex-block-list-item-template', false)
 			.toggleClass('cortex-block-list-item-loading', true)
 
-		item.find('.cortex-block-list-item-title').html(name)
+		item.find('.cortex-block-list-item-title span').html(name)
 
 		if (layout && region) {
 			item.appendTo(element.find('.cortex-block-list-item-region[data-layout="' + layout + '"][data-region="' + region + '"] .cortex-block-list-item-region-content'))
@@ -274,6 +274,17 @@ $.attach('.cortex-block-list', function(i, element) {
 		var region = $(this).closest('.cortex-block-list-item-region-content')
 		parent.css('height', '')
 		region.css('height', '')
+	})
+
+	var animationFrameId = null
+
+	$(window).on('resize', function() {
+		animationFrameId = cancelAnimationFrame(animationFrameId)
+		animationFrameId = requestAnimationFrame(function() {
+			element.find('.cortex-block-list-item-region-content').each(function(i, region) {
+				$(region).css('height', '')
+			})
+		})
 	})
 
 	var options = {
