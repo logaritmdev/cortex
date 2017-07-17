@@ -251,9 +251,17 @@ class Cortex {
 		$src_blocks = self::get_blocks($src_document);
 		$dst_blocks = self::get_blocks($dst_document);
 
+		$removed = array();
+
 		$src_blocks = self::block_array_remove($src_blocks, $block);
-		$src_blocks = self::block_array_remove_children($src_blocks, $block);
+		$src_blocks = self::block_array_remove_children($src_blocks, $block, $removed);
 		$dst_blocks = self::block_array_insert($dst_blocks, $block);
+
+		$dst_blocks = array_merge($dst_blocks, $removed);
+
+		foreach ($dst_blocks as &$dst_block) {
+			$dst_block->set_document($dst_document);
+		}
 
 		self::set_blocks($src_document, $src_blocks);
 		self::set_blocks($dst_document, $dst_blocks);
@@ -731,7 +739,7 @@ class Cortex {
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private static function block_array_remove_children($array, $parent) {
+	private static function block_array_remove_children($array, $parent, &$stack = array()) {
 
 		$items = array();
 		$child = array();
@@ -739,6 +747,7 @@ class Cortex {
 		foreach ($array as $block) if ($block->is_child_of($parent)) {
 
 			$child[] = $block;
+			$stack[] = $block;
 
 		} else {
 
@@ -747,7 +756,7 @@ class Cortex {
 		}
 
 		foreach ($child as $block) {
-			$items = self::block_array_remove_children($items, $block);
+			$items = array_merge($items, self::block_array_remove_children($items, $block, $stack));
 		}
 
 		return $items;

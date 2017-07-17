@@ -103,6 +103,15 @@ class CortexBlock {
 	}
 
 	/**
+	 * @method set_document
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	public function set_document($document) {
+		$this->document = (int) $document;
+	}
+
+	/**
 	 * Returns the block parent layout.
 	 * @method get_parent_layout
 	 * @since 0.1.0
@@ -172,15 +181,6 @@ class CortexBlock {
 	 */
 	private function set_template($template) {
 		$this->template = $template;
-	}
-
-	/**
-	 * @method set_document
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	private function set_document($document) {
-		$this->document = (int) $document;
 	}
 
 	//--------------------------------------------------------------------------
