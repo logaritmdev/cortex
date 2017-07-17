@@ -55,9 +55,14 @@ $.attach('.cortex-library', function(i, element) {
 				}
 			}
 
-			if (query) {
-				if (visible) visible = element.find('.cortex-library-grid-item-name').text().match(regex) !== null
-				if (visible) visible = element.find('.cortex-library-grid-item-hint').text().match(regex) !== null
+			if (query && visible) {
+                var foundInTitle = element.find('.cortex-library-grid-item-name').text().match(regex) !== null;
+                var foundInHint = element.find('.cortex-library-grid-item-hint').text().match(regex) !== null;
+                if (foundInHint || foundInTitle){
+                    visible = true;
+                }else{
+                    visible = false;
+                }
 			}
 
 			element.toggleClass('cortex-library-grid-cell-hidden', visible == false)
