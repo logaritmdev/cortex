@@ -266,6 +266,7 @@ class Cortex {
 
 		global $wpdb;
 
+        $parent_layout = 0;
 		$src_blocks = self::get_blocks($src_document);
 		$dst_blocks = self::get_blocks($dst_document);
 		$src_block_id = $block->get_id();
@@ -284,6 +285,8 @@ class Cortex {
 		);
 
 		$id = wp_insert_post($args);
+
+        self::session_add('src_block_' . $src_block_id, $id);
 
 		$metas = $wpdb->get_results("SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id=$src_block_id");
 
@@ -304,9 +307,17 @@ class Cortex {
 			$wpdb->query($insert . implode(" UNION ALL ", $values));
 		}
 
-		$dst_blocks[] = new CortexBlock($id, $dst_document, $block->get_template(), '', '');
+        $src_parent_layout = $block->get_parent_layout();
+        if ($src_parent_layout > 0){
+            $ids_src = self::session_get('src_block_' . $src_parent_layout);
+            $parent_layout = !empty($ids_src) && is_array($ids_src) ?
+                end($ids_src) : 0;
+        }
+
+		$dst_blocks[] = new CortexBlock($id, $dst_document, $block->get_template(), $parent_layout, $block->get_parent_region());
 
 		self::set_blocks($dst_document, $dst_blocks);
+
 	}
 
 	/**
