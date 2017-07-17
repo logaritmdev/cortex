@@ -55,17 +55,14 @@ $.attach('.cortex-library', function(i, element) {
 				}
 			}
 
-			if (query && visible) {
-                var foundInTitle = element.find('.cortex-library-grid-item-name').text().match(regex) !== null;
-                var foundInHint = element.find('.cortex-library-grid-item-hint').text().match(regex) !== null;
-                if (foundInHint || foundInTitle){
-                    visible = true;
-                }else{
-                    visible = false;
-                }
+			if (visible && query) {
+				visible = (
+					element.find('.cortex-library-grid-item-name').text().match(regex) !== null ||
+					element.find('.cortex-library-grid-item-hint').text().match(regex) !== null
+				)
 			}
 
-			element.toggleClass('cortex-library-grid-cell-hidden', visible == false)
+			element.toggleClass('cortex-library-grid-cell-hidden', visible === false)
 		})
 
 		filter.val(group)
