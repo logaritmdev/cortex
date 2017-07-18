@@ -816,6 +816,8 @@ class Cortex {
 		$this->define_public_hooks();
 		$this->define_acf_hooks();
 		$this->define_icl_hooks();
+
+		$this->loader->add_action('init', $this, 'init', 20);
 	}
 
 	/**
@@ -888,8 +890,6 @@ class Cortex {
 		if (is_admin() === false) {
 			return;
 		}
-
-		$this->loader->add_action('init', $this, 'init', 20);
 
 		$plugin_admin = new Cortex_Admin($this, $this->get_plugin_name(), $this->get_plugin_version());
 

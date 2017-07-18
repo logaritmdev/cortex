@@ -119,7 +119,7 @@ class Cortex_Public {
 
 		ob_start();
 
-		foreach ($this->plugin->get_blocks($post->ID) as $block) {
+		foreach (Cortex::get_blocks($post->ID) as $block) {
 
 			if ($block->get_parent_layout() ||
 				$block->get_parent_region() ||
