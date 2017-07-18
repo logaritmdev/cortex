@@ -800,7 +800,7 @@ class Cortex {
 	 */
 	public function __construct() {
 
-		session_start();
+		@session_start();
 
 		$this->plugin_name = 'cortex';
 		$this->plugin_version = '0.1.0';
@@ -808,8 +808,6 @@ class Cortex {
 		$this->register_post_types();
 
 		$this->load_dependencies();
-		$this->load_block_templates();
-		$this->load_block_groups();
 
 		$this->set_locale();
 
@@ -890,6 +888,8 @@ class Cortex {
 		if (is_admin() === false) {
 			return;
 		}
+
+		$this->loader->add_action('init', $this, 'init', 20);
 
 		$plugin_admin = new Cortex_Admin($this, $this->get_plugin_name(), $this->get_plugin_version());
 
@@ -1070,6 +1070,16 @@ class Cortex {
 		}
 
 		self::$block_groups = array_unique($groups);
+	}
+
+	/**
+	 * Initializes the plugin at the appropriate time.
+	 * @method init
+	 * @since 0.1.0
+	 */
+	public function init() {
+		$this->load_block_templates();
+		$this->load_block_groups();
 	}
 
 	/**
