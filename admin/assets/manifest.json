@@ -21,7 +21,7 @@
     }
   },
   "config": {
-    "devUrl": "http://wordpress.dev"
+    "devUrl": "http://pra17001.dev"
   },
   "paths": {
     "dist":   "../",

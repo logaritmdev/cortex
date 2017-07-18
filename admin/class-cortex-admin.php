@@ -435,6 +435,78 @@ class Cortex_Admin {
 	}
 
 	/**
+	 * Returns the modification date of a specific block template file.
+	 * @method get_block_template_file_date
+	 * @since 0.1.0
+	 */
+	public function get_block_template_file_date() {
+
+		$file = $_POST['file'];
+		$guid = $_POST['guid'];
+
+		$block = Cortex::get_block_template($guid);
+
+		if ($block == null) {
+			exit;
+		}
+
+		switch ($file) {
+
+			case 'preview':
+				echo $block->get_preview_file_date();
+				exit;
+
+			case 'block':
+				echo $block->get_block_file_date();
+				exit;
+
+			case 'style':
+				echo $block->get_style_file_date();
+				exit;
+
+			case 'script':
+				echo $block->get_script_file_date();
+				exit;
+		}
+	}
+
+	/**
+	 * Returns the content of a specific block template file.
+	 * @method get_block_template_file_content
+	 * @since 0.1.0
+	 */
+	public function get_block_template_file_content() {
+
+		$file = $_POST['file'];
+		$guid = $_POST['guid'];
+
+		$block = Cortex::get_block_template($guid);
+
+		if ($block == null) {
+			exit;
+		}
+
+		switch ($file) {
+
+			case 'preview':
+				echo $block->get_preview_file_content();
+				exit;
+
+			case 'block':
+				echo $block->get_block_file_content();
+				exit;
+
+			case 'style':
+				echo $block->get_style_file_content();
+				exit;
+
+			case 'script':
+				echo $block->get_script_file_content();
+				exit;
+		}
+	}
+
+	/**
 	 * Returns a list of document that can be used to copy/move blocks.
 	 * @method get_documents
 	 * @since 0.1.0

@@ -1,23 +1,2 @@
-<div id="cortex-block-editor" class="cortex-block-editor"></div>
+<div id="cortex-block-editor" class="cortex-text-editor cortex-block-editor" data-file="block" data-guid="{{ template.get_guid() }}" data-date="{{ template.get_block_file_date() }}"></div>
 <textarea id="cortex-block" name="cortex_block" style="display:none">{{ template.get_block_file_content() }}</textarea>
-<script type="text/javascript">
-
-	(function() {
-
-		var update = function() {
-			document.getElementById('cortex-block').value = editor.getSession().getValue()
-		}
-
-		var value = document.getElementById('cortex-block').value
-
-		var editor = ace.edit('cortex-block-editor')
-		editor.setTheme('ace/theme/tomorrow_night')
-		editor.getSession().setMode('ace/mode/twig')
-		editor.getSession().setValue(value)
-		editor.getSession().on('change', update)
-
-		update()
-
-	})();
-
-</script>

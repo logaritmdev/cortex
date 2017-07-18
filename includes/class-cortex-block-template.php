@@ -225,6 +225,15 @@ class CortexBlockTemplate {
 	}
 
 	/**
+	 * Returns the block template's preview file extension.
+	 * @method get_preview_file_type
+	 * @since 0.1.0
+	 */
+	public function get_preview_file_type() {
+		return $this->preview_file_type;
+	}
+
+	/**
 	 * Returns the block tempalte's preview file path.
 	 * @method get_preview_file_path
 	 * @since 0.1.0
@@ -240,6 +249,15 @@ class CortexBlockTemplate {
 	 */
 	public function get_preview_file_content() {
 		return @file_get_contents($this->get_preview_file_path());
+	}
+
+	/**
+	 * Returns the block template's preview file modification date.
+	 * @method get_preview_file_date
+	 * @since 0.1.0
+	 */
+	public function get_preview_file_date() {
+		return filemtime($this->get_preview_file_path());
 	}
 
 	/**
@@ -279,12 +297,12 @@ class CortexBlockTemplate {
 	}
 
 	/**
-	 * Returns the block template's preview file extension.
-	 * @method get_preview_file_type
+	 * Returns the block template's block file modification date.
+	 * @method get_block_file_date
 	 * @since 0.1.0
 	 */
-	public function get_preview_file_type() {
-		return $this->preview_file_type;
+	public function get_block_file_date() {
+		return filemtime($this->get_block_file_path());
 	}
 
 	/**
@@ -330,6 +348,15 @@ class CortexBlockTemplate {
 	}
 
 	/**
+	 * Returns block template's style file modification date.
+	 * @method get_style_file_date
+	 * @since 0.1.0
+	 */
+	public function get_style_file_date() {
+		return @filemtime($this->get_style_file_path());
+	}
+
+	/**
 	 * Returns the block template's script file path.
 	 * @method get_script_file_path
 	 * @since 0.1.0
@@ -345,6 +372,15 @@ class CortexBlockTemplate {
 	 */
 	public function get_script_file_content() {
 		return @file_get_contents($this->get_script_file_path());
+	}
+
+	/**
+	 * Returns the block template's script file modification date.
+	 * @method get_script_file_date
+	 * @since 0.1.0
+	 */
+	public function get_script_file_date() {
+		return @filemtime($this->get_script_file_path());
 	}
 
 	/**

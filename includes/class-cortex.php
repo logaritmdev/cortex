@@ -913,6 +913,8 @@ class Cortex {
 		$this->loader->add_action('wp_ajax_order_blocks', $plugin_admin, 'order_blocks');
 		$this->loader->add_action('wp_ajax_set_parent_block', $plugin_admin, 'set_parent_block');
 		$this->loader->add_action('wp_ajax_get_documents', $plugin_admin, 'get_documents');
+		$this->loader->add_action('wp_ajax_get_block_template_file_date', $plugin_admin, 'get_block_template_file_date');
+		$this->loader->add_action('wp_ajax_get_block_template_file_content', $plugin_admin, 'get_block_template_file_content');
 
 		$this->loader->add_filter('admin_body_class', $plugin_admin, 'configure_body_classes');
 

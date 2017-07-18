@@ -1,23 +1,2 @@
-<div id="cortex-style-editor" class="cortex-style-editor"></div>
+<div id="cortex-style-editor" class="cortex-text-editor cortex-style-editor" data-file="style" data-guid="{{ template.get_guid() }}" data-date="{{ template.get_style_file_date() }}"></div>
 <textarea id="cortex-style" name="cortex_style" style="display:none;">{{ template.get_style_file_content() }}</textarea>
-<script type="text/javascript">
-
-	(function() {
-
-		var update = function() {
-			document.getElementById('cortex-style').value = editor.getSession().getValue()
-		}
-
-		var value = document.getElementById('cortex-style').value
-
-		var editor = ace.edit('cortex-style-editor')
-		editor.setTheme('ace/theme/tomorrow_night')
-	    editor.getSession().setMode('ace/mode/scss')
-	    editor.getSession().setValue(value)
-	    editor.getSession().on('change', update)
-
-	    update()
-
-	})();
-
-</script>

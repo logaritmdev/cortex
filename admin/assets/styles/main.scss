@@ -85,6 +85,43 @@
 	}
 }
 
+@keyframes cortex-reload-rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.cortex-text-editor {
+
+	&.invalid {
+		@include relative;
+		border: 5px solid #dc3232;
+	}
+
+	.cortex-reload {
+
+		@include absolute(top 12px left 12px);
+		background: #dc3232 url(../images/reload.svg) no-repeat center center;
+		background-size: 18px 18px;
+		border-radius: 22px;
+		cursor: pointer;
+		height: 32px;
+		width: 32px;
+		z-index: 1000;
+
+		&.cortex-reload-reloading {
+			animation: cortex-reload-rotate infinite 1s linear;
+		}
+
+		&:hover {
+			background-color: #f73a3a;
+		}
+	}
+}
+
 .post-type-cortex-block {
 
 	.wrap {
