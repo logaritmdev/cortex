@@ -756,7 +756,7 @@ class Cortex {
 		}
 
 		foreach ($child as $block) {
-			$items = array_merge($items, self::block_array_remove_children($items, $block, $stack));
+			$items = self::block_array_remove_children($items, $block, $stack);
 		}
 
 		return $items;
