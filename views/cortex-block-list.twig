@@ -64,8 +64,23 @@
 		</div>
 	</div>
 
-	{% for block in blocks if block.template.active and block.parent_layout == 0 %}
-		{% include "cortex-block-list-item.twig" %}
-	{% endfor %}
+	<div class="cortex-block-list-items">
+		{% for block in blocks if block.template.active and block.parent_layout == 0 %}
+			{% include "cortex-block-list-item.twig" %}
+		{% endfor %}
+	</div>
+
+	<div class="cortex-block-list-menu" style="border-top: 1px solid #e5e5e5">
+		<div class="cortex-block-list-menu-button cortex-block-list-menu-button-insert">
+			<svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
+			    <path fill="#555d66" d="M42 18H24V0h-6v18H0v6h18v18h6V24h18"/>
+			</svg>
+		</div>
+		<div class="cortex-block-list-menu-button cortex-block-list-menu-button-layout">
+			<svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
+			    <path fill="#555d66" d="M40.2 0H1.8C1 0 0 1 0 1.8v38.5C0 41 1 42 1.8 42h38.5c1 0 1.8-1 1.8-1.8V1.8c0-1-1-1.8-1.8-1.8zM3.5 38.5V15.8h22.8v22.8H3.5zm35 0H28V15.8h10.5v22.7zm0-24.5h-35V3.5h35V14z"/>
+			</svg>
+		</div>
+	</div>
 
 </div>

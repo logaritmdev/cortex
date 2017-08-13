@@ -79,7 +79,8 @@ $.attach('.cortex-editor', function(i, element) {
 		element.toggleClass('cortex-modal-loading', false)
 
 		contents.find('#publish').on('click', function() {
-			element.toggleClass('cortex-modal-loading', true)
+			// Otherwise when validation fails the loading state remains
+			// element.toggleClass('cortex-modal-loading', true)
 		})
 	}
 

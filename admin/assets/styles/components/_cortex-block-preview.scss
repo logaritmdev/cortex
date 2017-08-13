@@ -1,0 +1,38 @@
+.cortex-block-preview {
+
+	@include relative;
+	min-height: 100px;
+	transition-property: height;
+  	transition-duration: 250ms;
+
+	&:after {
+		@include absolute(top 50% left 50%);
+		background: url(../images/spinner.gif) no-repeat;
+		background-size: 20px 20px;
+		content: "";
+		display: block;
+		margin-top: -10px;
+		margin-left: -10px;
+		height: 20px;
+		transition-property: opacity;
+  		transition-duration: 250ms;
+		width: 20px;
+	}
+
+  	iframe {
+  		opacity: 0;
+		transition-property: height, opacity;
+  		transition-duration: 250ms;
+  	}
+
+  	&.cortex-block-preview-loaded {
+
+  		iframe {
+  			opacity: 1;
+  		}
+
+  		&:after {
+  			opacity: 0;
+  		}
+  	}
+}

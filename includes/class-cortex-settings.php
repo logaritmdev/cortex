@@ -78,14 +78,18 @@ class Cortex_Settings {
 		$this->register('cortex_post_types');
 		$this->register('cortex_block_status');
 		$this->register('cortex_style_include_path');
+		$this->register('cortex_enqueue_styles_admin');
+		$this->register('cortex_enqueue_scripts_admin');
 		//$this->register_group('licence_key', __('Licence Key', 'cortex'));
 		//$this->register_field('licence_key', __('Licence Key', 'cortex'), 'licence_key');
 		$this->register_group('post_types', __('Post Types', 'cortex'));
 		$this->register_field('post_types', __('Post Types', 'cortex'), 'post_types');
 		$this->register_group('block_status', __('Blocks', 'cortex'));
 		$this->register_field('block_status', __('Blocks', 'cortex'), 'block_status');
-		$this->register_group('style_include_path', __('Styles Include Path', 'cortex'));
-		$this->register_field('style_include_path', __('Styles Include Path', 'cortex'), 'style_include_path');
+		$this->register_group('style', __('Styles Include Path', 'cortex'));
+		$this->register_field('style_include_path', __('Styles Include Path', 'cortex'), 'style');
+		$this->register_field('enqueue_styles_admin', __('Enqueue all blocks styles on admin page', 'cortex'), 'style');
+		$this->register_field('enqueue_scripts_admin', __('Enqueue all block scripts on admin page', 'cortex'), 'style');
 	}
 
 	/**
@@ -189,12 +193,12 @@ class Cortex_Settings {
 	}
 
 	/**
-	 * @method group_style_include_path
+	 * @method group_styles
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	public function group_style_include_path($args) {
-		Cortex::render('settings/cortex-style-include-path-group.twig');
+	public function group_style($args) {
+		echo __('Defines options related to block scripts and styles files.', 'cortex');
 	}
 
 	/**
@@ -203,6 +207,36 @@ class Cortex_Settings {
 	 * @hidden
 	 */
 	public function field_style_include_path($args) {
-		Cortex::render('settings/cortex-style-include-path-field.twig', array('value' => get_option('cortex_style_include_path')));
+		?>
+		<fieldset>
+			<textarea cols="60" rows="5" name="cortex_style_include_path"><?php echo get_option('cortex_style_include_path') ?></textarea>
+		</fieldset>
+		<?php
+	}
+
+	/**
+	 * @method field_enqueue_styles_admin
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	public function field_enqueue_styles_admin($args) {
+		?>
+		<fieldset>
+			<input type="checkbox" name="cortex_enqueue_styles_admin" value="true" <?php echo get_option('cortex_enqueue_styles_admin') == 'true' ? 'checked' : '' ?> />
+		</fieldset>
+		<?
+	}
+
+	/**
+	 * @method field_enqueue_scripts_admin
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	public function field_enqueue_scripts_admin($args) {
+		?>
+		<fieldset>
+			<input type="checkbox" name="cortex_enqueue_scripts_admin" value="true" <?php echo get_option('cortex_enqueue_scripts_admin') == 'true' ? 'checked' : '' ?> />
+		</fieldset>
+		<?
 	}
 }

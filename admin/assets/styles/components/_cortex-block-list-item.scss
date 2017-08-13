@@ -197,321 +197,324 @@
 
 	#poststuff & {
 
-		/* Headers */
+		.cortex-preview {
 
-		h1, h2, h3, h4, h5 {
+			/* Headers */
 
-			font-family: inherit;
-			font-weight: 500;
-			line-height: 1.1;
-			color: inherit;
-			padding: 0px;
-			margin: 0px;
-			margin-top: 24px;
-			margin-bottom: 12px;
+			h1, h2, h3, h4, h5 {
 
-			&:first-child {
-				margin-top: 0px;
-			}
-
-			&:last-child {
-				margin-bottom: 0px;
-			}
-		}
-
-		h4, h5 {
-			margin-top: 12px;
-			margin-bottom: 12px;
-		}
-
-		h1 {
-			font-size: 24px;
-		}
-
-		h2 {
-			font-size: 18px;
-		}
-
-		h3 {
-			font-size: 14px;
-		}
-
-		h4 {
-			font-size: 12px;
-		}
-
-		h5 {
-			font-size: 11px;
-		}
-
-		/* Paragraph */
-
-		p {
-
-			margin: 0px;
-			margin-bottom: 12px;
-
-			&:last-child {
-				margin-bottom: 0px;
-			}
-		}
-
-		/* Definitions */
-
-		dl {
-			margin: 0px;
-			margin-bottom: 24px;
-
-			&:last-child {
-				margin-bottom: 0px;
-			}
-		}
-
-		dt {
-			font-size: 13px;
-			font-weight: 500;
-		}
-
-		dd {
-
-			font-size: 12px;
-			margin: 0px;
-			margin-bottom: 12px;
-			opacity: 0.9;
-
-			&:last-child {
-				margin-bottom: 0px;
-			}
-		}
-
-		/* List */
-
-		ul {
-			li {
-				list-style: disc;
-				list-style-position: outside;
-				margin-left: 20px;
-			}
-		}
-
-		/* Tables */
-
-		table {
-			border-collapse: collapse;
-			width: 100%;
-		}
-
-		td {
-			border: 1px solid #ececec;
-			padding: 6px;
-		}
-
-		table.field-list {
-
-		}
-
-		table.field-list td {
-
-			&.field-label {
+				font-family: inherit;
 				font-weight: 500;
-				background: #fcfcfc;
-				padding-left: 12px;
-				padding-right: 12px;
-				text-align: right;
-				width: 0%;
-			}
-
-			&.field-value {
-				padding-left: 12px;
-				padding-right: 12px;
-				width: 100%;
-			}
-		}
-
-		/* Image */
-
-		img {
-			border: 1px solid #eee;
-			max-width: 100%;
-		}
-
-		/* Columns */
-
-		.columns {
-
-			@include flex-box;
-			@include flex-row(flex-start, flex-start);
-			box-sizing: border-box;
-			margin-top: -12px;
-			margin-left: -12px;
-			margin-right: -12px;
-
-			.column-25 {
-				@include flex(1, 0, auto);
-				box-sizing: border-box;
-				padding-top: 12px;
-				padding-left: 12px;
-				padding-right: 12px;
-				width: 25%;
-			}
-
-			.column-33 {
-				@include flex(1, 0, auto);
-				box-sizing: border-box;
-				padding-top: 12px;
-				padding-left: 12px;
-				padding-right: 12px;
-				width: 33.3333%;
-			}
-
-			.column-50 {
-				@include flex(1, 0, auto);
-				box-sizing: border-box;
-				padding-top: 12px;
-				padding-left: 12px;
-				padding-right: 12px;
-				width: 50%;
-			}
-
-			.column-66 {
-				@include flex(1, 0, auto);
-				box-sizing: border-box;
-				padding-top: 12px;
-				padding-left: 12px;
-				padding-right: 12px;
-				width: 66.6666%;
-			}
-
-			.column-75 {
-				@include flex(1, 0, auto);
-				box-sizing: border-box;
-				padding-top: 12px;
-				padding-left: 12px;
-				padding-right: 12px;
-				width: 75%;
-			}
-
-			.column-100 {
-				@include flex(1, 0, auto);
-				box-sizing: border-box;
-				padding-top: 12px;
-				padding-left: 12px;
-				padding-right: 12px;
-				width: 100%;
-			}
-
-			img {
-				max-width: 100%;
-				height: auto;
-			}
-		}
-
-		/* Gallery */
-
-		.gallery {
-
-			@include flex-box;
-			@include flex-row(flex-start, flex-start);
-			@include flex-wrap(wrap);
-			margin-top: -12px;
-			margin-left: -12px;
-			margin-right: -12px;
-
-			.image {
-
-				@include flex-box;
-				@include flex-col(flex-start, stretch);
-				@include flex-set(stretch);
-				box-sizing: border-box;
-				padding-top: 12px;
-				padding-left: 12px;
-				padding-right: 12px;
-				width: 20%;
-
-				img {
-					box-sizing: border-box;
-					background: #f5f5f5;
-					border: 1px solid #eee;
-					display: block;
-					height: auto;
-					width: 100%;
-				}
-
-				video {
-					@include flex(1, 0, auto);
-					box-sizing: border-box;
-					background: #f5f5f5;
-					border: 1px solid #eee;
-					display: block;
-					height: auto;
-					width: 100%;
-				}
-
-				figcaption {
-					box-sizing: border-box;
-					background: #f5f5f5;
-					border: 1px solid #eee;
-					border-top: none;
-					display: block;
-					padding: 12px;
-				}
-			}
-
-			.image-small {
-				width: 20%;
-			}
-
-			.image-medium {
-				width: 25%;
-			}
-
-			.image-large {
-				width: 33.3333%;
-			}
-		}
-
-		/* List */
-
-		.list {
-
-			.list-item {
-
-				padding-top: 12px;
-				padding-bottom: 12px;
+				line-height: 1.1;
+				color: inherit;
+				padding: 0px;
+				margin: 0px;
+				margin-top: 24px;
+				margin-bottom: 12px;
 
 				&:first-child {
-					padding-top: 0px;
+					margin-top: 0px;
 				}
 
 				&:last-child {
-					padding-bottom: 0px;
-				}
-
-				&:not(:last-child) {
-					border-bottom: 2px solid #f5f5f5;
+					margin-bottom: 0px;
 				}
 			}
-		}
 
-		/* Button */
+			h4, h5 {
+				margin-top: 12px;
+				margin-bottom: 12px;
+			}
 
-		& > .button,
-		& > p > .button {
-			background: #fafafa;
-			border: 1px solid #e5e5e5;
-			box-shadow: none;
-			border-radius: 3px;
-			color: #555d66;
-			display: inline-block;
-			height: auto;
-			line-height: normal;
-			font-size: 12px;
-			font-weight: 500;
-			padding: 4px;
-			padding-left: 8px;
-			padding-right: 8px;
-			text-align: center;
-			text-decoration: none;
+			h1 {
+				font-size: 24px;
+			}
+
+			h2 {
+				font-size: 18px;
+			}
+
+			h3 {
+				font-size: 14px;
+			}
+
+			h4 {
+				font-size: 12px;
+			}
+
+			h5 {
+				font-size: 11px;
+			}
+
+			/* Paragraph */
+
+			p {
+
+				margin: 0px;
+				margin-bottom: 12px;
+
+				&:last-child {
+					margin-bottom: 0px;
+				}
+			}
+
+			/* Definitions */
+
+			dl {
+				margin: 0px;
+				margin-bottom: 24px;
+
+				&:last-child {
+					margin-bottom: 0px;
+				}
+			}
+
+			dt {
+				font-size: 13px;
+				font-weight: 500;
+			}
+
+			dd {
+
+				font-size: 12px;
+				margin: 0px;
+				margin-bottom: 12px;
+				opacity: 0.9;
+
+				&:last-child {
+					margin-bottom: 0px;
+				}
+			}
+
+			/* List */
+
+			ul {
+				li {
+					list-style: disc;
+					list-style-position: outside;
+					margin-left: 20px;
+				}
+			}
+
+			/* Tables */
+
+			table {
+				border-collapse: collapse;
+				width: 100%;
+			}
+
+			td {
+				border: 1px solid #ececec;
+				padding: 6px;
+			}
+
+			table.field-list {
+
+			}
+
+			table.field-list td {
+
+				&.field-label {
+					font-weight: 500;
+					background: #fcfcfc;
+					padding-left: 12px;
+					padding-right: 12px;
+					text-align: right;
+					width: 0%;
+				}
+
+				&.field-value {
+					padding-left: 12px;
+					padding-right: 12px;
+					width: 100%;
+				}
+			}
+
+			/* Image */
+
+			img {
+				border: 1px solid #eee;
+				max-width: 100%;
+			}
+
+			/* Columns */
+
+			.columns {
+
+				@include flex-box;
+				@include flex-row(flex-start, flex-start);
+				box-sizing: border-box;
+				margin-top: -12px;
+				margin-left: -12px;
+				margin-right: -12px;
+
+				.column-25 {
+					@include flex(1, 0, auto);
+					box-sizing: border-box;
+					padding-top: 12px;
+					padding-left: 12px;
+					padding-right: 12px;
+					width: 25%;
+				}
+
+				.column-33 {
+					@include flex(1, 0, auto);
+					box-sizing: border-box;
+					padding-top: 12px;
+					padding-left: 12px;
+					padding-right: 12px;
+					width: 33.3333%;
+				}
+
+				.column-50 {
+					@include flex(1, 0, auto);
+					box-sizing: border-box;
+					padding-top: 12px;
+					padding-left: 12px;
+					padding-right: 12px;
+					width: 50%;
+				}
+
+				.column-66 {
+					@include flex(1, 0, auto);
+					box-sizing: border-box;
+					padding-top: 12px;
+					padding-left: 12px;
+					padding-right: 12px;
+					width: 66.6666%;
+				}
+
+				.column-75 {
+					@include flex(1, 0, auto);
+					box-sizing: border-box;
+					padding-top: 12px;
+					padding-left: 12px;
+					padding-right: 12px;
+					width: 75%;
+				}
+
+				.column-100 {
+					@include flex(1, 0, auto);
+					box-sizing: border-box;
+					padding-top: 12px;
+					padding-left: 12px;
+					padding-right: 12px;
+					width: 100%;
+				}
+
+				img {
+					max-width: 100%;
+					height: auto;
+				}
+			}
+
+			/* Gallery */
+
+			.gallery {
+
+				@include flex-box;
+				@include flex-row(flex-start, flex-start);
+				@include flex-wrap(wrap);
+				margin-top: -12px;
+				margin-left: -12px;
+				margin-right: -12px;
+
+				.image {
+
+					@include flex-box;
+					@include flex-col(flex-start, stretch);
+					@include flex-set(stretch);
+					box-sizing: border-box;
+					padding-top: 12px;
+					padding-left: 12px;
+					padding-right: 12px;
+					width: 20%;
+
+					img {
+						box-sizing: border-box;
+						background: #f5f5f5;
+						border: 1px solid #eee;
+						display: block;
+						height: auto;
+						width: 100%;
+					}
+
+					video {
+						@include flex(1, 0, auto);
+						box-sizing: border-box;
+						background: #f5f5f5;
+						border: 1px solid #eee;
+						display: block;
+						height: auto;
+						width: 100%;
+					}
+
+					figcaption {
+						box-sizing: border-box;
+						background: #f5f5f5;
+						border: 1px solid #eee;
+						border-top: none;
+						display: block;
+						padding: 12px;
+					}
+				}
+
+				.image-small {
+					width: 20%;
+				}
+
+				.image-medium {
+					width: 25%;
+				}
+
+				.image-large {
+					width: 33.3333%;
+				}
+			}
+
+			/* List */
+
+			.list {
+
+				.list-item {
+
+					padding-top: 12px;
+					padding-bottom: 12px;
+
+					&:first-child {
+						padding-top: 0px;
+					}
+
+					&:last-child {
+						padding-bottom: 0px;
+					}
+
+					&:not(:last-child) {
+						border-bottom: 2px solid #f5f5f5;
+					}
+				}
+			}
+
+			/* Button */
+
+			& > .button,
+			& > p > .button {
+				background: #fafafa;
+				border: 1px solid #e5e5e5;
+				box-shadow: none;
+				border-radius: 3px;
+				color: #555d66;
+				display: inline-block;
+				height: auto;
+				line-height: normal;
+				font-size: 12px;
+				font-weight: 500;
+				padding: 4px;
+				padding-left: 8px;
+				padding-right: 8px;
+				text-align: center;
+				text-decoration: none;
+			}
 		}
 	}
 

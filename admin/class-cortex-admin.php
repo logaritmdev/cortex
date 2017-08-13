@@ -69,7 +69,18 @@ class Cortex_Admin {
 	 * @since 0.1.0
 	 */
 	public function enqueue_styles() {
+
 		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'styles/main.css', array(), $this->plugin_version, 'all');
+
+		$enqueue_styles = get_option('cortex_enqueue_styles_admin');
+		$enqueue_scripts = get_option('cortex_enqueue_styles_admin');
+
+		if ($enqueue_styles || $enqueue_scripts) {
+			foreach (Cortex::get_block_templates() as $template) {
+				if ($enqueue_styles) $template->enqueue_styles();
+				if ($enqueue_scripts) $template->enqueue_scripts();
+			}
+		}
 	}
 
 	/**
@@ -507,6 +518,49 @@ class Cortex_Admin {
 	}
 
 	/**
+	 * @method render_single_block
+	 * @since 0.1.0
+	 */
+	public function render_single_block() {
+
+		$id = $_REQUEST['id'];
+		$document = $_REQUEST['document'];
+
+		$block = Cortex::get_block($document, $id);
+
+		?>
+
+			<!DOCTYPE HTML>
+			<html <?php language_attributes()?>>
+			<head>
+				<meta charset="utf-8">
+				<meta http-equiv="x-ua-compatible" content="ie=edge">
+				<meta name="viewport" content="width=device-width, initial-scale=1">
+				<link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed:700" rel="stylesheet">
+				<?php wp_head() ?>
+			</head>
+			<body <?php body_class('preview') ?>>
+				<?php
+
+					if ($block) {
+						$block->get_template()->enqueue_scripts();
+						$block->get_template()->enqueue_styles();
+						$block->enqueue_scripts();
+						$block->enqueue_styles();
+						$block->display();
+					}
+
+				?>
+			</body>
+			<?php wp_footer() ?>
+			</html>
+
+		<?php
+
+		exit;
+	}
+
+	/**
 	 * Returns a list of document that can be used to copy/move blocks.
 	 * @method get_documents
 	 * @since 0.1.0
@@ -913,6 +967,15 @@ class Cortex_Admin {
 	private function add_error($message) {
 		Cortex::session_add('cortex_errors', $message);
 	}
+}
+
+function cortex_block_preview($post, $h = null, $w = null) {
+
+	$styles = array();
+	if ($w) $styles[] = 'width:  ' . $w;
+	if ($h) $styles[] = 'height: ' . $h;
+
+	echo '<div class="cortex-block-preview" data-id="' . $post->ID . '" data-document="' . $post->post_parent . '" style="' . implode(';', $styles) . '"></div>';
 }
 
 /**

@@ -816,6 +816,7 @@ class Cortex {
 		$this->define_public_hooks();
 		$this->define_acf_hooks();
 		$this->define_icl_hooks();
+		$this->define_twig_hooks();
 
 		$this->loader->add_action('init', $this, 'init', 20);
 	}
@@ -915,6 +916,7 @@ class Cortex {
 		$this->loader->add_action('wp_ajax_get_documents', $plugin_admin, 'get_documents');
 		$this->loader->add_action('wp_ajax_get_block_template_file_date', $plugin_admin, 'get_block_template_file_date');
 		$this->loader->add_action('wp_ajax_get_block_template_file_content', $plugin_admin, 'get_block_template_file_content');
+		$this->loader->add_action('wp_ajax_render_single_block', $plugin_admin, 'render_single_block');
 
 		$this->loader->add_filter('admin_body_class', $plugin_admin, 'configure_body_classes');
 
@@ -968,6 +970,43 @@ class Cortex {
 	 */
 	protected function define_icl_hooks() {
 		$this->loader->add_action('icl_make_duplicate', $this, 'icl_make_duplicate', 10, 4);
+	}
+
+	/**
+	 * Registers twig functions and filters.
+	 * @method define_twig_hooks
+	 * @since 0.1.0
+	 */
+	protected function define_twig_hooks() {
+
+		add_filter('get_twig', function($twig) {
+
+			$twig->addFunction(new \Twig_SimpleFunction('classes', function(array $args = array()) {
+
+				$classes = array();
+
+				foreach ($args as $arg) {
+
+					if (is_array($arg)) {
+
+						foreach ($arg as $key => $val) {
+							if ($val) $classes[] = $key;
+						}
+
+						continue;
+					}
+
+					$classes[] = $arg;
+				}
+
+				return implode($classes, ' ');
+
+			}, array('is_variadic' => true)));
+
+			return $twig;
+
+		});
+
 	}
 
 	/**

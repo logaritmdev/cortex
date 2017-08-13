@@ -9,6 +9,7 @@
         "scripts/components/cortex-block-list.js",
         "scripts/components/cortex-block-list-item.js",
         "scripts/components/cortex-post-selector.js",
+        "scripts/components/cortex-block-preview.js",
         "scripts/main.js"
       ],
       "main": true

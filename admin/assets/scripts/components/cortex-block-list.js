@@ -67,8 +67,15 @@ $.attach('.cortex-block-list', function(i, element) {
 			'id': id
 
 		}, function(result) {
+
 			content.html(result)
 			current.toggleClass('cortex-block-list-item-loading', false)
+
+			var preview = content.find('.cortex-block-preview')
+			if (preview.length) {
+				$.attach.refresh(preview)
+			}
+
 		})
 	})
 
@@ -90,7 +97,7 @@ $.attach('.cortex-block-list', function(i, element) {
 		if (layout && region) {
 			item.appendTo(element.find('.cortex-block-list-item-region[data-layout="' + layout + '"][data-region="' + region + '"] .cortex-block-list-item-region-content'))
 		} else {
-			item.appendTo(element)
+			item.appendTo(element.find('.cortex-block-list-items'))
 		}
 
 		toggleEmptyListMessage()
