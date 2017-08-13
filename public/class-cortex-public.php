@@ -111,7 +111,7 @@ class Cortex_Public {
 
 		global $post;
 
-		if (self::$rendering) {
+		if (self::$rendering || empty($post)) {
 			return $content;
 		}
 
