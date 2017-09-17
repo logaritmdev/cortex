@@ -916,8 +916,8 @@ class Cortex {
 		$this->loader->add_action('wp_ajax_get_documents', $plugin_admin, 'get_documents');
 		$this->loader->add_action('wp_ajax_get_block_template_file_date', $plugin_admin, 'get_block_template_file_date');
 		$this->loader->add_action('wp_ajax_get_block_template_file_content', $plugin_admin, 'get_block_template_file_content');
-		$this->loader->add_action('wp_ajax_render_single_block', $plugin_admin, 'render_single_block');
-
+		$this->loader->add_action('wp_ajax_render_block', $plugin_admin, 'render_block');
+		$this->loader->add_action('wp_ajax_nopriv_render_block', $plugin_admin, 'render_block');
 		$this->loader->add_filter('admin_body_class', $plugin_admin, 'configure_body_classes');
 
 		// Duplicate Post Plugin Extension
@@ -938,8 +938,8 @@ class Cortex {
 
 		$plugin_public = new Cortex_Public($this, $this->get_plugin_name(), $this->get_plugin_version());
 
-		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
-		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles', 20);
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts', 20);
 		$this->loader->add_action('init', $plugin_public, 'configure_timber');
 		$this->loader->add_filter('the_content', $plugin_public, 'render');
 	}

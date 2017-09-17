@@ -361,6 +361,49 @@ class Cortex_Admin {
 	}
 
 	/**
+	 * @method render_block
+	 * @since 0.1.0
+	 */
+	public function render_block() {
+
+		$id = $_REQUEST['id'];
+		$document = $_REQUEST['document'];
+
+		$block = Cortex::get_block($document, $id);
+
+		?>
+
+			<!DOCTYPE HTML>
+			<html <?php language_attributes()?>>
+			<head>
+				<meta charset="utf-8">
+				<meta http-equiv="x-ua-compatible" content="ie=edge">
+				<meta name="viewport" content="width=device-width, initial-scale=1">
+				<link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed:700" rel="stylesheet">
+				<?php wp_head() ?>
+			</head>
+			<body <?php body_class('preview') ?>>
+				<?php
+
+					if ($block) {
+						$block->get_template()->enqueue_scripts();
+						$block->get_template()->enqueue_styles();
+						$block->enqueue_scripts();
+						$block->enqueue_styles();
+						$block->display();
+					}
+
+				?>
+			</body>
+			<?php wp_footer() ?>
+			</html>
+
+		<?php
+
+		exit;
+	}
+
+	/**
 	 * Moves a block from a document to another.
 	 * @method move_block
 	 * @since 0.1.0
@@ -515,49 +558,6 @@ class Cortex_Admin {
 				echo $block->get_script_file_content();
 				exit;
 		}
-	}
-
-	/**
-	 * @method render_single_block
-	 * @since 0.1.0
-	 */
-	public function render_single_block() {
-
-		$id = $_REQUEST['id'];
-		$document = $_REQUEST['document'];
-
-		$block = Cortex::get_block($document, $id);
-
-		?>
-
-			<!DOCTYPE HTML>
-			<html <?php language_attributes()?>>
-			<head>
-				<meta charset="utf-8">
-				<meta http-equiv="x-ua-compatible" content="ie=edge">
-				<meta name="viewport" content="width=device-width, initial-scale=1">
-				<link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed:700" rel="stylesheet">
-				<?php wp_head() ?>
-			</head>
-			<body <?php body_class('preview') ?>>
-				<?php
-
-					if ($block) {
-						$block->get_template()->enqueue_scripts();
-						$block->get_template()->enqueue_styles();
-						$block->enqueue_scripts();
-						$block->enqueue_styles();
-						$block->display();
-					}
-
-				?>
-			</body>
-			<?php wp_footer() ?>
-			</html>
-
-		<?php
-
-		exit;
 	}
 
 	/**
@@ -754,6 +754,8 @@ class Cortex_Admin {
 
 			Cortex::set_blocks($post->post_parent, $blocks);
 		}
+
+		do_action('cortex/save_block', $post->post_parent, $post->ID);
 	}
 
 	/**
@@ -967,15 +969,6 @@ class Cortex_Admin {
 	private function add_error($message) {
 		Cortex::session_add('cortex_errors', $message);
 	}
-}
-
-function cortex_block_preview($post, $h = null, $w = null) {
-
-	$styles = array();
-	if ($w) $styles[] = 'width:  ' . $w;
-	if ($h) $styles[] = 'height: ' . $h;
-
-	echo '<div class="cortex-block-preview" data-id="' . $post->ID . '" data-document="' . $post->post_parent . '" style="' . implode(';', $styles) . '"></div>';
 }
 
 /**

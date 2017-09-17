@@ -930,7 +930,7 @@ $.attach('.cortex-block-preview', function(i, element) {
 	var loaded = false
 	var iframe = $('<iframe frameborder="0" allowtransparency="true" scrolling="no" width="100%" height="100%"></iframe>').appendTo(element)
 
-	var source = ajaxurl + '?action=render_single_block&document=' + element.attr('data-document') + '&id=' + element.attr('data-id')
+	var source = ajaxurl + '?action=render_block&document=' + element.attr('data-document') + '&id=' + element.attr('data-id')
 
 	var load = function() {
 		if (loaded === false) {

@@ -224,7 +224,7 @@ class Cortex_Settings {
 		<fieldset>
 			<input type="checkbox" name="cortex_enqueue_styles_admin" value="true" <?php echo get_option('cortex_enqueue_styles_admin') == 'true' ? 'checked' : '' ?> />
 		</fieldset>
-		<?
+		<?php
 	}
 
 	/**
@@ -237,6 +237,6 @@ class Cortex_Settings {
 		<fieldset>
 			<input type="checkbox" name="cortex_enqueue_scripts_admin" value="true" <?php echo get_option('cortex_enqueue_scripts_admin') == 'true' ? 'checked' : '' ?> />
 		</fieldset>
-		<?
+		<?php
 	}
 }
