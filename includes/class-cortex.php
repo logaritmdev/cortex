@@ -449,6 +449,7 @@ class Cortex {
 		$template = self::get_block_template($template);
 
 		if ($template == null) {
+
 			return null;
 		}
 
@@ -765,6 +766,13 @@ class Cortex {
 	//--------------------------------------------------------------------------
 	// Properties
 	//--------------------------------------------------------------------------
+
+	/**
+	 * Whether the plugin is initialized;
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private $initialized = false;
 
 	/**
 	 * The plugin loader.
@@ -1119,8 +1127,11 @@ class Cortex {
 	 * @since 0.1.0
 	 */
 	public function init() {
-		$this->load_block_templates();
-		$this->load_block_groups();
+		if ($this->initialized == false) {
+			$this->initialized = true;
+			$this->load_block_templates();
+			$this->load_block_groups();
+		}
 	}
 
 	/**
@@ -1217,6 +1228,7 @@ class Cortex {
 	 * @sine 0.1.0
 	 */
 	public function icl_make_duplicate($src_document, $lang, $post_data, $dst_document) {
+		$this->init();
 		self::copy_blocks($src_document, $dst_document, true);
 	}
 

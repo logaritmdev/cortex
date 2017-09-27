@@ -838,7 +838,6 @@ class Cortex_Admin {
 		}
 	}
 
-
 	/**
 	 * Handles a delete post of type cortex-block.
 	 * @method save_block
