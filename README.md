@@ -24,6 +24,3 @@ Once completed you can go back to the page editor and use your newly created blo
 The block content will be saved in the `blocks` folder of your theme and the structure will look like this:
 
 ![Folder](https://github.com/logaritmdev/cortex/raw/master/doc/block.png)
-
-### Licence
-Cortex is free to use for development and production during the beta period. However, a licence will need to be purchased on production sites once the project goes out of beta.
