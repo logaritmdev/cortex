@@ -117,22 +117,27 @@ class Cortex_Public {
 
 		self::$rendering = true;
 
-		ob_start();
+		$blocks = Cortex::get_blocks($post->ID);
 
-		foreach (Cortex::get_blocks($post->ID) as $block) {
+		if (count($blocks) > 0) {
 
-			if ($block->get_parent_layout() ||
-				$block->get_parent_region() ||
-				$block->get_template()->is_active() === false) {
-				continue;
+			ob_start();
+
+			foreach (Cortex::get_blocks($post->ID) as $block) {
+
+				if ($block->get_parent_layout() ||
+					$block->get_parent_region() ||
+					$block->get_template()->is_active() === false) {
+					continue;
+				}
+
+				$block->display();
 			}
 
-			$block->display();
+			$content = ob_get_contents();
+
+			ob_end_clean();
 		}
-
-		$content = $content . ob_get_contents();
-
-		ob_end_clean();
 
 		self::$rendering = false;
 
