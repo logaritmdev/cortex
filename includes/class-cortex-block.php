@@ -8,6 +8,26 @@
 class CortexBlock {
 
 	//--------------------------------------------------------------------------
+	// Static
+	//--------------------------------------------------------------------------
+
+	/**
+	 * @property current
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	private static $current = null;
+
+	/**
+	 * Returns the block being rendered.
+	 * @method get_current_block
+	 * @since 1.0.0
+	 */
+	public static function get_current_block() {
+		return self::$current;
+	}
+
+	//--------------------------------------------------------------------------
 	// Properties
 	//--------------------------------------------------------------------------
 
@@ -207,6 +227,8 @@ class CortexBlock {
 	 */
 	public function display() {
 
+		self::$current = $this;
+
 		$context = Timber::get_context();
 
 		$id = $this->id;
@@ -221,6 +243,8 @@ class CortexBlock {
 		$context['block'] = $this;
 
 		$this->render_template('block.twig', $this->render($context));
+
+		self::$current = null;
 	}
 
 	/**
@@ -230,6 +254,8 @@ class CortexBlock {
 	 */
 	public function preview() {
 
+		self::$current = $this;
+
 		$context = Timber::get_context();
 
 		$context['post'] = new TimberPost($this->id);
@@ -238,6 +264,8 @@ class CortexBlock {
 		$context['block'] = $this;
 
 		$this->render_template('preview.twig', $this->render($context));
+
+		self::$current = null;
 	}
 
 	/**

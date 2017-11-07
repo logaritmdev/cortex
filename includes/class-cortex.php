@@ -393,6 +393,77 @@ class Cortex {
 	}
 
 	/**
+	 * @method get_block_index
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	private static function get_block_index($document, $id) {
+
+		$blocks = json_decode(get_post_meta($document, '_cortex_blocks', true), true);
+
+		if ($blocks == null) {
+			return false;
+		}
+
+		foreach ($blocks as $index => $block) {
+			if ($block['id'] == $id) return $index;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @method get_block_index_before
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private static function get_block_index_before($document, $id, $template) {
+
+		$index = self::get_block_index($document, $id);
+		if ($index === false) {
+			return false;
+		}
+
+		$blocks = json_decode(get_post_meta($document, '_cortex_blocks', true), true);
+
+		for ($i = $index - 1; $i >= 0; $i--) {
+			if (self::is_type_of_block($blocks[$i]['template'], $template)) return $i;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @method get_block_index_after
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private static function get_block_index_after($document, $id, $template) {
+
+		$index = self::get_block_index($document, $id);
+		if ($index === false) {
+			return false;
+		}
+
+		$blocks = json_decode(get_post_meta($document, '_cortex_blocks', true), true);
+
+		for ($i = $index + 1; $i < count($blocks); $i++) {
+			if (self::is_type_of_block($blocks[$i]['template'], $template)) return $i;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @method is_type_of_block
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private static function is_type_of_block($guid, $name) {
+		return substr($guid, -strlen($name)) == $name;
+	}
+
+	/**
 	 * Sets the order of the blocks on a specific page.
 	 * @method order_blocks.
 	 * @since 0.1.0
@@ -1011,10 +1082,101 @@ class Cortex {
 
 			}, array('is_variadic' => true)));
 
+			$twig->addFunction(new \Twig_SimpleFunction('block_is_before', function($block) {
+
+				$current = CortexBlock::get_current_block();
+
+				if ($current == null) {
+					return false;
+				}
+
+				$curr_index = self::get_block_index($current->get_document(), $current->get_id());
+				$find_index = self::get_block_index_before($current->get_document(), $current->get_id(), $block);
+
+				if ($curr_index === false ||
+					$find_index === false) {
+					return false;
+				}
+
+				return $curr_index > $find_index;
+
+			}));
+
+			$twig->addFunction(new \Twig_SimpleFunction('block_is_right_before', function($block) {
+
+				$current = CortexBlock::get_current_block();
+
+				if ($current == null) {
+					return false;
+				}
+
+				$curr_index = self::get_block_index($current->get_document(), $current->get_id());
+				$find_index = self::get_block_index_before($current->get_document(), $current->get_id(), $block);
+
+				if ($curr_index === false ||
+					$find_index === false) {
+					return false;
+				}
+
+				return $curr_index - 1 == $find_index;
+
+			}));
+
+			$twig->addFunction(new \Twig_SimpleFunction('block_is_after', function($block) {
+
+				$current = CortexBlock::get_current_block();
+
+				if ($current == null) {
+					return false;
+				}
+
+				$curr_index = self::get_block_index($current->get_document(), $current->get_id());
+				$find_index = self::get_block_index_after($current->get_document(), $current->get_id(), $block);
+
+				if ($curr_index === false ||
+					$find_index === false) {
+					return false;
+				}
+
+				return $curr_index < $find_index;
+
+			}));
+
+			$twig->addFunction(new \Twig_SimpleFunction('block_is_right_after', function($block) {
+
+				$current = CortexBlock::get_current_block();
+
+				if ($current == null) {
+					return false;
+				}
+
+				$curr_index = self::get_block_index($current->get_document(), $current->get_id());
+				$find_index = self::get_block_index_after($current->get_document(), $current->get_id(), $block);
+
+				if ($curr_index === false ||
+					$find_index === false) {
+					return false;
+				}
+
+				return $curr_index + 1 == $find_index;
+
+			}));
+
+			$twig->addFunction(new \Twig_SimpleFunction('image', function($image, $w = null, $h = null) {
+
+				$image = new \TimberImage($image);
+
+				if ($w != null || $h != null) {
+					$image = \TimberImageHelper::resize($w, $h);
+				}
+
+				return $image;
+
+			}));
+
 			return $twig;
 
 		});
-
 	}
 
 	/**
