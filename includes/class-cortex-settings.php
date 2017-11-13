@@ -98,7 +98,7 @@ class Cortex_Settings {
 	 * @hidden
 	 */
 	public function group_licence_key($args) {
-		Cortex::render('settings/cortex-licence-key-group.twig');
+		Cortex::render_twig('settings/cortex-licence-key-group.twig');
 	}
 
 	/**
@@ -107,7 +107,7 @@ class Cortex_Settings {
 	 * @hidden
 	 */
 	public function field_licence_key($args) {
-		Cortex::render('settings/cortex-licence-key-field.twig');
+		Cortex::render_twig('settings/cortex-licence-key-field.twig');
 	}
 
 	/**
@@ -116,7 +116,7 @@ class Cortex_Settings {
 	 * @hidden
 	 */
 	public function group_post_types($args) {
-		Cortex::render('settings/cortex-post-types-group.twig');
+		Cortex::render_twig('settings/cortex-post-types-group.twig');
 	}
 
 	/**
@@ -152,7 +152,7 @@ class Cortex_Settings {
 			);
 		}
 
-		Cortex::render('settings/cortex-post-types-field.twig', array('values' => $values));
+		Cortex::render_twig('settings/cortex-post-types-field.twig', array('values' => $values));
 	}
 
 	/**
@@ -161,7 +161,7 @@ class Cortex_Settings {
 	 * @hidden
 	 */
 	public function group_block_status($args) {
-		Cortex::render('settings/cortex-block-status-group.twig');
+		Cortex::render_twig('settings/cortex-block-status-group.twig');
 	}
 
 	/**
@@ -189,7 +189,7 @@ class Cortex_Settings {
 			);
 		}
 
-		Cortex::render('settings/cortex-block-status-field.twig', array('values' => $values));
+		Cortex::render_twig('settings/cortex-block-status-field.twig', array('values' => $values));
 	}
 
 	/**

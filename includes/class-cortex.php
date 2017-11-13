@@ -96,11 +96,11 @@ class Cortex {
 	}
 
 	/**
-	 * Convenience method to render a template.
-	 * @method render
+	 * Convenience method to render a twig template.
+	 * @method render_twig
 	 * @since 0.1.0
 	 */
-	public static function render($template, array $vars = array(), $echo = false) {
+	public static function render_twig($template, array $vars = array(), $echo = false) {
 
 		if ($echo) {
 			ob_start();
@@ -112,6 +112,33 @@ class Cortex {
 			$result = ob_get_contents();
 			ob_end_clean();
 			return $result;
+		}
+	}
+
+	/**
+	 * Convenience method to manually render a block with custom data.
+	 * @method render_block
+	 * @since 0.1.0
+	 */
+	public static function render_block($template, $post_data = array(), $meta_data = array()) {
+
+		foreach (self::get_block_templates() as $block_template) {
+
+			if ($block_template->is_type($template)) {
+
+				$block = $block_template->create_block();
+				$block->get_template()->enqueue_scripts();
+				$block->get_template()->enqueue_styles();
+				$block->enqueue_scripts();
+				$block->enqueue_styles();
+
+				$block->display(
+					$post_data,
+					$meta_data
+				);
+
+				return;
+			}
 		}
 	}
 
@@ -413,45 +440,39 @@ class Cortex {
 	}
 
 	/**
-	 * @method get_block_index_before
-	 * @since 0.1.0
+	 * @method get_block_template_after
+	 * @since 1.0.0
 	 * @hidden
 	 */
-	private static function get_block_index_before($document, $id, $template) {
+	private static function get_block_template_after($document, $id) {
 
 		$index = self::get_block_index($document, $id);
+
 		if ($index === false) {
 			return false;
 		}
 
 		$blocks = json_decode(get_post_meta($document, '_cortex_blocks', true), true);
 
-		for ($i = $index - 1; $i >= 0; $i--) {
-			if (self::is_type_of_block($blocks[$i]['template'], $template)) return $i;
-		}
-
-		return false;
+		return isset($blocks[$index + 1]) ? $blocks[$index + 1]['template'] : null;
 	}
 
 	/**
-	 * @method get_block_index_after
-	 * @since 0.1.0
+	 * @method get_block_template_before
+	 * @since 1.0.0
 	 * @hidden
 	 */
-	private static function get_block_index_after($document, $id, $template) {
+	private static function get_block_template_before($document, $id) {
 
 		$index = self::get_block_index($document, $id);
+
 		if ($index === false) {
 			return false;
 		}
 
 		$blocks = json_decode(get_post_meta($document, '_cortex_blocks', true), true);
 
-		for ($i = $index + 1; $i < count($blocks); $i++) {
-			if (self::is_type_of_block($blocks[$i]['template'], $template)) return $i;
-		}
-
-		return false;
+		return isset($blocks[$index - 1]) ? $blocks[$index - 1]['template'] : null;
 	}
 
 	/**
@@ -573,7 +594,7 @@ class Cortex {
 	 * @method get_block_templates
 	 * @since 0.1.0
 	 */
-	public static function get_block_templates($all = false) {
+	public static function get_block_templates() {
 		return self::$block_templates;
 	}
 
@@ -1082,7 +1103,7 @@ class Cortex {
 
 			}, array('is_variadic' => true)));
 
-			$twig->addFunction(new \Twig_SimpleFunction('block_is_before', function($block) {
+			$twig->addFunction(new \Twig_SimpleFunction('is_right_before', function($block) {
 
 				$current = CortexBlock::get_current_block();
 
@@ -1090,19 +1111,14 @@ class Cortex {
 					return false;
 				}
 
-				$curr_index = self::get_block_index($current->get_document(), $current->get_id());
-				$find_index = self::get_block_index_before($current->get_document(), $current->get_id(), $block);
-
-				if ($curr_index === false ||
-					$find_index === false) {
-					return false;
-				}
-
-				return $curr_index > $find_index;
+				return self::is_type_of_block(self::get_block_template_after(
+					$current->get_document(),
+					$current->get_id()
+				), $block);
 
 			}));
 
-			$twig->addFunction(new \Twig_SimpleFunction('block_is_right_before', function($block) {
+			$twig->addFunction(new \Twig_SimpleFunction('is_right_after', function($block) {
 
 				$current = CortexBlock::get_current_block();
 
@@ -1110,67 +1126,38 @@ class Cortex {
 					return false;
 				}
 
-				$curr_index = self::get_block_index($current->get_document(), $current->get_id());
-				$find_index = self::get_block_index_before($current->get_document(), $current->get_id(), $block);
-
-				if ($curr_index === false ||
-					$find_index === false) {
-					return false;
-				}
-
-				return $curr_index - 1 == $find_index;
+				return self::is_type_of_block(self::get_block_template_before(
+					$current->get_document(),
+					$current->get_id()
+				), $block);
 
 			}));
 
-			$twig->addFunction(new \Twig_SimpleFunction('block_is_after', function($block) {
-
-				$current = CortexBlock::get_current_block();
-
-				if ($current == null) {
-					return false;
-				}
-
-				$curr_index = self::get_block_index($current->get_document(), $current->get_id());
-				$find_index = self::get_block_index_after($current->get_document(), $current->get_id(), $block);
-
-				if ($curr_index === false ||
-					$find_index === false) {
-					return false;
-				}
-
-				return $curr_index < $find_index;
-
-			}));
-
-			$twig->addFunction(new \Twig_SimpleFunction('block_is_right_after', function($block) {
-
-				$current = CortexBlock::get_current_block();
-
-				if ($current == null) {
-					return false;
-				}
-
-				$curr_index = self::get_block_index($current->get_document(), $current->get_id());
-				$find_index = self::get_block_index_after($current->get_document(), $current->get_id(), $block);
-
-				if ($curr_index === false ||
-					$find_index === false) {
-					return false;
-				}
-
-				return $curr_index + 1 == $find_index;
-
-			}));
-
-			$twig->addFunction(new \Twig_SimpleFunction('image', function($image, $w = null, $h = null) {
+			$twig->addFunction(new \Twig_SimpleFunction('image', function($image, $resizeW = null, $resizeH = null, $format = null) {
 
 				$image = new \TimberImage($image);
 
-				if ($w != null || $h != null) {
-					$image = \TimberImageHelper::resize($w, $h);
+				if ($resizeW != null ||
+					$resizeH != null) {
+					$image = \TimberImageHelper::resize($image, $resizeW, $resizeH);
+				}
+
+				switch ($format) {
+					case 'url': return sprintf('url(%s);', $image);
+					case 'src': return sprintf('src="%s"', $image);
 				}
 
 				return $image;
+
+			}));
+
+			$twig->addFunction(new \Twig_SimpleFunction('render_block', function($template, $post_data, $meta_data) {
+
+				self::render_block(
+					$template,
+					$post_data,
+					$meta_data
+				);
 
 			}));
 

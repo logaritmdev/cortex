@@ -268,7 +268,7 @@ class Cortex_Admin {
 		$list = new CortexBlockTemplateList();
 		$list->prepare_items();
 
-		Cortex::render('cortex-admin-blocks-page.twig', array('list' => $list));
+		Cortex::render_twig('cortex-admin-blocks-page.twig', array('list' => $list));
 	}
 
 	/**
@@ -277,7 +277,7 @@ class Cortex_Admin {
 	 * @since 0.1.0
 	 */
 	public function admin_settings_page() {
-		Cortex::render('cortex-admin-settings-page.twig');
+		Cortex::render_twig('cortex-admin-settings-page.twig');
 	}
 
 	/**
@@ -316,7 +316,7 @@ class Cortex_Admin {
 
 		Cortex::insert_block($document, $block);
 
-		Cortex::render('cortex-block-list-item-preview.twig', array('block' => $block));
+		Cortex::render_twig('cortex-block-list-item-preview.twig', array('block' => $block));
 		exit;
 	}
 
@@ -601,7 +601,7 @@ class Cortex_Admin {
 			);
 		}
 
-		Cortex::render('cortex-post-selector.twig', array('groups' => $groups, 'icl' => class_exists('SitePress'), 'flags' => $flags));
+		Cortex::render_twig('cortex-post-selector.twig', array('groups' => $groups, 'icl' => class_exists('SitePress'), 'flags' => $flags));
 		exit;
 	}
 
@@ -800,7 +800,7 @@ class Cortex_Admin {
 					update_post_meta($id, '_cortex_block_guid', $template->get_guid());
 					update_post_meta($id, '_cortex_block_date', $template->get_date());
 
-					$defaults = Cortex::render('cortex-empty-block-template.twig', array('fields' => $field_group['fields']), true);
+					$defaults = Cortex::render_twig('cortex-empty-block-template.twig', array('fields' => $field_group['fields']), true);
 					$_POST['cortex_block']   = !empty($_POST['cortex_block'])   ? $_POST['cortex_block']   : $defaults;
 					$_POST['cortex_preview'] = !empty($_POST['cortex_preview']) ? $_POST['cortex_preview'] : $defaults;
 

@@ -444,6 +444,15 @@ class CortexBlockTemplate {
 		return $this->active;
 	}
 
+	/**
+	 * Indicates whether this block template is of the given type.
+	 * @method is_type
+	 * @since 1.0.0
+	 */
+	public function is_type($name) {
+		return substr($this->guid, -strlen($name)) === $name;
+	}
+
 	//--------------------------------------------------------------------------
 	// Methods
 	//--------------------------------------------------------------------------
@@ -477,7 +486,7 @@ class CortexBlockTemplate {
 	 * @method create_block
 	 * @since 0.1.0
 	 */
-	public function create_block($id, $document, $parent_layout, $parent_region) {
+	public function create_block($id = 0, $document = 0, $parent_layout = null, $parent_region = '') {
 		return $this->create_block_with($this->get_class(), $id, $document, $parent_layout, $parent_region);
 	}
 
@@ -486,7 +495,7 @@ class CortexBlockTemplate {
 	 * @method create_block_with
 	 * @since 0.1.0
 	 */
-	public function create_block_with($class, $id, $document, $parent_layout, $parent_region) {
+	public function create_block_with($class, $id = 0, $document = 0, $parent_layout = null, $parent_region = '') {
 		return new $class($id, $document, $this, $parent_layout, $parent_region);
 	}
 

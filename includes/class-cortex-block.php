@@ -73,6 +73,27 @@ class CortexBlock {
 	 */
 	private $parent_region = '';
 
+	/**
+	 * The block raw post id used to display this block without an actual post.
+	 * @property raw_id
+	 * @since 1.0.0
+	 */
+	private $raw_id = null;
+
+	/**
+	 * The block raw post used to display this block without an actual post.
+	 * @property raw_post_data
+	 * @since 1.0.0
+	 */
+	private $raw_post_data = null;
+
+	/**
+	 * The block raw post data used to display this block without an actual post.
+	 * @property raw_meta_data
+	 * @since 1.0.0
+	 */
+	private $raw_meta_data = null;
+
 	//--------------------------------------------------------------------------
 	// Accessors
 	//--------------------------------------------------------------------------
@@ -213,11 +234,14 @@ class CortexBlock {
 	 * @since 0.1.0
 	 */
 	public function __construct($id, $document, $template, $parent_layout, $parent_region) {
+
 		$this->set_id($id);
 		$this->set_document($document);
 		$this->set_template($template);
 		$this->set_parent_layout($parent_layout);
 		$this->set_parent_region($parent_region);
+
+		add_filter('timber_post_get_meta_field', array($this, 'timber_post_get_meta_field'), 20, 4);
 	}
 
 	/**
@@ -225,7 +249,7 @@ class CortexBlock {
 	 * @method display
 	 * @since 0.1.0
 	 */
-	public function display() {
+	public function display($post_data = null, $meta_data = null) {
 
 		self::$current = $this;
 
@@ -237,7 +261,21 @@ class CortexBlock {
 			$id = $this->revision;
 		}
 
-		$context['post'] = new TimberPost($id);
+		if ($post_data ||
+			$meta_data) {
+
+			$post_data = $post_data ? $post_data : array();
+			$meta_data = $meta_data ? $meta_data : array();
+
+			$context['post'] = $this->load_raw_post(
+				$post_data,
+				$meta_data
+			);
+
+		} else {
+			$context['post'] = new TimberPost($id);
+		}
+
 		$context['document'] = $this->document;
 		$context['template'] = $this->template;
 		$context['block'] = $this;
@@ -299,8 +337,13 @@ class CortexBlock {
 	// ACF Shortcuts
 	//--------------------------------------------------------------------------
 
-	protected function get_field($field) {
-		return get_field($field, $this->id);
+	/**
+	 * Convenience method to retrieve the value of a specified field.
+	 * @method get_field.
+	 * @since 0.1.0
+	 */
+	public function get_field($field) {
+		return $this->raw_id ? $this->get_raw_meta_data($field) : get_field($field, $this->id);
 	}
 
 	//--------------------------------------------------------------------------
@@ -362,6 +405,68 @@ class CortexBlock {
 		array_unshift(Timber::$locations, $this->template->get_path());
 		Timber::render($file, $context);
 		Timber::$locations = $locations;
+	}
+
+	/**
+	 * @function load_raw_post
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	private function load_raw_post($post_data, $meta_data) {
+
+		static $fake_id = 0;
+
+		$fake_id++;
+
+		$this->raw_id = $fake_id;
+		$this->raw_post_data = $post_data;
+		$this->raw_meta_data = $meta_data;
+
+		$post = new TimberPost(false);
+		$post->ID = $this->raw_id;
+		$post->id = $this->raw_id;
+
+		foreach ($this->raw_post_data as $key => $val) {
+			$post->$key = $val;
+		}
+
+		return $post;
+	}
+
+	/**
+	 * @function has_raw_meta_data
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	protected function has_raw_meta_data($field) {
+		return isset($this->raw_meta_data[$field]);
+	}
+
+	/**
+	 * @function get_raw_meta_data
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	protected function get_raw_meta_data($field, $default = null) {
+		return $this->has_raw_meta_data($field) ? $this->raw_meta_data[$field] : $default;
+	}
+
+	//--------------------------------------------------------------------------
+	// Hooks
+	//--------------------------------------------------------------------------
+
+	/**
+	 * @function timber_post_get_meta_field
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	public function timber_post_get_meta_field($value, $id, $field, $post) {
+
+		if ($this->raw_id == $id) {
+			return $this->get_raw_meta_data($field);
+		}
+
+		return $value;
 	}
 
 	//--------------------------------------------------------------------------
