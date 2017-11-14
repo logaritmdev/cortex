@@ -122,6 +122,21 @@ class Cortex {
 	 */
 	public static function render_block($template, $post_data = array(), $meta_data = array()) {
 
+		$argv = func_get_args();
+		$argc = func_num_args();
+
+		if (is_numeric($argv[0]) &&
+			is_numeric($argv[1])) {
+
+			$block = Cortex::get_block($argv[0], $argv[1]);
+			$block->get_template()->enqueue_scripts();
+			$block->get_template()->enqueue_styles();
+			$block->enqueue_scripts();
+			$block->enqueue_styles();
+			$block->display();
+			return;
+		}
+
 		foreach (self::get_block_templates() as $block_template) {
 
 			if ($block_template->is_type($template)) {
