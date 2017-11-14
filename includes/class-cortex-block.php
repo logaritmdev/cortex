@@ -94,6 +94,13 @@ class CortexBlock {
 	 */
 	private $raw_meta_data = null;
 
+	/**
+	 * The block's instance id.
+	 * @property instance_id
+	 * @since 1.0.0
+	 */
+	private $instance_id = 0;
+
 	//--------------------------------------------------------------------------
 	// Accessors
 	//--------------------------------------------------------------------------
@@ -234,6 +241,8 @@ class CortexBlock {
 	 * @since 0.1.0
 	 */
 	public function __construct($id, $document, $template, $parent_layout, $parent_region) {
+
+		$this->instance_id = uniqid();
 
 		$this->set_id($id);
 		$this->set_document($document);
@@ -478,4 +487,5 @@ class CortexBlock {
 	public function getdocument() { return $this->get_document(); }
 	public function getparent_layout() { return $this->get_parent_layout(); }
 	public function getparent_region() { return $this->get_parent_region(); }
+	public function getinstance_id() { return $this->instance_id; }
 }
