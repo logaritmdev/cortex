@@ -58,6 +58,14 @@ $.attach('.cortex-block-list', function(i, element) {
 			return
 		}
 
+		var event = $.Event('reloadblock')
+
+		current.trigger(event)
+
+		if (event.isDefaultPrevented()) {
+			return
+		}
+
 		current.toggleClass('cortex-block-list-item-loading', true)
 
 		$.post(ajaxurl, {
