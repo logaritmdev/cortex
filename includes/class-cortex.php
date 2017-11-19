@@ -516,7 +516,7 @@ class Cortex {
 		}
 
 		foreach ($map as $block) {
-			if (array_search($block, $blocks) === false) {
+			if (self::block_array_search($blocks, $block) === false) {
 				wp_delete_post($block->get_id());
 			}
 		}
@@ -819,7 +819,7 @@ class Cortex {
 	 */
 	private static function block_array_insert($array, $block) {
 
-		$index = array_search($block, $array);
+		$index = self::block_array_search($array, $block);
 		if ($index === false) {
 			array_push($array, $block);
 		}
@@ -834,7 +834,7 @@ class Cortex {
 	 */
 	private static function block_array_remove($array, $block) {
 
-		$index = array_search($block, $array);
+		$index = self::block_array_search($array, $block);
 		if ($index !== false) {
 			array_splice($array, $index, 1);
 		}
@@ -868,6 +868,20 @@ class Cortex {
 		}
 
 		return $items;
+	}
+
+	/**
+	 * @method block_array_remove_children
+	 * @since 1.0.1
+	 * @hidden
+	 */
+	private static function block_array_search($block_array, $block) {
+
+		foreach ($block_array as $index => $item) {
+			if ($item->get_id() == $block->get_id()) return $index;
+		}
+
+		return false;
 	}
 
 	//--------------------------------------------------------------------------
