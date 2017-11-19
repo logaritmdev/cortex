@@ -17,18 +17,6 @@
 	&.cortex-block-list-item-template {
 		display: none;
 	}
-
-	&.cortex-block-list-item-loading:after {
-		@include absolute(top 50% left 50%);
-		background: url(../images/spinner.gif) no-repeat;
-		background-size: 20px 20px;
-		content: "";
-		display: block;
-		margin-top: -10px;
-		margin-left: -10px;
-		height: 20px;
-		width: 20px;
-	}
 }
 
 .cortex-block-list-item-menu {
@@ -47,10 +35,10 @@
 	transition-duration: 250ms;
 	visibility: visible;
 
-	.cortex-block-list-item-loading & {
-		visibility: hidden;
-		opacity: 0;
-	}
+	// .cortex-block-list-item-loading & {
+	// 	visibility: hidden;
+	// 	opacity: 0;
+	// }
 }
 
 .cortex-block-list-item-menu-lf {
@@ -182,17 +170,30 @@
 
 .cortex-block-list-item-preview {
 
+	@include relative;
 	padding: 16px;
 	opacity: 1;
 	transition-property: opacity;
 	transition-duration: 250ms;
 
 	.cortex-block-list-item-loading & {
-		opacity: 0.25;
+		opacity: 0.50;
 	}
 
 	.cortex-block-list-item-collapsed & {
 		display: none;
+	}
+
+	.cortex-block-list-item-loading &:after {
+		@include absolute(top 50% left 50%);
+		background: url(../images/spinner.gif) no-repeat;
+		background-size: 20px 20px;
+		content: "";
+		display: block;
+		margin-top: -10px;
+		margin-left: -10px;
+		height: 20px;
+		width: 20px;
 	}
 
 	#poststuff & {
