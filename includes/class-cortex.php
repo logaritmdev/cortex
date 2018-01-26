@@ -1052,6 +1052,7 @@ class Cortex {
 		// Duplicate Post Plugin Extension
 		$this->loader->add_action('dp_duplicate_page', $plugin_admin, 'dp_duplicate_post', 10, 3);
 		$this->loader->add_action('dp_duplicate_post', $plugin_admin, 'dp_duplicate_post', 10, 3);
+
 	}
 
 	/**
@@ -1071,6 +1072,9 @@ class Cortex {
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts', 20);
 		$this->loader->add_action('init', $plugin_public, 'configure_timber');
 		$this->loader->add_filter('the_content', $plugin_public, 'render');
+
+		// Timber image resizing issue
+		$this->loader->add_filter('home_url', $plugin_public, 'home_url');
 	}
 
 	/**
@@ -1168,7 +1172,9 @@ class Cortex {
 
 				if ($resizeW != null ||
 					$resizeH != null) {
+					Cortex_Public::$resizing_image = true;
 					$image = \TimberImageHelper::resize($image, $resizeW, $resizeH);
+					Cortex_Public::$resizing_image = false;
 				}
 
 				switch ($format) {
