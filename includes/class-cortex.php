@@ -178,32 +178,41 @@ class Cortex {
 	 */
 	public static function get_blocks($document) {
 
-		$blocks = json_decode(get_post_meta($document, '_cortex_blocks', true), true);
+		static $cache = [];
+
+		$blocks = isset($cache[$document]) ? $cache[$document] : null;
 
 		if ($blocks == null) {
-			return array();
-		}
 
-		$map = function($data) use ($document) {
+			$blocks = json_decode(get_post_meta($document, '_cortex_blocks', true), true);
 
-			$block = self::create_block(
-				$data['id'],
-				$data['document'],
-				$data['template'],
-				$data['parent_layout'],
-				$data['parent_region']
-			);
-
-			if ($block) {
-				$block->set_revision($data['revision']);
-				return $block;
+			if ($blocks == null) {
+				return array();
 			}
 
-			return null;
+			$map = function($data) use ($document) {
 
-		};
+				$block = self::create_block(
+					$data['id'],
+					$data['document'],
+					$data['template'],
+					$data['parent_layout'],
+					$data['parent_region']
+				);
 
-		return array_filter(array_map($map, $blocks));
+				if ($block) {
+					$block->set_revision($data['revision']);
+					return $block;
+				}
+
+				return null;
+
+			};
+
+			$blocks = $cache[$document] = array_filter(array_map($map, $blocks));
+		}
+
+		return $blocks;
 	}
 
 	/**
