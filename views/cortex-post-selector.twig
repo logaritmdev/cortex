@@ -1,20 +1,3 @@
-{# <div class="cortex-post-selector-menu">
-
-	<div class="cortex-post-selector-menu-select">
-		{{ __('Post Type', 'cortex') }}:
-		<select>
-			{% for group in groups %}
-				<option value={{ group.slug }}>{{ group.name }}</option>
-			{% endfor %}
-		</select>
-	</div>
-
-	<div class="cortex-post-selector-menu-search">
-		<input type="search" class="wp-filter-search cortex-library-query-input" placeholder="{{ __('Search', 'cortex') }}" aria-describedby="live-search-desc">
-	</div>
-
-</div> #}
-
 <div class="cortex-post-selector-post-list-group">
 
 	{% for group in groups %}
@@ -29,6 +12,7 @@
 				</tr>
 			</thead>
 			<tbody>
+
 				{% for post in group.posts %}
 
 					{% set language = fn('apply_filters', 'wpml_post_language_details', null, post.id) %}
@@ -46,7 +30,27 @@
 							<a href="#" data-document="{{ post.id }}">{{ __('Select', 'cortex') }}</a>
 						</td>
 					</tr>
+
 				{% endfor %}
+
+				{% set len = group.posts | length %}
+
+				{% if len == 0 %}
+					<tr class="cortex-post-selector-post-list-item">
+						<td class="cortex-post-selector-post-list-item-title" colspan="2">
+							<em>{{ __('Empty', 'cortex') }}</em>
+						</td>
+					</tr>
+				{% endif %}
+
+				{% if len == 50 and group.total > len %}
+					<tr class="cortex-post-selector-post-list-item">
+						<td class="cortex-post-selector-post-list-item-warning" colspan="2">
+							{{ __('This post type contains more than 50 posts. You should use the search box instead.', 'cortex') }}
+						</td>
+					</tr>
+				{% endif %}
+
 			</tbody>
 			<tfoot>
 				<tr>

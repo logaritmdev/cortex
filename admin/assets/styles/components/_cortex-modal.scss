@@ -68,7 +68,7 @@
 
 	@include absolute(top 50px left 0 right 0 bottom 0);
 	opacity: 1;
-	overflow: hidden;
+	overflow: auto;
 	transition-property: transform, opacity, visibility;
 	transition-duration: 150ms;
 	z-index: 50;
@@ -76,4 +76,36 @@
 	.cortex-modal-loading & {
 		opacity: 0;
 	}
+}
+
+.cortex-post-selector-search {
+
+	@include flex-box;
+	@include flex-row(center, flex-end);
+	padding: 16px;
+}
+
+.cortex-post-selector-search-label {
+
+	@include relative;
+	margin-right: 8px;
+
+	.cortex-post-selector-searching & {
+
+		&:before {
+			@include absolute(top 50% left -24px);
+			background: url(../images/spinner.gif) no-repeat;
+			background-size: 20px 20px;
+			content: "";
+			display: block;
+			margin-top: -10px;
+			margin-left: -10px;
+			height: 20px;
+			width: 20px;
+		}
+	}
+}
+
+.cortex-post-selector-search-field {
+
 }

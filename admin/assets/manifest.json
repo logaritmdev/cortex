@@ -21,7 +21,7 @@
     }
   },
   "config": {
-    "devUrl": "http://pra17001.dev"
+    "devUrl": ""
   },
   "paths": {
     "dist":   "../",

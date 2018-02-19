@@ -585,7 +585,7 @@ class Cortex_Admin {
 			$name = get_post_type_object($slug)->label;
 
 			$args = array(
-				'posts_per_page'   => -1,
+				'posts_per_page'   => 50,
 				'offset'           => 0,
 				'post_type'        => $slug,
 				'post_status'      => 'any',
@@ -594,10 +594,18 @@ class Cortex_Admin {
 				'order'            => 'ASC'
 			);
 
+			if (isset($_REQUEST['search']) && trim($_REQUEST['search'])) {
+				$args['s'] = $_REQUEST['search'];
+			}
+
+			$count = wp_count_posts($slug);
+			$total = $count->publish + $count->draft;
+
 			$groups[] = array(
 				'name'  => $name,
 				'slug'  => $slug,
-				'posts' => Timber::get_posts($args)
+				'posts' => Timber::get_posts($args),
+				'total' => $total
 			);
 		}
 

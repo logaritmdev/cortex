@@ -1,12 +1,10 @@
 .cortex-post-selector-content {
-	@include absolute(top 0 left 0 right 0 bottom 0);
-	overflow: auto;
 	padding: 16px;
 }
 
 .cortex-post-selector-menu {
 	@include flex-box;
-	@include flex-row(center, flex-start)
+	@include flex-row(center, flex-start);
 	border: 1px solid #dddddd;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 	background: #fff;
@@ -41,9 +39,14 @@
 }
 
 .cortex-post-selector-post-list {
+
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04) !important;
 	margin: 0px;
 	margin-top: 16px;
+
+	&:not(:last-child) {
+		margin-bottom: 16px;
+	}
 }
 
 .cortex-post-selector-post-list-item {
@@ -73,4 +76,11 @@
 .cortex-post-selector-post-list-item-check {
 	text-align: right;
 	padding-left: 16px !important;
+}
+
+.cortex-post-selector-post-list-item-warning {
+	background: #f5dc98;
+	color: #997c2b !important;
+	padding: 24px !important;
+	text-align: center;
 }

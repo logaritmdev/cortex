@@ -1,7 +1,7 @@
 .cortex-library-menu {
 	@include relative;
 	@include flex-box;
-	@include flex-row(center, flex-start)
+	@include flex-row(center, flex-start);
 	border: 1px solid #dddddd;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 	background: #fff;
@@ -54,7 +54,7 @@
 
 .cortex-library-query {
 
-	@include flex(1, 0, auto)
+	@include flex(1, 0, auto);
 	@include flex-box;
 	@include flex-row(center, flex-end);
 
@@ -171,6 +171,3 @@
 .cortex-meta-box-document {
 	background: #fafafa;
 }
-
-
-
