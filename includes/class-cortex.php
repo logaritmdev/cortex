@@ -941,7 +941,7 @@ class Cortex {
 		@session_start();
 
 		$this->plugin_name = 'cortex';
-		$this->plugin_version = '0.1.0';
+		$this->plugin_version = CORTEX_PLUGIN_VERSION;
 
 		$this->register_post_types();
 
@@ -979,16 +979,17 @@ class Cortex {
 				'not_found'				=> __('No Cortex Blocks found', 'acf' ),
 				'not_found_in_trash'	=> __('No Cortex Blocks found in Trash', 'acf' ),
 			),
-			'public'			=> false,
-			'show_ui'			=> true,
-			'_builtin'			=> false,
-			'capability_type'	=> 'post',
-			'capabilities'		=> array(),
-			'hierarchical'		=> true,
-			'rewrite'			=> false,
-			'query_var'			=> false,
-			'supports'          => array('revisions'),
-			'show_in_menu'		=> false,
+			'public'              => false,
+			'show_ui'             => true,
+			'_builtin'            => false,
+			'capability_type'     => 'post',
+			'capabilities'        => array(),
+			'hierarchical'        => true,
+			'rewrite'             => false,
+			'query_var'           => false,
+			'supports'            => array('revisions'),
+			'show_in_menu'        => false,
+			'exclude_from_search' => false,
 		));
 
 	}
@@ -1175,15 +1176,26 @@ class Cortex {
 
 			}));
 
+			// deprecated
 			$twig->addFunction(new \Twig_SimpleFunction('image', function($image, $resizeW = null, $resizeH = null, $format = null) {
+
+				if (empty($image)) {
+					return;
+				}
 
 				$image = new \TimberImage($image);
 
 				if ($resizeW != null ||
 					$resizeH != null) {
-					Cortex_Public::$resizing_image = true;
-					$image = \TimberImageHelper::resize($image, $resizeW, $resizeH);
-					Cortex_Public::$resizing_image = false;
+
+					$w = $image->width();
+					$h = $image->height();
+
+					if ($w > $resizeW || $h > $resizeH) {
+						Cortex_Public::$resizing_image = true;
+						$image = \TimberImageHelper::resize($image, $resizeW, $resizeH);
+						Cortex_Public::$resizing_image = false;
+					}
 				}
 
 				switch ($format) {
@@ -1202,6 +1214,36 @@ class Cortex {
 					$post_data,
 					$meta_data
 				);
+
+			}));
+
+			$twig->addFilter(new \Twig_SimpleFilter('resized', function($image, $resizeW = null, $resizeH = null, $format = null) {
+
+				if (empty($image)) {
+					return;
+				}
+
+				$image = new \TimberImage($image);
+
+				if ($resizeW != null ||
+					$resizeH != null) {
+
+					$w = $image->width();
+					$h = $image->height();
+
+					if ($w > $resizeW || $h > $resizeH) {
+						Cortex_Public::$resizing_image = true;
+						$image = \TimberImageHelper::resize($image, $resizeW, $resizeH);
+						Cortex_Public::$resizing_image = false;
+					}
+				}
+
+				switch ($format) {
+					case 'url': return sprintf('url(%s);', $image);
+					case 'src': return sprintf('src="%s"', $image);
+				}
+
+				return $image;
 
 			}));
 

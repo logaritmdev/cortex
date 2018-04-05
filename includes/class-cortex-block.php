@@ -289,6 +289,8 @@ class CortexBlock {
 		$context['template'] = $this->template;
 		$context['block'] = $this;
 
+		$context['block_url'] = admin_url('admin-ajax.php') . '?action=render_block&document=' . $this->document . '&id=' . $this->id;
+
 		$this->render_template('block.twig', $this->render($context));
 
 		self::$current = null;
@@ -309,6 +311,8 @@ class CortexBlock {
 		$context['document'] = $this->document;
 		$context['template'] = $this->template;
 		$context['block'] = $this;
+
+		$context['block_url'] = admin_url('admin-ajax.php') . '?action=render_block&document=' . $this->document . '&id=' . $this->id;
 
 		$this->render_template('preview.twig', $this->render($context));
 
