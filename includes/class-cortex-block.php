@@ -289,7 +289,8 @@ class CortexBlock {
 		$context['template'] = $this->template;
 		$context['block'] = $this;
 
-		$context['block_url'] = admin_url('admin-ajax.php') . '?action=render_block&document=' . $this->document . '&id=' . $this->id;
+		$context['block_id'] = $this->id;
+		$context['block_url'] = $this->get_block_url();
 
 		$this->render_template('block.twig', $this->render($context));
 
@@ -312,7 +313,8 @@ class CortexBlock {
 		$context['template'] = $this->template;
 		$context['block'] = $this;
 
-		$context['block_url'] = admin_url('admin-ajax.php') . '?action=render_block&document=' . $this->document . '&id=' . $this->id;
+		$context['block_id'] = $this->id;
+		$context['block_url'] = $this->get_block_url();
 
 		$this->render_template('preview.twig', $this->render($context));
 
@@ -362,6 +364,14 @@ class CortexBlock {
 	//--------------------------------------------------------------------------
 	// Private API
 	//--------------------------------------------------------------------------
+
+	/**
+	 * @method get_block_url
+	 * @since 0.2.0
+	 */
+	public function get_block_url() {
+		return admin_url('admin-ajax.php') . '?action=render_block&document=' . $this->document . '&id=' . $this->id;
+	}
 
 	/**
 	 * @method preview_region

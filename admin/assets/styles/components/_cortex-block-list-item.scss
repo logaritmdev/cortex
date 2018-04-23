@@ -175,6 +175,7 @@
 	opacity: 1;
 	transition-property: opacity;
 	transition-duration: 250ms;
+	box-sizing: border-box;
 
 	.cortex-block-list-item-loading & {
 		opacity: 0.50;
