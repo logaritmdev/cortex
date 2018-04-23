@@ -270,8 +270,8 @@ class CortexBlock {
 			$id = $this->revision;
 		}
 
-		if ($post_data ||
-			$meta_data) {
+		if ($post_data !== null ||
+			$meta_data !== null) {
 
 			$post_data = $post_data ? $post_data : array();
 			$meta_data = $meta_data ? $meta_data : array();
