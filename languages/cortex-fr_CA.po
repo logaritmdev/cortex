@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Blocks Builder\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2018-04-05 14:28-0400\n"
+"POT-Creation-Date: 2018-04-23 14:03-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jean-Philippe Déry <jean-philippe.dery@logaritm.ca>\n"
 "Language-Team: Logaritm <jean-philippe.dery@logaritm.ca>\n"
@@ -18,10 +18,9 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;esc_html_e;esc_html_x:1,2c;esc_html__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
-"_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,"
-"_nc:4c,1,2\n"
+"_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
 "X-Poedit-Basepath: ..\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.0.7\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: admin/assets/node_modules\n"
 
@@ -47,7 +46,7 @@ msgstr "Paramètres"
 
 #: admin/class-cortex-admin.php:193 admin/class-cortex-admin.php:194
 #: admin/class-cortex-admin.php:235 includes/class-cortex-settings.php:87
-#: includes/class-cortex-settings.php:88
+#: includes/class-cortex-settings.php:88 views/cortex-admin-blocks-page.twig:4
 msgid "Blocks"
 msgstr "Blocs"
 
@@ -149,7 +148,7 @@ msgstr "Blocs Cortex"
 msgid "Cortex Block"
 msgstr "Bloc Cortex"
 
-#: includes/class-cortex.php:973
+#: includes/class-cortex.php:973 views/cortex-admin-blocks-page.twig:5
 msgid "Add New"
 msgstr "Ajouter"
 
@@ -181,101 +180,152 @@ msgstr "Aucun bloc Cortex trouvé"
 msgid "No Cortex Blocks found in Trash"
 msgstr "Aucun bloc Cortex trouvé dans la corbeille"
 
-#~ msgid "Cortex Settings"
-#~ msgstr "Paramètres Cortex"
+#: views/cortex-admin-settings-page.twig:5
+msgid "Cortex Settings"
+msgstr "Paramètres Cortex"
 
-#~ msgid "Empty layout region"
-#~ msgstr "Région de mise en page vide"
+#: views/cortex-block-list-item-region.twig:7
+msgid "Empty layout region"
+msgstr "Région de mise en page vide"
 
-#~ msgid "Use the button below or drop a block to fill this region."
-#~ msgstr ""
-#~ "Utilisez le bouton ci-dessous ou déplacez-y un bloc pour remplir cette "
-#~ "région."
+#: views/cortex-block-list-item-region.twig:8
+msgid "Use the button below or drop a block to fill this region."
+msgstr ""
+"Utilisez le bouton ci-dessous ou déplacez-y un bloc pour remplir cette "
+"région."
 
-#~ msgid "Add Block"
-#~ msgstr "Ajouter un bloc"
+#: views/cortex-block-list-item-region.twig:19 views/cortex-block-list.twig:63
+msgid "Add Block"
+msgstr "Ajouter un bloc"
 
-#~ msgid "Show"
-#~ msgstr "Afficher"
+#: views/cortex-block-list-item.twig:18 views/cortex-block-list.twig:28
+msgid "Show"
+msgstr "Afficher"
 
-#~ msgid "Hide"
-#~ msgstr "Cacher"
+#: views/cortex-block-list-item.twig:22 views/cortex-block-list.twig:31
+msgid "Hide"
+msgstr "Cacher"
 
-#~ msgid "Copy"
-#~ msgstr "Copier"
+#: views/cortex-block-list-item.twig:31 views/cortex-block-list.twig:36
+msgid "Copy"
+msgstr "Copier"
 
-#~ msgid "Move"
-#~ msgstr "Déplacer"
+#: views/cortex-block-list-item.twig:37 views/cortex-block-list.twig:39
+msgid "Move"
+msgstr "Déplacer"
 
-#~ msgid "Remove"
-#~ msgstr "Retirer"
+#: views/cortex-block-list-item.twig:42 views/cortex-block-list.twig:42
+msgid "Remove"
+msgstr "Retirer"
 
-#~ msgid "Edit"
-#~ msgstr "Modifier"
+#: views/cortex-block-list-item.twig:46 views/cortex-block-list.twig:45
+msgid "Edit"
+msgstr "Modifier"
 
-#~ msgid "This document is empty."
-#~ msgstr "Ce document est vide."
+#: views/cortex-block-list.twig:59
+msgid "This document is empty."
+msgstr "Ce document est vide."
 
-#~ msgid "Start building this page by adding a few blocks."
-#~ msgstr "Construisez cette page en y ajoutant quelques blocs."
+#: views/cortex-block-list.twig:60
+msgid "Start building this page by adding a few blocks."
+msgstr "Construisez cette page en y ajoutant quelques blocs."
 
-#~ msgid "Edit Content"
-#~ msgstr "Modifier le contenu"
+#: views/cortex-editor.twig:4
+msgid "Edit Content"
+msgstr "Modifier le contenu"
 
-#~ msgid "Close"
-#~ msgstr "Fermer"
+#: views/cortex-editor.twig:8 views/cortex-library.twig:10
+#: views/cortex-meta-box-document.twig:14
+#: views/cortex-meta-box-document.twig:38
+msgid "Close"
+msgstr "Fermer"
 
-#~ msgid "Empty"
-#~ msgstr "Vide"
+#: views/cortex-library.twig:6 views/cortex-library.twig:47
+msgid "Insert Block"
+msgstr "Insérer un bloc"
 
-#~ msgid "Insert Block"
-#~ msgstr "Insérer un bloc"
+#: views/cortex-library.twig:21
+msgid "All Blocks"
+msgstr "Tous les blocs"
 
-#~ msgid "All Blocks"
-#~ msgstr "Tous les blocs"
+#: views/cortex-library.twig:22
+msgid "Layouts Blocks"
+msgstr "Blocs de mise en page"
 
-#~ msgid "Layouts Blocks"
-#~ msgstr "Blocs de mise en page"
+#: views/cortex-library.twig:29
+msgid "Search"
+msgstr "Rechercher"
 
-#~ msgid "Copy Block"
-#~ msgstr "Copier le bloc"
+#: views/cortex-meta-box-document.twig:10
+msgid "Copy Block"
+msgstr "Copier le bloc"
 
-#~ msgid "Move Block"
-#~ msgstr "Déplacer le bloc"
+#: views/cortex-meta-box-document.twig:21
+#: views/cortex-meta-box-document.twig:45
+msgid "Search: "
+msgstr "Rechercher: "
 
-#~ msgid "Location"
-#~ msgstr "Emplacement"
+#: views/cortex-meta-box-document.twig:34
+msgid "Move Block"
+msgstr "Déplacer le bloc"
 
-#~ msgid "The location where the block template will be created."
-#~ msgstr "L’emplacement où le modèle du bloc sera créé."
+#: views/cortex-meta-box-options.twig:9
+msgid "Location"
+msgstr "Emplacement"
 
-#~ msgid "Folder"
-#~ msgstr "Dossier"
+#: views/cortex-meta-box-options.twig:12
+msgid "The location where the block template will be created."
+msgstr "L’emplacement où le modèle du bloc sera créé."
 
-#~ msgid ""
-#~ "The block template folder name, will default to the block name if empty."
-#~ msgstr ""
-#~ "Le nom du dossier contenant le modèle du bloc. Utilisera le nom du bloc "
-#~ "si laissé vide."
+#: views/cortex-meta-box-options.twig:33
+msgid "Folder"
+msgstr "Dossier"
+
+#: views/cortex-meta-box-options.twig:36
+msgid ""
+"The block template folder name, will default to the block name if empty."
+msgstr ""
+"Le nom du dossier contenant le modèle du bloc. Utilisera le nom du bloc si "
+"laissé vide."
+
+#: views/cortex-post-selector.twig:10
+msgid "Title"
+msgstr "Titre"
+
+#: views/cortex-post-selector.twig:30
+msgid "Select"
+msgstr "Sélectionner"
+
+#: views/cortex-post-selector.twig:41
+msgid "Empty"
+msgstr "Vide"
+
+#: views/cortex-post-selector.twig:49
+msgid ""
+"This post type contains more than 50 posts. You should use the search box "
+"instead."
+msgstr ""
+"Ce type de message contient plus de 50 postes. Vous devez plutôt utiliser la "
+"boîte de recherche."
+
+#: views/settings/cortex-block-status-group.twig:1
+msgid "Enable / disable certain blocks for the whole site."
+msgstr "Active / désactive certains blocs pour le site en entier."
+
+#: views/settings/cortex-licence-key-group.twig:1
+msgid ""
+"Cortex is free to use for development purposes but a licence key is required "
+"for production projects."
+msgstr ""
+"Cortex peut être utilisé gratuitement lors du développement mais une licence "
+"est requise pour un site en production."
+
+#: views/settings/cortex-post-types-group.twig:1
+msgid "Select which post types are allowed to display blocks."
+msgstr "Sélectionnez quel type de posts peuvent contenir des blocs."
 
 #~ msgid "Post Type"
 #~ msgstr "Type de post"
-
-#~ msgid "Select"
-#~ msgstr "Sélectionner"
-
-#~ msgid "Enable / disable certain blocks for the whole site."
-#~ msgstr "Active / désactive certains blocs pour le site en entier."
-
-#~ msgid ""
-#~ "Cortex is free to use for development purposes but a licence key is "
-#~ "required for production projects."
-#~ msgstr ""
-#~ "Cortex peut être utilisé gratuitement lors du développement mais une "
-#~ "licence est requise pour un site en production."
-
-#~ msgid "Select which post types are allowed to display blocks."
-#~ msgstr "Sélectionnez quel type de posts peuvent contenir des blocs."
 
 #~ msgid ""
 #~ "Defines paths that will be used with @import directive in LESS or SASS "

@@ -21,7 +21,7 @@
 					<option value="all">{{ __('All Blocks', 'cortex') }}</option>
 					<option value="layout">{{ __('Layouts Blocks', 'cortex') }}</option>
 					{% for group in groups %}
-						<option value="{{ group }}">{{ __(group, 'cortex') }}</option>
+						<option value="{{ group }}">{{ group }}</option>
 					{% endfor %}
 				</select>
 
@@ -39,8 +39,8 @@
 								<div class="cortex-library-grid-item-body">
 									<div class="cortex-library-grid-item-icon"><img src="{{ template.get_icon_url() }}"></div>
 									<div class="cortex-library-grid-item-text">
-										<div class="cortex-library-grid-item-name">{{ __(template.name) }}</div>
-										<div class="cortex-library-grid-item-hint">{{ __(template.hint) }}</div>
+										<div class="cortex-library-grid-item-name">{{ template.name }}</div>
+										<div class="cortex-library-grid-item-hint">{{ template.hint }}</div>
 									</div>
 								</div>
 								<div class="cortex-library-grid-item-foot">
