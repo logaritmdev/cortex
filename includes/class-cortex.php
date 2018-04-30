@@ -178,7 +178,7 @@ class Cortex {
 	 */
 	public static function get_blocks($document) {
 
-		static $cache = [];
+		static $cache = array();
 
 		$blocks = isset($cache[$document]) ? $cache[$document] : null;
 
@@ -330,7 +330,7 @@ class Cortex {
 		$dst_block = self::duplicate_block($src_document, $dst_document, $block);
 		$dst_nodes = self::duplicate_nodes($src_document, $dst_document, $block, $dst_block);
 
-		self::set_blocks($dst_document, array_merge($dst_blocks, [$dst_block], $dst_nodes));
+		self::set_blocks($dst_document, array_merge($dst_blocks, array($dst_block), $dst_nodes));
 	}
 
 	/**
@@ -352,7 +352,7 @@ class Cortex {
 			$dst_block = self::duplicate_block($src_document, $dst_document, $src_block);
 			$dst_nodes = self::duplicate_nodes($src_document, $dst_document, $src_block, $dst_block);
 
-			$dst_blocks = array_merge($dst_blocks, [$dst_block], $dst_nodes);
+			$dst_blocks = array_merge($dst_blocks, array($dst_block), $dst_nodes);
 		}
 
 		self::set_blocks($dst_document, $dst_blocks);
@@ -431,7 +431,7 @@ class Cortex {
 				$dst_block = self::duplicate_block($src_document, $dst_document, $src_block);
 				$dst_block->set_parent_layout($dst_layout_id);
 
-				$dst_blocks = array_merge($dst_blocks, [$dst_block], self::duplicate_nodes(
+				$dst_blocks = array_merge($dst_blocks, array($dst_block), self::duplicate_nodes(
 					$src_document,
 					$dst_document,
 					$src_block,
@@ -1231,7 +1231,8 @@ class Cortex {
 					$w = $image->width();
 					$h = $image->height();
 
-					if ($w > $resizeW || $h > $resizeH) {
+					if (($resizeW && $w > $resizeW) ||
+						($resizeH && $h > $resizeH)) {
 						Cortex_Public::$resizing_image = true;
 						$image = \TimberImageHelper::resize($image, $resizeW, $resizeH);
 						Cortex_Public::$resizing_image = false;
@@ -1445,7 +1446,7 @@ class Cortex {
 						)
 					);
 
-					return [$field_group];
+					return array($field_group);
 				}
 			}
 		}
@@ -1514,6 +1515,6 @@ class Cortex {
 
 		$contents = json_decode($contents, true);
 
-		return empty($contents) ? [] : $contents;
+		return empty($contents) ? array() : $contents;
 	}
 }
