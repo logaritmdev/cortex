@@ -1275,7 +1275,8 @@ class Cortex {
 					'order' => 10,
 					'block_type' => 'twig',
 					'style_type' => 'scss',
-					'disabled' => false
+					'disabled' => false,
+					'version' => '1.0.0'
 				),
 
 				$this->get_json($path, 'block')
@@ -1297,16 +1298,7 @@ class Cortex {
 
 			$fields = $this->get_json($path, 'fields');
 
-			$template = new CortexBlockTemplate(
-				$guid,
-				$path,
-				$data['name'],
-				$data['icon'],
-				$data['hint'],
-				$data['group'],
-				$data['class']
-			);
-
+			$template = new CortexBlockTemplate($guid, $path, $data);
 			$template->set_order($data['order']);
 			$template->set_block_file_type($data['block_type']);
 			$template->set_style_file_type($data['style_type']);

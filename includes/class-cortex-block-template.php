@@ -462,17 +462,18 @@ class CortexBlockTemplate {
 	 * @cosntructor
 	 * @since 0.1.0
 	 */
-	public function __construct($guid, $path, $name, $icon, $hint, $group, $class) {
+	public function __construct($guid, $path, $data) {
 
 		static $block_status = null;
 
 		$this->guid = $guid;
 		$this->path = $path;
-		$this->name = $name;
-		$this->icon = $icon;
-		$this->hint = $hint;
-		$this->group = $group;
-		$this->class = $class;
+		$this->name = $data['name'];
+		$this->icon = $data['icon'];
+		$this->hint = $data['hint'];
+		$this->group = $data['group'];
+		$this->class = $data['class'];
+		$this->version = $data['version'];
 
 		if ($block_status == null) {
 			$block_status = get_option('cortex_block_status');
