@@ -468,12 +468,12 @@ class CortexBlockTemplate {
 
 		$this->guid = $guid;
 		$this->path = $path;
-		$this->name = $data['name'];
-		$this->icon = $data['icon'];
-		$this->hint = $data['hint'];
-		$this->group = $data['group'];
-		$this->class = $data['class'];
-		$this->version = $data['version'];
+		$this->name = isset($data['name']) ? $data['name'] : $this->name;
+		$this->icon = isset($data['icon']) ? $data['icon'] : $this->icon;
+		$this->hint = isset($data['hint']) ? $data['hint'] : $this->hint;
+		$this->group = isset($data['group']) ? $data['group'] : $this->group;
+		$this->class = isset($data['class']) ? $data['class'] : $this->class;
+		$this->version = isset($data['version']) ? $data['version'] : $this->version;
 
 		if ($block_status == null) {
 			$block_status = get_option('cortex_block_status');
