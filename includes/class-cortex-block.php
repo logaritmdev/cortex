@@ -362,6 +362,19 @@ class CortexBlock {
 	}
 
 	//--------------------------------------------------------------------------
+	// Convenience
+	//--------------------------------------------------------------------------
+
+	/**
+	 * Convenience method to retrieve a request parameter.
+	 * @method get_param.
+	 * @since 1.0.6
+	 */
+	public function get_param($name, $default = null) {
+		return isset($_REQUEST[$name]) ? $_REQUEST[$name] : $default;
+	}
+
+	//--------------------------------------------------------------------------
 	// Private API
 	//--------------------------------------------------------------------------
 
@@ -370,7 +383,15 @@ class CortexBlock {
 	 * @since 0.2.0
 	 */
 	public function get_block_url() {
-		return admin_url('admin-ajax.php') . '?action=render_block&document=' . $this->document . '&id=' . $this->id;
+
+		$block_url = admin_url('admin-ajax.php') . '?action=render_block&document=' . $this->document . '&id=' . $this->id;
+
+		$block_lng = apply_filters('wpml_current_language', NULL);
+		if ($block_lng) {
+			$block_url = add_query_arg('lang', $block_lng, $block_url);
+		}
+
+		return $block_url;
 	}
 
 	/**
