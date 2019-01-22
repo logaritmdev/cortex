@@ -172,28 +172,22 @@ class Cortex_Admin {
 		$settings_slug = 'cortex_settings_page';
 		$templates_slug = 'cortex_templates_page';
 
-		add_menu_page(
+		add_options_page(
 			__('Cortex', 'cortex'),
 			__('Cortex', 'cortex'),
-			'manage_options', $settings_slug, false,
-			'dashicons-editor-kitchensink',
-			'80.025'
-		);
-
-		add_submenu_page(
-			$settings_slug,
-			__('Settings', 'cortex'),
-			__('Settings', 'cortex'),
-			'manage_options', $settings_slug,
+			'manage_options',
+			'cortex_settings_page',
 			array($this, 'admin_settings_page')
 		);
 
-		add_submenu_page(
-			$settings_slug,
-			__('Blocks', 'cortex'),
-			__('Blocks', 'cortex'),
-			'manage_options', $templates_slug,
-			array($this, 'admin_blocks_page')
+		add_menu_page(
+			__('Cortex', 'cortex'),
+			__('Cortex', 'cortex'),
+			'manage_options',
+			'cortex_templates_page',
+			array($this, 'admin_blocks_page'),
+			'dashicons-editor-kitchensink',
+			'80.025'
 		);
 	}
 
