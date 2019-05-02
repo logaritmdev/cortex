@@ -388,6 +388,25 @@ class Cortex_Admin {
 
 			$date = (int) $date;
 
+			if (isset($groups[$type])) {
+
+				/*
+				 * Sometimes a group will be duplicated. I have no idea how this
+				 * happens but for the time being the solution will be to automaticaly
+				 * delete the duplicate.
+				 */
+
+				acf_delete_field_group($field_group['ID']);
+
+				$this->add_notice("
+					The block $type has been delete because it has been
+					duplicated. Make sure your content is still intact and
+					report the error if it broke something.
+				");
+
+				continue;
+			}
+
 			$groups[$type] = array(
 				'fields' => $field_group,
 				'date' => $date,
@@ -395,7 +414,13 @@ class Cortex_Admin {
 			);
 
 			if (Cortex::has_block_template($type) == false) {
+
 				acf_delete_field_group($field_group['ID']);
+
+				$this->add_notice("
+					The block $type has been delete because it is no longer
+					present within a searchable block folder.
+				");
 			}
 		}
 
@@ -433,6 +458,10 @@ class Cortex_Admin {
 				update_post_meta($field_group['ID'], '_cortex_block_date', $date);
 
 				acf_update_setting('json', true);
+
+				$this->add_notice("
+					Blocks from your blocks folder have been synchronized.
+				");
 			}
 		}
 	}
@@ -597,18 +626,6 @@ class Cortex_Admin {
 	//--------------------------------------------------------------------------
 	// Private API
 	//--------------------------------------------------------------------------
-
-	/**
-	 * @method has_been_saved
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	private function has_been_saved($id) {
-		static $saved = array();
-		$found = in_array($id, $saved);
-		$saved[] = $id;
-		return $found;
-	}
 
 	/**
 	 * @method is_create_block_page
