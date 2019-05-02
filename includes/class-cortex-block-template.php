@@ -379,11 +379,6 @@ class CortexBlockTemplate {
 		$this->group = isset($data['group']) ? $data['group'] : $this->group;
 		$this->version = isset($data['version']) ? $data['version'] : $this->version;
 
-		if ($this->class !== '' &&
-			$this->class !== 'CortexBlock') {
-			require_once $this->path . '/block.php';
-		}
-
 		$this->active = $blocks_status == false || !isset($blocks_status[$type]) || $blocks_status[$type] == 'enabled';
 	}
 
@@ -393,6 +388,12 @@ class CortexBlockTemplate {
 	 * @since 0.1.0
 	 */
 	public function create_block($type = 0, $post = 0) {
+
+		if ($this->class !== '' &&
+			$this->class !== 'CortexBlock') {
+			require_once $this->path . '/block.php';
+		}
+
 		return new $this->class($type, $post, $this);
 	}
 

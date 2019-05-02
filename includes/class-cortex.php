@@ -680,7 +680,14 @@ class Cortex {
 				);
 
 				if ($block) {
-					$block->display(get_fields());
+
+					$fields = get_fields();
+
+					if ($fields == false) {
+						$fields = array();
+					}
+
+					$block->display($fields);
 				}
 
 				if ($preview) {

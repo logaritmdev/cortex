@@ -39,7 +39,7 @@
 		</div>
 
 		<div class="acf-input">
-			<input type="text" id="cortex_block_template_name" name="cortex_block_template_name" value="<?php echo basename($template->get_path()) ?>">
+			<input type="text" id="cortex_block_template_name" name="cortex_block_template_name" value="<?php echo $template ? basename($template->get_path()) : '' ?>">
 		</div>
 
 	</div>

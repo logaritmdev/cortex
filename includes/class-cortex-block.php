@@ -188,7 +188,7 @@ class CortexBlock {
 
 		$context = Timber::get_context();
 		$context['block'] = $this;
-		$context['post'] = TimberPost($this->post);
+		$context['post'] = Timber::get_post($this->post);
 
 		if ($data) {
 			foreach ($data as $key => $val) {
