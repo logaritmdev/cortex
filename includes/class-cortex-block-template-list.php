@@ -46,10 +46,9 @@ class CortexBlockTemplateList extends WP_List_Table {
 		$template = $this->get_block_template($field_group);
 
 		switch ($column_name) {
-
-			case 'name':  return $template->get_name();
-			case 'hint':  return $template->get_hint();
-			case 'group': return $template->get_group();
+			case 'icon': return $this->get_icon($template);
+			case 'name': return $this->get_name($template);
+			case 'category': return $template->get_group();
 
 			default:
 				return '';
@@ -64,8 +63,8 @@ class CortexBlockTemplateList extends WP_List_Table {
 	public function get_columns() {
 
 		$columns = array(
-			'name'  => __('Name', 'cortex'),
-			'hint'  => __('Hint', 'cortex'),
+			'icon' => '',
+			'name' => __('Name', 'cortex'),
 			'category' => __('Category', 'cortex'),
 		);
 
@@ -102,7 +101,7 @@ class CortexBlockTemplateList extends WP_List_Table {
 		$edit_fields_url = sprintf('post.php?post=%s&action=edit&mode=cortex-block', $field_group['ID']);
 
 		$actions = array(
-			'edit_fields'  => sprintf('<a class="cortex-update-block-link" href="%s">%s</a>', $edit_fields_url, __('Edit Fields', 'cortex')),
+			//'edit_fields'  => sprintf('<a class="cortex-update-block-link" href="%s">%s</a>', $edit_fields_url, __('Edit Fields', 'cortex')),
 		);
 
 		return sprintf('<strong><a class="row-title cortex-update-block-link" href="%s">%s</a></strong> %s', $edit_fields_url, $this->get_block_template($field_group)->get_name(), $this->row_actions($actions));
@@ -171,6 +170,73 @@ class CortexBlockTemplateList extends WP_List_Table {
   	public function process_bulk_action() {
 
     }
+
+	/**
+	 * @method get_name
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	private function get_name($template) {
+		return (
+			'<div class="cortex-block-name">' . $template->get_name() . '</div>' .
+			'<div class="cortex-block-hint">' . $template->get_hint() . '</div>'
+		);
+	}
+
+	/**
+	 * @method get_icon
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	private function get_icon($template) {
+
+		$icon = $template->get_icon();
+
+		if ($icon == '' ||
+			$icon == null) {
+			$icon = plugins_url('../admin/images/icon.svg', __FILE__);
+		}
+
+		if ($this->icon_is_svg_file($icon)) {
+			return ('
+				<div class="cortex-block-icon">
+					<img src="' . $icon . '" width="24" height="20">
+				</div>
+			');
+		}
+
+		if ($this->icon_is_svg_code($icon)) {
+			return ('
+				<div class="cortex-block-icon">' . $icon . '</div>
+			');
+		}
+
+		return ('
+			<div class="cortex-block-icon">
+				<div class="dashicons-before ' . $icon . '"></div>
+			</div>
+		');
+	}
+
+	/**
+	 * @method icon_is_svg_file
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	private function icon_is_svg_file($icon) {
+		return preg_match_all('/\.svg$/s', $icon);
+	}
+
+	/**
+	 * @method icon_is_svg_code
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	private function icon_is_svg_code($icon) {
+		return preg_match_all('/(<svg)([^<]*|[^>]*)/s', $icon);
+	}
+
+
 
 	/**
 	 * @method get_block_template

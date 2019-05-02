@@ -75,16 +75,23 @@ class Cortex_Settings {
 	 * @since 0.1.0
 	 */
 	public function setup() {
+
 		$this->register('cortex_block_status');
 		$this->register('cortex_style_include_path');
-		$this->register('cortex_enqueue_styles_admin');
-		$this->register('cortex_enqueue_scripts_admin');
+		$this->register('cortex_environment');
+		$this->register('cortex_enqueue_style_admin');
+		$this->register('cortex_enqueue_script_admin');
+		$this->register('cortex_preview_server');
+
 		$this->register_group('block_status', __('Blocks', 'cortex'));
 		$this->register_field('block_status', __('Blocks', 'cortex'), 'block_status');
 		$this->register_group('style', __('Styles Include Path', 'cortex'));
 		$this->register_field('style_include_path', __('Styles Include Path', 'cortex'), 'style');
-		$this->register_field('enqueue_styles_admin', __('Enqueue all blocks styles on admin page', 'cortex'), 'style');
-		$this->register_field('enqueue_scripts_admin', __('Enqueue all block scripts on admin page', 'cortex'), 'style');
+		$this->register_field('environment', __('Environment', 'cortex'), 'style');
+		$this->register_group('settings', __('Settings', 'cortex'));
+		$this->register_field('enqueue_style_admin', __('Enqueue block style on admin page', 'cortex'), 'settings');
+		$this->register_field('enqueue_script_admin', __('Enqueue block script on admin page', 'cortex'), 'settings');
+		$this->register_field('preview_server', __('Preview Server', 'cortex'), 'settings');
 	}
 
 	/**
@@ -105,6 +112,11 @@ class Cortex_Settings {
 
 		$option = get_option('cortex_block_status');
 
+		if ($option == '' ||
+			$option == null) {
+			$option = array();
+		}
+
 		$values = array();
 
 		foreach (Cortex::get_block_templates() as $block_template) {
@@ -112,7 +124,7 @@ class Cortex_Settings {
 			$name = $block_template->get_name();
 			$slug = $block_template->get_type();
 
-			$enabled = $option === false || !(isset($option[$slug])) || $option[$slug] == 'enabled';
+			$enabled = $option === false || (isset($option[$slug]) == false) || $option[$slug] === 'enabled';
 
 			$values[] = array(
 				'name' => $name,
@@ -134,6 +146,15 @@ class Cortex_Settings {
 	}
 
 	/**
+	 * @method group_settings
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	public function group_settings($args) {
+		echo __('General settings.', 'cortex');
+	}
+
+	/**
 	 * @method field_style_include_path
 	 * @since 0.1.0
 	 * @hidden
@@ -141,33 +162,65 @@ class Cortex_Settings {
 	public function field_style_include_path($args) {
 		?>
 		<fieldset>
-			<textarea cols="60" rows="5" name="cortex_style_include_path"><?php echo get_option('cortex_style_include_path') ?></textarea>
+			<textarea cols="60" rows="5" name="cortex_style_include_path"><?php echo esc_attr(get_option('cortex_style_include_path')) ?></textarea>
 		</fieldset>
 		<?php
 	}
 
 	/**
-	 * @method field_enqueue_styles_admin
-	 * @since 0.1.0
+	 * @method field_environment
+	 * @since 2.0.0
 	 * @hidden
 	 */
-	public function field_enqueue_styles_admin($args) {
+	public function field_environment($args) {
 		?>
 		<fieldset>
-			<input type="checkbox" name="cortex_enqueue_styles_admin" value="true" <?php echo get_option('cortex_enqueue_styles_admin') == 'true' ? 'checked' : '' ?> />
+			<table>
+				<tr>
+					<td style="padding:0px 12px 0px 0px"><input type="radio" name="cortex_environment" value="dev" <?php echo get_option('cortex_environment') == 'dev' ? 'checked' : '' ?> /> Development</td>
+					<td style="padding:0px 12px 0px 0px"><input type="radio" name="cortex_environment" value="prod" <?php echo get_option('cortex_environment') == 'prod' ? 'checked' : '' ?> /> Production</td>
+				</tr>
+			</table>
 		</fieldset>
 		<?php
 	}
 
 	/**
-	 * @method field_enqueue_scripts_admin
+	 * @method field_enqueue_style_admin
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	public function field_enqueue_scripts_admin($args) {
+	public function field_enqueue_style_admin($args) {
 		?>
 		<fieldset>
-			<input type="checkbox" name="cortex_enqueue_scripts_admin" value="true" <?php echo get_option('cortex_enqueue_scripts_admin') == 'true' ? 'checked' : '' ?> />
+			<input type="checkbox" name="cortex_enqueue_style_admin" value="true" <?php echo get_option('cortex_enqueue_style_admin') ? 'checked' : '' ?> />
+		</fieldset>
+		<?php
+	}
+
+	/**
+	 * @method field_enqueue_script_admin
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	public function field_enqueue_script_admin($args) {
+		?>
+		<fieldset>
+			<input type="checkbox" name="cortex_enqueue_script_admin" value="true" <?php echo get_option('cortex_enqueue_script_admin') ? 'checked' : '' ?> />
+		</fieldset>
+		<?php
+	}
+
+	/**
+	 * @method field_preview_server
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	public function field_preview_server($args) {
+		?>
+		<fieldset>
+			<input type="text" name="cortex_preview_server" value="<?php echo esc_attr(get_option('cortex_preview_server')) ?>" size="60" /><br>
+			<p class="description"><?php echo __('Optionnal.', 'cortex'); ?></p>
 		</fieldset>
 		<?php
 	}

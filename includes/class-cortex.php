@@ -660,12 +660,12 @@ class Cortex {
 	 */
 	public function register_blocks() {
 
-		$enqueue_styles = get_option('cortex_enqueue_styles_admin');
-		$enqueue_scripts = get_option('cortex_enqueue_styles_admin');
+		$enqueue_style = get_option('cortex_enqueue_style_admin');
+		$enqueue_script = get_option('cortex_enqueue_style_admin');
 
 		foreach (self::get_block_templates() as $template) {
 
-			$render = function($block, $content, $preview, $post) use($template, $enqueue_styles, $enqueue_scripts) {
+			$render = function($block, $content, $preview, $post) use($template, $enqueue_style, $enqueue_script) {
 
 				if ($preview) {
 					echo '<div class="previewed">';
@@ -680,20 +680,12 @@ class Cortex {
 				);
 
 				if ($block) {
-
-					$fields = get_fields();
-
-					if ($fields == false) {
-						$fields = array();
-					}
-
-					$block->display($fields);
+					$block->display(get_fields() ?: []);
 				}
 
 				if ($preview) {
 					echo '</div>';
 				}
-
 
 			};
 
@@ -709,12 +701,12 @@ class Cortex {
 
 				'enqueue_style'  => '',
 				'enquele_script' => '',
-				'enqueue_assets' => function() use ($template, $enqueue_styles, $enqueue_scripts) {
+				'enqueue_assets' => function() use ($template, $enqueue_style, $enqueue_script) {
 
 					if (is_admin() && (isset($_REQUEST['action']) == false || $_REQUEST['action'] != 'render_block')) {
 
-						if ($enqueue_styles) $template->enqueue_styles();
-						if ($enqueue_scripts) $template->enqueue_scripts();
+						if ($enqueue_style) $template->enqueue_styles();
+						if ($enqueue_script) $template->enqueue_scripts();
 
 						return;
 					}

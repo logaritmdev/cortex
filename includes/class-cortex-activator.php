@@ -18,6 +18,8 @@ class Cortex_Activator {
 	 * @hidden
 	 */
 	public static function activate() {
-
+		add_option('cortex_enqueue_style_admin', true);
+		add_option('cortex_enqueue_script_admin', true);
+		add_option('cortex_environment', 'dev');
 	}
 }
