@@ -1,0 +1,1 @@
+<?php _e('Enable / disable certain blocks for the whole site.', 'cortex') ?>

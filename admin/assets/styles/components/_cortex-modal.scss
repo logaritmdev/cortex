@@ -7,7 +7,7 @@
 	min-height: 360px;
 	min-width: 360px;
 	opacity: 0;
-	padding: 60px;
+	padding: 32px;
 	transition-property: opacity, visibility;
 	transition-duration: 250ms;
 	visibility: hidden;
@@ -68,7 +68,7 @@
 
 	@include absolute(top 50px left 0 right 0 bottom 0);
 	opacity: 1;
-	overflow: auto;
+	overflow: hidden;
 	transition-property: transform, opacity, visibility;
 	transition-duration: 150ms;
 	z-index: 50;
@@ -78,34 +78,27 @@
 	}
 }
 
-.cortex-post-selector-search {
-
-	@include flex-box;
-	@include flex-row(center, flex-end);
-	padding: 16px;
+.cortex-modal-close {
+	@include absolute(top 0 right 0);
+    background: 0 0;
+    border: 1px solid transparent;
+    color: #666;
+    cursor: pointer;
+    height: 50px;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    width: 50px;
+    z-index: 1000;
 }
 
-.cortex-post-selector-search-label {
-
-	@include relative;
-	margin-right: 8px;
-
-	.cortex-post-selector-searching & {
-
-		&:before {
-			@include absolute(top 50% left -24px);
-			background: url(../images/spinner.gif) no-repeat;
-			background-size: 20px 20px;
-			content: "";
-			display: block;
-			margin-top: -10px;
-			margin-left: -10px;
-			height: 20px;
-			width: 20px;
-		}
+.cortex-modal-close-icon {
+	&:before {
+		-moz-osx-font-smoothing: grayscale;
+		-webkit-font-smoothing: antialiased;
+		content: "\f158";
+		font: normal 20px/1 dashicons;
+		speak: none;
+		vertical-align: middle;
 	}
-}
-
-.cortex-post-selector-search-field {
-
 }

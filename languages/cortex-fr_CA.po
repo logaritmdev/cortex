@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Blocks Builder\n"
-"Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
+"Report-Msgid-Bugs-To: Translator Name <translations@cortex.test>\n"
 "POT-Creation-Date: 2018-04-23 14:03-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jean-Philippe Déry <jean-philippe.dery@logaritm.ca>\n"
@@ -184,49 +184,49 @@ msgstr "Aucun bloc Cortex trouvé dans la corbeille"
 msgid "Cortex Settings"
 msgstr "Paramètres Cortex"
 
-#: views/cortex-block-list-item-region.twig:7
+#: views/cortex-template-list-item-region.twig:7
 msgid "Empty layout region"
 msgstr "Région de mise en page vide"
 
-#: views/cortex-block-list-item-region.twig:8
+#: views/cortex-template-list-item-region.twig:8
 msgid "Use the button below or drop a block to fill this region."
 msgstr ""
 "Utilisez le bouton ci-dessous ou déplacez-y un bloc pour remplir cette "
 "région."
 
-#: views/cortex-block-list-item-region.twig:19 views/cortex-block-list.twig:63
+#: views/cortex-template-list-item-region.twig:19 views/cortex-template-list.twig:63
 msgid "Add Block"
 msgstr "Ajouter un bloc"
 
-#: views/cortex-block-list-item.twig:18 views/cortex-block-list.twig:28
+#: views/cortex-template-list-item.twig:18 views/cortex-template-list.twig:28
 msgid "Show"
 msgstr "Afficher"
 
-#: views/cortex-block-list-item.twig:22 views/cortex-block-list.twig:31
+#: views/cortex-template-list-item.twig:22 views/cortex-template-list.twig:31
 msgid "Hide"
 msgstr "Cacher"
 
-#: views/cortex-block-list-item.twig:31 views/cortex-block-list.twig:36
+#: views/cortex-template-list-item.twig:31 views/cortex-template-list.twig:36
 msgid "Copy"
 msgstr "Copier"
 
-#: views/cortex-block-list-item.twig:37 views/cortex-block-list.twig:39
+#: views/cortex-template-list-item.twig:37 views/cortex-template-list.twig:39
 msgid "Move"
 msgstr "Déplacer"
 
-#: views/cortex-block-list-item.twig:42 views/cortex-block-list.twig:42
+#: views/cortex-template-list-item.twig:42 views/cortex-template-list.twig:42
 msgid "Remove"
 msgstr "Retirer"
 
-#: views/cortex-block-list-item.twig:46 views/cortex-block-list.twig:45
+#: views/cortex-template-list-item.twig:46 views/cortex-template-list.twig:45
 msgid "Edit"
 msgstr "Modifier"
 
-#: views/cortex-block-list.twig:59
+#: views/cortex-template-list.twig:59
 msgid "This document is empty."
 msgstr "Ce document est vide."
 
-#: views/cortex-block-list.twig:60
+#: views/cortex-template-list.twig:60
 msgid "Start building this page by adding a few blocks."
 msgstr "Construisez cette page en y ajoutant quelques blocs."
 

@@ -1,7 +1,7 @@
 <?php
 
 require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-
+// TODO retouch
 /**
  * @class CortexBlockTemplateList
  * @since 0.1.0
@@ -43,11 +43,13 @@ class CortexBlockTemplateList extends WP_List_Table {
 	 */
 	public function column_default($field_group, $column_name) {
 
+		$template = $this->get_block_template($field_group);
+
 		switch ($column_name) {
 
-			case 'name':  return $this->get_block_template($field_group)->get_name();
-			case 'hint':  return $this->get_block_template($field_group)->get_hint();
-			case 'group': return $this->get_block_template($field_group)->get_group();
+			case 'name':  return $template->get_name();
+			case 'hint':  return $template->get_hint();
+			case 'group': return $template->get_group();
 
 			default:
 				return '';
@@ -62,10 +64,9 @@ class CortexBlockTemplateList extends WP_List_Table {
 	public function get_columns() {
 
 		$columns = array(
-			'cb'    => '<input type="checkbox" />',
 			'name'  => __('Name', 'cortex'),
 			'hint'  => __('Hint', 'cortex'),
-			'group' => __('Group', 'cortex'),
+			'category' => __('Category', 'cortex'),
 		);
 
 		return $columns;
@@ -77,9 +78,7 @@ class CortexBlockTemplateList extends WP_List_Table {
 	 * @hidden
 	 */
 	public function get_bulk_actions() {
-        return array(
-			'sync' => __('Sync', 'cortex'),
-        );
+        return array();
     }
 
 	/**
@@ -103,12 +102,10 @@ class CortexBlockTemplateList extends WP_List_Table {
 		$edit_fields_url = sprintf('post.php?post=%s&action=edit&mode=cortex-block', $field_group['ID']);
 
 		$actions = array(
-			'edit_fields'  => sprintf('<a href="%s">%s</a>', $edit_fields_url, __('Edit Fields', 'cortex')),
-			// 'edit_styles'  => sprintf('<a href="%s">%s</a>', $edit_fields_url, __('Edit CSS', 'cortex')),
-			// 'edit_scripts' => sprintf('<a href="%s">%s</a>', $edit_fields_url, __('Edit HTML', 'cortex')),
+			'edit_fields'  => sprintf('<a class="cortex-update-block-link" href="%s">%s</a>', $edit_fields_url, __('Edit Fields', 'cortex')),
 		);
 
-		return sprintf('<strong><a class="row-title" href="%s">%s</a></strong> %s', $edit_fields_url, $this->get_block_template($field_group)->get_name(), $this->row_actions($actions));
+		return sprintf('<strong><a class="row-title cortex-update-block-link" href="%s">%s</a></strong> %s', $edit_fields_url, $this->get_block_template($field_group)->get_name(), $this->row_actions($actions));
 	}
 
 	/**
@@ -117,26 +114,7 @@ class CortexBlockTemplateList extends WP_List_Table {
 	 * @hidden
 	 */
 	public function extra_tablenav($which) {
-		if ($which === 'top'): ?>
 
-			<div class="alignleft actions bulkactions">
-
-				<select name="filter">
-
-					<option value=""><?php echo __('All Groups', 'cortex') ?></option>
-					<option value="Layout"><?php echo __('Layout', 'cortex') ?></option>
-
-					<?php foreach (Cortex::get_block_groups() as $group): ?>
-						<option value="<?php echo $group ?>" <?php echo isset($_REQUEST['filter']) && $_REQUEST['filter'] === $group ? 'selected' : '' ?>><?php echo $group ?></option>
-					<?php endforeach ?>
-
-				</select>
-
-				<input type="submit" class="button" value="<?php echo __('Filter', 'cortex') ?>">
-
-			</div>
-
-		<?php endif;
 	}
 
 	/**
@@ -149,9 +127,6 @@ class CortexBlockTemplateList extends WP_List_Table {
 		if (class_exists('acf') === false) {
 			return;
 		}
-
-		$filter = (isset($_REQUEST['filter'])) ? strtolower($_REQUEST['filter']) : false;
-		$search = (isset($_REQUEST['search'])) ? strtolower($_REQUEST['search']) : false;
 
 		$columns_hidden = array();
 		$columns_header = $this->get_columns();
@@ -167,23 +142,12 @@ class CortexBlockTemplateList extends WP_List_Table {
 
 		foreach (acf_get_field_groups() as $field_group) {
 
-			$guid = get_post_meta($field_group['ID'], '_cortex_block_guid', true);
-
-			if ($guid == null) {
+			$template = $this->get_block_template($field_group);
+			if ($template == null) {
 				continue;
 			}
-
-			$template = Cortex::get_block_template($guid);
 
 			if ($template->is_active() === false) {
-				continue;
-			}
-
-			if ($filter && strpos(strtolower($template->get_group()), $filter) === false) {
-				continue;
-			}
-
-			if ($search && strpos(strtolower($template->get_name()), $search) === false) {
 				continue;
 			}
 
@@ -206,17 +170,6 @@ class CortexBlockTemplateList extends WP_List_Table {
 	 */
   	public function process_bulk_action() {
 
-        $action = $this->current_action();
-
-        switch ($action) {
-
-            case 'sync':
-                wp_die('Sync not implemented yet');
-                break;
-
-        }
-
-        return;
     }
 
 	/**
@@ -225,6 +178,6 @@ class CortexBlockTemplateList extends WP_List_Table {
 	 * @hidden
 	 */
 	private function get_block_template($field_group) {
-		return Cortex::get_block_template(get_post_meta($field_group['ID'], '_cortex_block_guid', true));
+		return Cortex::get_block_template(get_post_meta($field_group['ID'], '_cortex_block_type', true));
 	}
 }

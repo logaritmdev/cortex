@@ -10,7 +10,7 @@ msgstr ""
 "2017-06-28 09:46-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your "
-"Name <you@example.com>\n"
+"Name <you@cortex.test>\n"
 "Language-Team: Logaritm "
 "<jean-philippe."
 "dery@logaritm.ca>\n"
@@ -72,58 +72,58 @@ msgstr ""
 msgid "Cortex Settings"
 msgstr ""
 
-#: views/cortex-block-list-item-region.twig:7
+#: views/cortex-template-list-item-region.twig:7
 msgid "Empty layout region"
 msgstr ""
 
-#: views/cortex-block-list-item-region.twig:8
+#: views/cortex-template-list-item-region.twig:8
 msgid ""
 "Use the button below or "
 "drop a block to fill "
 "this region."
 msgstr ""
 
-#: views/cortex-block-list-item-region.twig:19
-#: views/cortex-block-list.twig:61
+#: views/cortex-template-list-item-region.twig:19
+#: views/cortex-template-list.twig:61
 msgid "Add Block"
 msgstr ""
 
-#: views/cortex-block-list-item.twig:16
-#: views/cortex-block-list.twig:26
+#: views/cortex-template-list-item.twig:16
+#: views/cortex-template-list.twig:26
 msgid "Show"
 msgstr ""
 
-#: views/cortex-block-list-item.twig:20
-#: views/cortex-block-list.twig:29
+#: views/cortex-template-list-item.twig:20
+#: views/cortex-template-list.twig:29
 msgid "Hide"
 msgstr ""
 
-#: views/cortex-block-list-item.twig:29
-#: views/cortex-block-list.twig:34
+#: views/cortex-template-list-item.twig:29
+#: views/cortex-template-list.twig:34
 msgid "Copy"
 msgstr ""
 
-#: views/cortex-block-list-item.twig:35
-#: views/cortex-block-list.twig:37
+#: views/cortex-template-list-item.twig:35
+#: views/cortex-template-list.twig:37
 msgid "Move"
 msgstr ""
 
-#: views/cortex-block-list-item.twig:40
-#: views/cortex-block-list.twig:40
+#: views/cortex-template-list-item.twig:40
+#: views/cortex-template-list.twig:40
 msgid "Remove"
 msgstr ""
 
-#: views/cortex-block-list-item.twig:44
-#: views/cortex-block-list.twig:43
+#: views/cortex-template-list-item.twig:44
+#: views/cortex-template-list.twig:43
 msgid "Edit"
 msgstr ""
 
-#: views/cortex-block-list.twig:57
+#: views/cortex-template-list.twig:57
 msgid ""
 "This document is empty."
 msgstr ""
 
-#: views/cortex-block-list.twig:58
+#: views/cortex-template-list.twig:58
 msgid ""
 "Start building this page "
 "by adding a few blocks."

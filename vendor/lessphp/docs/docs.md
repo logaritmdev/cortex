@@ -1239,7 +1239,7 @@ One for PHP and one for LESS.
 
     ```php
     $less->setVariables(array(
-      "url" => "'http://example.com.com/'"
+      "url" => "'http://cortex.test.com/'"
     ));
 
     echo $less->compile("body { background: url("@{url}/bg.png"); }");
@@ -1397,4 +1397,3 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 *Also under GPL3 if required, see `LICENSE` file*
-

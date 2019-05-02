@@ -58,8 +58,12 @@ class CortexMetaBox {
 	 * @since 0.1.0
 	 */
 	public function render() {
-		$context = Timber::get_context();
-		$context['options'] = $this->options;
-		Timber::render($this->template(), $this->load($context));
+
+		$context = $this->options;
+		$context = $this->load($context);
+
+		extract($context);
+
+		include __DIR__ . '/../views/' . $this->template();
 	}
 }

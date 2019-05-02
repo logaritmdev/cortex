@@ -5,10 +5,8 @@
         "scripts/plugins/jquery-attach.js",
         "scripts/components/cortex-modal.js",
         "scripts/components/cortex-editor.js",
-        "scripts/components/cortex-library.js",
-        "scripts/components/cortex-block-list.js",
-        "scripts/components/cortex-block-list-item.js",
-        "scripts/components/cortex-post-selector.js",
+        "scripts/components/cortex-admin-blocks-page.js",
+        "scripts/components/cortex-admin-settings-page.js",
         "scripts/main.js"
       ],
       "main": true
@@ -21,10 +19,10 @@
     }
   },
   "config": {
-    "devUrl": ""
+    "devUrl": "http://cortex.test"
   },
   "paths": {
-    "dist":   "../",
+    "dist": "../",
     "source": "./"
   }
 }

@@ -1,28 +1,8 @@
 @import "mixins/flex";
 @import "mixins/position";
 @import "components/cortex-modal";
-@import "components/cortex-library";
-@import "components/cortex-editor";
-@import "components/cortex-block-list";
-@import "components/cortex-block-list-item";
-@import "components/cortex-post-selector";
-@import "components/cortex-block-preview";
-
-#cortex_meta_box_document {
-
-	.inside {
-		margin: 0px;
-		padding: 0px;
-	}
-
-	.hndle {
-		border-bottom-color: #e5e5e5;
-	}
-}
-
-.cortex-meta-box-document {
-	background: #fafafa;
-}
+@import "components/cortex-admin-blocks-page";
+@import "components/cortex-admin-settings-page";
 
 #cortex_block_editor {
 
@@ -56,18 +36,6 @@
 	}
 
 	.cortex-script-editor {
-		height: 400px;
-	}
-}
-
-#cortex_preview_editor {
-
-	.inside {
-		margin: 0px;
-		padding: 0px;
-	}
-
-	.cortex-preview-editor {
 		height: 400px;
 	}
 }
@@ -123,7 +91,8 @@
 	}
 }
 
-.post-type-cortex-block {
+.cortex-create-block-page,
+.cortex-update-block-page {
 
 	.wrap {
 		margin: 12px;
@@ -189,9 +158,9 @@
 		margin: 0px !important;
 	}
 
-	#post-body-content {
-		display: none !important;
-	}
+	// #post-body-content {
+	// 	display: none !important;
+	// }
 
 	#submitdiv {
 		@include fixed(left 0 right 0 bottom 0);
@@ -228,4 +197,26 @@
 	.page-title-action {
 		display: none;
 	}
+}
+
+/* Gutenberg */
+
+.wp-block {
+    max-width: none;
+}
+
+.wp-block[data-align=wide] {
+    max-width: none;
+}
+
+.wp-block[data-align=full] {
+    max-width: none;
+}
+
+/* ACF */
+
+.acf-block-preview {
+	border: 1px solid #e2e4e7;
+	border-radius: 4px;
+	padding: 12px;
 }

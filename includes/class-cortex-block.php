@@ -12,19 +12,21 @@ class CortexBlock {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * @property current
-	 * @since 1.0.0
-	 * @hidden
+	 * Enqueue styles file.
+	 * @method enqueue_style
+	 * @since 0.1.0
 	 */
-	private static $current = null;
+	public static function enqueue_styles() {
+
+	}
 
 	/**
-	 * Returns the block being rendered.
-	 * @method get_current_block
-	 * @since 1.0.0
+	 * Enqueue scripts file.
+	 * @method enqueue_scripts.
+	 * @since 0.1.0
 	 */
-	public static function get_current_block() {
-		return self::$current;
+	public static function enqueue_scripts() {
+
 	}
 
 	//--------------------------------------------------------------------------
@@ -39,18 +41,11 @@ class CortexBlock {
 	private $id = 0;
 
 	/**
-	 * The block's revision id;
-	 * @property parent_region
+	 * The block's post.
+	 * @property post
 	 * @since 0.1.0
 	 */
-	private $revision = 0;
-
-	/**
-	 * The block's document.
-	 * @property document
-	 * @since 0.1.0
-	 */
-	private $document = 0;
+	private $post = 0;
 
 	/**
 	 * The block's template.
@@ -58,48 +53,6 @@ class CortexBlock {
 	 * @since 0.1.0
 	 */
 	private $template = null;
-
-	/**
-	 * The block's parent layout.
-	 * @property parent_layout
-	 * @since 0.1.0
-	 */
-	private $parent_layout = 0;
-
-	/**
-	 * The block's parent region.
-	 * @property parent_region
-	 * @since 0.1.0
-	 */
-	private $parent_region = '';
-
-	/**
-	 * The block raw post id used to display this block without an actual post.
-	 * @property raw_id
-	 * @since 1.0.0
-	 */
-	private $raw_id = null;
-
-	/**
-	 * The block raw post used to display this block without an actual post.
-	 * @property raw_post_data
-	 * @since 1.0.0
-	 */
-	private $raw_post_data = null;
-
-	/**
-	 * The block raw post data used to display this block without an actual post.
-	 * @property raw_meta_data
-	 * @since 1.0.0
-	 */
-	private $raw_meta_data = null;
-
-	/**
-	 * The block's instance id.
-	 * @property instance_id
-	 * @since 1.0.0
-	 */
-	private $instance_id = 0;
 
 	//--------------------------------------------------------------------------
 	// Accessors
@@ -115,21 +68,30 @@ class CortexBlock {
 	}
 
 	/**
-	 * Returns the block post revision.
-	 * @method get_revision
+	 * @method set_id
 	 * @since 0.1.0
+	 * @hidden
 	 */
-	public function get_revision() {
-		return $this->revision;
+	private function set_id($id) {
+		$this->id = $id;
 	}
 
 	/**
-	 * Assigns the block post revision.
-	 * @method set_revision
-	 * @since 0.1.0
+	 * Returns the block post.
+	 * @method get_post
+	 * @since 2.0.0
 	 */
-	public function set_revision($revision) {
-		$this->revision = (int) $revision;
+	public function get_post() {
+		return $this->post;
+	}
+
+	/**
+	 * @method set_post
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	public function set_post($post) {
+		$this->post = $post;
 	}
 
 	/**
@@ -139,87 +101,6 @@ class CortexBlock {
 	 */
 	public function get_template() {
 		return $this->template;
-	}
-
-	/**
-	 * Returns the block document.
-	 * @method get_document
-	 * @since 0.1.0
-	 */
-	public function get_document() {
-		return $this->document;
-	}
-
-	/**
-	 * @method set_document
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	public function set_document($document) {
-		$this->document = (int) $document;
-	}
-
-	/**
-	 * Returns the block parent layout.
-	 * @method get_parent_layout
-	 * @since 0.1.0
-	 */
-	public function get_parent_layout() {
-		return $this->parent_layout;
-	}
-
-	/**
-	 * Assigns the block parent layout.
-	 * @method set_parent_layout
-	 * @since 0.1.0
-	 */
-	public function set_parent_layout($parent_layout) {
-		$this->parent_layout = (int) $parent_layout;
-	}
-
-	/**
-	 * Returns the block parent region.
-	 * @method get_parent_region
-	 * @since 0.1.0
-	 */
-	public function get_parent_region() {
-		return $this->parent_region;
-	}
-
-	/**
-	 * Assigns the block parent region.
-	 * @method set_parent_region
-	 * @since 0.1.0
-	 */
-	public function set_parent_region($parent_region) {
-		$this->parent_region = (string) $parent_region;
-	}
-
-	/**
-	 * Indicates whether this block is the parent of a specified block.
-	 * @method is_parent_of
-	 * @since 0.1.0
-	 */
-	public function is_parent_of($block) {
-		return $block->get_parent_layout() == $this->id;
-	}
-
-	/**
-	 * Indicates whether this block is the child of a specified block.
-	 * @method is_parent_of
-	 * @since 0.1.0
-	 */
-	public function is_child_of($block) {
-		return $this->parent_layout == $block->get_id();
-	}
-
-	/**
-	 * @method set_revision
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	private function set_id($id) {
-		$this->id = (int) $id;
 	}
 
 	/**
@@ -240,17 +121,10 @@ class CortexBlock {
 	 * @constructor
 	 * @since 0.1.0
 	 */
-	public function __construct($id, $document, $template, $parent_layout, $parent_region) {
-
-		$this->instance_id = uniqid();
-
+	public function __construct($id, $post, $template) {
 		$this->set_id($id);
-		$this->set_document($document);
+		$this->set_post($post);
 		$this->set_template($template);
-		$this->set_parent_layout($parent_layout);
-		$this->set_parent_region($parent_region);
-
-		add_filter('timber_post_get_meta_field', array($this, 'timber_post_get_meta_field'), 20, 4);
 	}
 
 	/**
@@ -258,67 +132,18 @@ class CortexBlock {
 	 * @method display
 	 * @since 0.1.0
 	 */
-	public function display($post_data = null, $meta_data = null) {
+	public function display(array $data = array()) {
 
-		self::$current = $this;
+		switch ($this->template->get_block_file_type()) {
 
-		$context = Timber::get_context();
+			case 'twig':
+				$this->render_twig_template($data);
+				break;
 
-		$id = $this->id;
-
-		if (is_admin() === false && is_preview() === false && $this->revision) {
-			$id = $this->revision;
+			case 'blade':
+				$this->render_blade_template($data);
+				break;
 		}
-
-		if ($post_data !== null ||
-			$meta_data !== null) {
-
-			$post_data = $post_data ? $post_data : array();
-			$meta_data = $meta_data ? $meta_data : array();
-
-			$context['post'] = $this->load_raw_post(
-				$post_data,
-				$meta_data
-			);
-
-		} else {
-			$context['post'] = new TimberPost($id);
-		}
-
-		$context['document'] = $this->document;
-		$context['template'] = $this->template;
-		$context['block'] = $this;
-
-		$context['block_id'] = $this->id;
-		$context['block_url'] = $this->get_block_url();
-
-		$this->render_template('block.twig', $this->render($context));
-
-		self::$current = null;
-	}
-
-	/**
-	 * Renders the preview template of this block.
-	 * @method preview
-	 * @since 0.1.0
-	 */
-	public function preview() {
-
-		self::$current = $this;
-
-		$context = Timber::get_context();
-
-		$context['post'] = new TimberPost($this->id);
-		$context['document'] = $this->document;
-		$context['template'] = $this->template;
-		$context['block'] = $this;
-
-		$context['block_id'] = $this->id;
-		$context['block_url'] = $this->get_block_url();
-
-		$this->render_template('preview.twig', $this->render($context));
-
-		self::$current = null;
 	}
 
 	/**
@@ -330,63 +155,19 @@ class CortexBlock {
 		return $context;
 	}
 
-	/**
-	 * Enqueue styles file.
-	 * @method enqueue_style
-	 * @since 0.1.0
-	 */
-	public function enqueue_styles() {
-
-	}
-
-	/**
-	 * Enqueue scripts file.
-	 * @method enqueue_scripts.
-	 * @since 0.1.0
-	 */
-	public function enqueue_scripts() {
-
-	}
-
-	//--------------------------------------------------------------------------
-	// ACF Shortcuts
-	//--------------------------------------------------------------------------
-
-	/**
-	 * Convenience method to retrieve the value of a specified field.
-	 * @method get_field.
-	 * @since 0.1.0
-	 */
-	public function get_field($field) {
-		return $this->raw_id ? $this->get_raw_meta_data($field) : get_field($field, $this->id);
-	}
-
-	//--------------------------------------------------------------------------
-	// Convenience
-	//--------------------------------------------------------------------------
-
-	/**
-	 * Convenience method to retrieve a request parameter.
-	 * @method get_param.
-	 * @since 1.0.6
-	 */
-	public function get_param($name, $default = null) {
-		return isset($_REQUEST[$name]) ? $_REQUEST[$name] : $default;
-	}
-
 	//--------------------------------------------------------------------------
 	// Private API
 	//--------------------------------------------------------------------------
 
 	/**
-	 * @method get_block_url
+	 * @method get_link
 	 * @since 0.2.0
 	 */
-	public function get_block_url() {
+	public function get_link() {
 
-		$block_url = admin_url('admin-ajax.php') . '?action=render_block&document=' . $this->document . '&id=' . $this->id;
-
+		$block_url = admin_url('admin-ajax.php') . '?action=render_block&post=' . $this->post . '&id=' . $this->id;
 		$block_lng = apply_filters('wpml_current_language', NULL);
+
 		if ($block_lng) {
 			$block_url = add_query_arg('lang', $block_lng, $block_url);
 		}
@@ -395,132 +176,46 @@ class CortexBlock {
 	}
 
 	/**
-	 * @method preview_region
-	 * @since 0.1.0
-	 */
-	public function preview_region($region) {
-
-		$layout = $this->id;
-
-		$blocks = array_filter(Cortex::get_blocks($this->document), function($block) use ($layout, $region) {
-
-			if ($block->get_template()->is_active() == false) {
-				return false;
-			}
-
-			if ($block->get_parent_layout() === $layout &&
-				$block->get_parent_region() === $region) {
-				return true;
-			}
-
-			return false;
-
-		});
-
-		$context = Timber::get_context();
-		$context['layout'] = $layout;
-		$context['region'] = $region;
-		$context['blocks'] = $blocks;
-
-		Timber::render('cortex-block-list-item-region.twig', $context);
-	}
-
-	/**
-	 * @method display_region
-	 * @since 0.1.0
-	 */
-	public function display_region($region) {
-		foreach (Cortex::get_blocks($this->document) as $block) {
-			if ($block->get_template()->is_active() &&
-				$block->get_parent_layout() === $this->id &&
-				$block->get_parent_region() === $region) {
-				$block->display();
-			}
-		}
-	}
-
-	/**
-	 * @function render_template
+	 * @function render_twig_template
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private function render_template($file, $context) {
+	protected function render_twig_template(array $data = array()) {
+
 		$locations = Timber::$locations;
+
 		array_unshift(Timber::$locations, $this->template->get_path());
-		Timber::render($file, $context);
+
+		$context = Timber::get_context();
+		$context['block'] = $this;
+		$context['post'] = TimberPost($this->post);
+
+		if ($data) {
+			foreach ($data as $key => $val) {
+				$context[$key] = $val;
+			}
+		}
+
+		Timber::render('block.twig', $this->render($context));
+
 		Timber::$locations = $locations;
 	}
 
 	/**
-	 * @function load_raw_post
-	 * @since 1.0.0
+	 * @function render_blade_template
+	 * @since 2.0.0
 	 * @hidden
 	 */
-	private function load_raw_post($post_data, $meta_data) {
+	protected function render_blade_template($file, $context) {
 
-		static $fake_id = 0;
-
-		$fake_id++;
-
-		$this->raw_id = $fake_id;
-		$this->raw_post_data = $post_data;
-		$this->raw_meta_data = $meta_data;
-
-		$post = new TimberPost(false);
-		$post->ID = $this->raw_id;
-		$post->id = $this->raw_id;
-
-		foreach ($this->raw_post_data as $key => $val) {
-			$post->$key = $val;
-		}
-
-		return $post;
-	}
-
-	/**
-	 * @function has_raw_meta_data
-	 * @since 1.0.0
-	 * @hidden
-	 */
-	protected function has_raw_meta_data($field) {
-		return isset($this->raw_meta_data[$field]);
-	}
-
-	/**
-	 * @function get_raw_meta_data
-	 * @since 1.0.0
-	 * @hidden
-	 */
-	protected function get_raw_meta_data($field, $default = null) {
-		return $this->has_raw_meta_data($field) ? $this->raw_meta_data[$field] : $default;
-	}
-
-	//--------------------------------------------------------------------------
-	// Hooks
-	//--------------------------------------------------------------------------
-
-	/**
-	 * @function timber_post_get_meta_field
-	 * @since 1.0.0
-	 * @hidden
-	 */
-	public function timber_post_get_meta_field($value, $id, $field, $post) {
-
-		if ($this->raw_id == $id) {
-			return $this->get_raw_meta_data($field);
-		}
-
-		return $value;
 	}
 
 	//--------------------------------------------------------------------------
 	// Twig
 	//--------------------------------------------------------------------------
 
-	public function getid() { return $this->get_id(); }
-	public function gettemplate() { return $this->get_template(); }
-	public function getdocument() { return $this->get_document(); }
-	public function getparent_layout() { return $this->get_parent_layout(); }
-	public function getparent_region() { return $this->get_parent_region(); }
-	public function getinstance_id() { return $this->instance_id; }
+	public function getId() { return $this->get_id(); }
+	public function getLink() { return $this->get_link(); }
+	public function getPost() { return $this->get_post(); }
+	public function getTemplate() { return $this->get_template(); }
 }

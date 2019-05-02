@@ -13,13 +13,6 @@ class Cortex_Public {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * Indicates whether blocks are rendering.
-	 * @property rendering
-	 * @since 0.1.0
-	 */
-	private static $rendering = false;
-
-	/**
 	 * Hack to detect whether timber is resizing an image.
 	 * @since 0.1.0
 	 * @hidden
@@ -63,92 +56,12 @@ class Cortex_Public {
 	}
 
 	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 * @method enqueue_styles
-	 * @since 0.1.0
-	 */
-	public function enqueue_styles() {
-
-		global $post;
-
-		if ($post) foreach (Cortex::get_blocks($post->ID) as $block) {
-
-			if ($block->get_template()->is_active()) {
-				$block->get_template()->enqueue_styles();
-				$block->enqueue_styles();
-			}
-
-		}
-	}
-
-	/**
-	 * Register the JavaScript for the public-facing side of the site.
-	 * @method enqueue_scripts
-	 * @since 0.1.0
-	 */
-	public function enqueue_scripts() {
-
-		global $post;
-
-		if ($post) foreach (Cortex::get_blocks($post->ID) as $block) {
-
-			if ($block->get_template()->is_active()) {
-				$block->get_template()->enqueue_scripts();
-				$block->enqueue_scripts();
-			}
-
-		}
-	}
-
-	/**
 	 * Configures Timber's locations.
 	 * @method configure_timber
 	 * @since 0.1.0
 	 */
 	public function configure_timber() {
 		Timber::$locations = array();
-	}
-
-	/**
-	 * Displays the blocks.
-	 * @method render
-	 * @since 0.1.0
-	 */
-	public function render($content) {
-
-		global $post;
-
-		if (self::$rendering) {
-			return $content;
-		}
-
-		self::$rendering = true;
-
-		$blocks = Cortex::get_blocks($post->ID);
-
-		if (count($blocks) > 0) {
-
-			ob_start();
-
-			foreach (Cortex::get_blocks($post->ID) as $block) {
-
-				if ($block->get_parent_layout() ||
-					$block->get_parent_region() ||
-					$block->get_template()->is_active() === false) {
-					continue;
-				}
-
-				$block->display();
-			}
-
-			$content = ob_get_contents();
-
-			ob_end_clean();
-		}
-
-		self::$rendering = false;
-
-		return $content;
 	}
 
 	/**

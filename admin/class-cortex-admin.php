@@ -1,13 +1,12 @@
 <?php
 
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-meta-box.php';
-require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-meta-box-document.php';
-require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-meta-box-options.php';
+require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-meta-box-block-options.php';
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-meta-box-block-editor.php';
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-meta-box-style-editor.php';
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-meta-box-script-editor.php';
-require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-meta-box-preview-editor.php';
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-sass-compiler.php';
+require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-less-compiler.php';
 
 /**
  * The plugin's admin functionality.
@@ -41,13 +40,6 @@ class Cortex_Admin {
 	 */
 	private $plugin_version;
 
-	/**
-	 * Whether we're currently inserting a block.
-	 * @property inserting
-	 * @since 0.1.0
-	 */
-	private $inserting = false;
-
 	//--------------------------------------------------------------------------
 	// Methods
 	//--------------------------------------------------------------------------
@@ -69,18 +61,7 @@ class Cortex_Admin {
 	 * @since 0.1.0
 	 */
 	public function enqueue_styles() {
-
 		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'styles/main.css', array(), $this->plugin_version, 'all');
-
-		$enqueue_styles = get_option('cortex_enqueue_styles_admin');
-		$enqueue_scripts = get_option('cortex_enqueue_styles_admin');
-
-		if ($enqueue_styles || $enqueue_scripts) {
-			foreach (Cortex::get_block_templates() as $template) {
-				if ($enqueue_styles) $template->enqueue_styles();
-				if ($enqueue_scripts) $template->enqueue_scripts();
-			}
-		}
 	}
 
 	/**
@@ -107,12 +88,6 @@ class Cortex_Admin {
 			'home_url'  => home_url(),
 			'admin_url' => admin_url(),
 
-			'messages' => array(
-				'remove_block' => __('This block will be removed from this document. Are you sure ?', 'cortex'),
-				'create_block_template' => __('Add New Block Template', 'cortex'),
-				'update_block_template' => __('Edit Block Template', 'cortex'),
-			)
-
 		));
 	}
 
@@ -128,7 +103,7 @@ class Cortex_Admin {
 			array(
 				'name' => 'Advanced Custom Fields',
 				'slug' => 'advanced-custom-fields-pro/acf.php',
-				'version' => '5.4.0'
+				'version' => '5.8.0-RC2'
 			),
 
 			array(
@@ -169,9 +144,6 @@ class Cortex_Admin {
 	 */
 	public function configure_menu() {
 
-		$settings_slug = 'cortex_settings_page';
-		$templates_slug = 'cortex_templates_page';
-
 		add_options_page(
 			__('Cortex', 'cortex'),
 			__('Cortex', 'cortex'),
@@ -181,10 +153,10 @@ class Cortex_Admin {
 		);
 
 		add_menu_page(
-			__('Cortex', 'cortex'),
-			__('Cortex', 'cortex'),
+			__('Blocks', 'cortex'),
+			__('Blocks', 'cortex'),
 			'manage_options',
-			'cortex_templates_page',
+			'cortex_blocks_page',
 			array($this, 'admin_blocks_page'),
 			'dashicons-editor-kitchensink',
 			'80.025'
@@ -225,26 +197,21 @@ class Cortex_Admin {
 	 */
 	public function configure_meta_box() {
 
-		foreach (Cortex::get_post_types() as $post_type) {
-			new CortexMetaBoxDocument(__('Blocks', 'cortex'), 'cortex_meta_box_document', $post_type);
-		}
-
 		$create_block_page = $this->is_create_block_page();
 		$update_block_page = $this->is_update_block_page();
 
 		if ($create_block_page) {
-			new CortexMetaBoxOptions(__('Options', 'cortex'), 'cortex_create_block', 'acf-field-group', array('mode' => 'create'), 'normal', 'default');
+			new CortexMetaBoxBlockOptions(__('Options', 'cortex'), 'cortex_create_block', 'acf-field-group', array('mode' => 'create'), 'normal', 'default');
 		}
 
 		if ($update_block_page) {
-			new CortexMetaBoxOptions(__('Options', 'cortex'), 'cortex_update_block', 'acf-field-group', array('mode' => 'update'), 'normal', 'default');
+			new CortexMetaBoxBlockOptions(__('Options', 'cortex'), 'cortex_update_block', 'acf-field-group', array('mode' => 'update'), 'normal', 'default');
 		}
 
 		if ($create_block_page || $update_block_page) {
 			new CortexMetaBoxBlockEditor(__('Block', 'cortex'), 'cortex_block_editor', 'acf-field-group', array(), 'normal', 'default');
-			new CortexMetaBoxStyleEditor(__('Styles', 'cortex'), 'cortex_style_editor', 'acf-field-group', array(), 'normal', 'default');
-			new CortexMetaBoxScriptEditor(__('Scripts', 'cortex'), 'cortex_script_editor', 'acf-field-group', array(), 'normal', 'default');
-			new CortexMetaBoxPreviewEditor(__('Preview', 'cortex'), 'cortex_preview_editor', 'acf-field-group', array(), 'normal', 'default');
+			new CortexMetaBoxStyleEditor(__('Style', 'cortex'), 'cortex_style_editor', 'acf-field-group', array(), 'normal', 'default');
+			new CortexMetaBoxScriptEditor(__('Script', 'cortex'), 'cortex_script_editor', 'acf-field-group', array(), 'normal', 'default');
 		}
 	}
 
@@ -256,13 +223,13 @@ class Cortex_Admin {
 	public function admin_blocks_page() {
 
 		if (isset($_GET['settings-updated'])) {
-			add_settings_error( 'cortex_messages', 'cortex_message', __('Settings Saved', 'cortex'), 'updated');
+			add_settings_error('cortex_messages', 'cortex_message', __('Settings Saved', 'cortex'), 'updated');
  		}
 
 		$list = new CortexBlockTemplateList();
 		$list->prepare_items();
 
-		Cortex::render_twig('cortex-admin-blocks-page.twig', array('list' => $list));
+		Cortex::render_template('cortex-admin-blocks-page.php', array('list' => $list));
 	}
 
 	/**
@@ -271,87 +238,7 @@ class Cortex_Admin {
 	 * @since 0.1.0
 	 */
 	public function admin_settings_page() {
-		Cortex::render_twig('cortex-admin-settings-page.twig');
-	}
-
-	/**
-	 * Inserts a block in a document.
-	 * @method insert_block
-	 * @since 0.1.0
-	 */
-	public function insert_block() {
-
-		global $post;
-
-		$template = $_POST['template'];
-		$document = $_POST['document'];
-		$parent_layout = isset($_POST['parent_layout']) ? $_POST['parent_layout'] : '';
-		$parent_region = isset($_POST['parent_region']) ? $_POST['parent_region'] : '';
-
-		$this->inserting = true;
-
-		$id = wp_insert_post(array(
-			'post_parent'  => $document,
-			'post_type'    => 'cortex-block',
-			'post_title'   => '',
-			'post_content' => '',
-			'post_status'  => 'publish',
-		));
-
-		$this->inserting = false;
-
-		$block = Cortex::create_block(
-			$id,
-			$document,
-			$template,
-			$parent_layout,
-			$parent_region
-		);
-
-		Cortex::insert_block($document, $block);
-
-		Cortex::render_twig('cortex-block-list-item-preview.twig', array('block' => $block));
-		exit;
-	}
-
-	/**
-	 * Removes a block in a document.
-	 * @method remove_block
-	 * @since 0.1.0
-	 */
-	public function remove_block() {
-
-		$id = $_POST['id'];
-		$document = $_POST['document'];
-
-		$block = Cortex::get_block($document, $id);
-
-		if ($block == null) {
-			return;
-		}
-
-		Cortex::remove_block($document, $block);
-		exit;
-	}
-
-	/**
-	 * Displays the preview of a block.
-	 * @method preview_block
-	 * @since 0.1.0
-	 */
-	public function preview_block() {
-
-		$id = $_POST['id'];
-		$document = $_POST['document'];
-
-		$block = Cortex::get_block($document, $id);
-
-		if ($block == null) {
-			return;
-		}
-
-		$block->preview();
-		exit;
+		Cortex::render_template('cortex-admin-settings-page.php');
 	}
 
 	/**
@@ -360,124 +247,54 @@ class Cortex_Admin {
 	 */
 	public function render_block() {
 
-		$id = $_REQUEST['id'];
-		$document = $_REQUEST['document'];
+		$id   = $_REQUEST['id'];
+		$post = $_REQUEST['post'];
 
-		$block = Cortex::get_block($document, $id);
+		$post = get_post($post);
 
-		?>
-
-			<!DOCTYPE HTML>
-			<html <?php language_attributes()?>>
-			<head>
-				<meta charset="utf-8">
-				<meta http-equiv="x-ua-compatible" content="ie=edge">
-				<meta name="viewport" content="width=device-width, initial-scale=1">
-				<?php wp_head() ?>
-			</head>
-			<body <?php body_class('preview') ?>>
-				<?php
-
-					if ($block) {
-						$block->get_template()->enqueue_scripts();
-						$block->get_template()->enqueue_styles();
-						$block->enqueue_scripts();
-						$block->enqueue_styles();
-						$block->display();
-					}
-
-				?>
-			</body>
-			<?php wp_footer() ?>
-			</html>
-
-		<?php
-
-		exit;
-	}
-
-	/**
-	 * Moves a block from a document to another.
-	 * @method move_block
-	 * @since 0.1.0
-	 */
-	public function move_block() {
-
-		$id = $_POST['id'];
-		$src_document = $_POST['src_document'];
-		$dst_document = $_POST['dst_document'];
-
-		$block = Cortex::get_block($src_document, $id);
-
-		if ($block == null) {
+		if ($post == null) {
 			return;
 		}
 
-		Cortex::move_block($src_document, $dst_document, $block);
-		exit;
-	}
+		$target = null;
+		$blocks = parse_blocks($post->post_content);
 
-	/**
-	 * Copies a block from a document to another.
-	 * @method copy_block
-	 * @since 0.1.0
-	 */
-	public function copy_block() {
+		if ($blocks) {
 
-		$id = $_POST['id'];
-		$src_document = $_POST['src_document'];
-		$dst_document = $_POST['dst_document'];
+			foreach ($blocks as $block) {
 
-		$block = Cortex::get_block($src_document, $id);
+				if (isset($block['attrs']['id']) == false ||
+					isset($block['attrs']['name']) == false) {
+					continue;
+				}
 
-		if ($block == null) {
-			return;
+				if ($block['attrs']['id'] == $id) {
+					$target = acf_get_block_type($block['attrs']['name']);
+					break;
+				}
+			}
 		}
 
-		Cortex::copy_block($src_document, $dst_document, $block);
-		exit;
-	}
+		if ($target) {
 
-	/**
-	 * Saves the block order.
-	 * @method order
-	 * @since 0.1.0
-	 */
-	public function order_blocks() {
+			?>
 
-		$order = $_POST['order'];
-		$document = $_POST['document'];
-
-		$order = stripslashes($order);
-		$order = json_decode($order, true);
-
-		if ($order == null) {
-			return;
+				<!DOCTYPE HTML>
+				<html <?php language_attributes()?>>
+				<head>
+					<meta charset="utf-8">
+					<meta http-equiv="x-ua-compatible" content="ie=edge">
+					<meta name="viewport" content="width=device-width, initial-scale=1">
+					<?php wp_head() ?>
+				</head>
+				<body>
+					<?php acf_render_block($target, '', false, $post->ID); ?>
+					<?php wp_footer() ?>
+				</body>
+				</html>
+			<?php
 		}
 
-		Cortex::order_blocks($document, $order);
-		exit;
-	}
-
-	/**
-	 * Sets the block parent layout and region.
-	 * @method set_parent_block
-	 * @since 0.1.0
-	 */
-	public function set_parent_block() {
-
-		$id = $_POST['id'];
-		$document = $_POST['document'];
-		$parent_layout = $_POST['parent_layout'];
-		$parent_region = $_POST['parent_region'];
-
-		$block = Cortex::get_block($document, $id);
-
-		if ($block == null) {
-			return;
-		}
-
-		Cortex::set_parent_block($document, $block, $parent_layout, $parent_region);
 		exit;
 	}
 
@@ -488,20 +305,16 @@ class Cortex_Admin {
 	 */
 	public function get_block_template_file_date() {
 
+		$id = $_POST['id'];
 		$file = $_POST['file'];
-		$guid = $_POST['guid'];
 
-		$block = Cortex::get_block_template($guid);
+		$block = Cortex::get_block_template($id);
 
 		if ($block == null) {
 			exit;
 		}
 
 		switch ($file) {
-
-			case 'preview':
-				echo $block->get_preview_file_date();
-				exit;
 
 			case 'block':
 				echo $block->get_block_file_date();
@@ -519,25 +332,21 @@ class Cortex_Admin {
 
 	/**
 	 * Returns the content of a specific block template file.
-	 * @method get_block_template_file_content
+	 * @method get_block_template_file_data
 	 * @since 0.1.0
 	 */
-	public function get_block_template_file_content() {
+	public function get_block_template_file_data() {
 
 		$file = $_POST['file'];
-		$guid = $_POST['guid'];
+		$id = $_POST['id'];
 
-		$block = Cortex::get_block_template($guid);
+		$block = Cortex::get_block_template($id);
 
 		if ($block == null) {
 			exit;
 		}
 
 		switch ($file) {
-
-			case 'preview':
-				echo $block->get_preview_file_content();
-				exit;
 
 			case 'block':
 				echo $block->get_block_file_content();
@@ -554,67 +363,15 @@ class Cortex_Admin {
 	}
 
 	/**
-	 * Returns a list of document that can be used to copy/move blocks.
-	 * @method get_documents
-	 * @since 0.1.0
-	 */
-	public function get_documents() {
-
-		$groups = array();
-		$flags = array();
-
-		if (function_exists('icl_get_languages')) {
-
-			foreach (icl_get_languages() as $language) {
-
-				$code = $language['language_code'];
-				$flag = $language['country_flag_url'];
-
-				$flags[$code] = $flag;
-			}
-		}
-
-		foreach (Cortex::get_post_types() as $slug) {
-
-			$name = get_post_type_object($slug)->label;
-
-			$args = array(
-				'posts_per_page'   => 50,
-				'offset'           => 0,
-				'post_type'        => $slug,
-				'post_status'      => 'any',
-				'suppress_filters' => true,
-				'orderby'          => 'title',
-				'order'            => 'ASC'
-			);
-
-			if (isset($_REQUEST['search']) && trim($_REQUEST['search'])) {
-				$args['s'] = $_REQUEST['search'];
-			}
-
-			$count = wp_count_posts($slug);
-			$total = $count->publish + $count->draft;
-
-			$groups[] = array(
-				'name'  => $name,
-				'slug'  => $slug,
-				'posts' => Timber::get_posts($args),
-				'total' => $total
-			);
-		}
-
-		Cortex::render_twig('cortex-post-selector.twig', array('groups' => $groups, 'icl' => class_exists('SitePress'), 'flags' => $flags));
-		exit;
-	}
-
-	/**
 	 * Synchronizes the block templates with the database.
 	 * @method synchronize
 	 * @since 0.1.0
 	 */
 	public function synchronize() {
 
-		if (class_exists('acf') === false) {
+		global $pagenow;
+
+		if (class_exists('acf') === false || ($pagenow == 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] == 'acf-field-group')) {
 			return;
 		}
 
@@ -622,27 +379,27 @@ class Cortex_Admin {
 
 		foreach (acf_get_field_groups() as $field_group) {
 
-			$guid = get_post_meta($field_group['ID'], '_cortex_block_guid', true);
+			$type = get_post_meta($field_group['ID'], '_cortex_block_type', true);
 			$date = get_post_meta($field_group['ID'], '_cortex_block_date', true);
 
-			if ($guid == '') {
+			if ($type == '') {
 				continue;
 			}
 
 			$date = (int) $date;
 
-			$groups[$guid] = array(
+			$groups[$type] = array(
 				'fields' => $field_group,
 				'date' => $date,
-				'guid' => $guid,
+				'type' => $type,
 			);
 
-			if (Cortex::has_block_template($guid) == false) {
+			if (Cortex::has_block_template($type) == false) {
 				acf_delete_field_group($field_group['ID']);
 			}
 		}
 
-		foreach (Cortex::get_block_templates() as $guid => $template) {
+		foreach (Cortex::get_block_templates() as $type => $template) {
 
 			$template_fields = $template->get_fields();
 
@@ -651,7 +408,7 @@ class Cortex_Admin {
 			}
 
 			$sync = false;
-			$data = isset($groups[$guid]) ? $groups[$guid] : null;
+			$data = isset($groups[$type]) ? $groups[$type] : null;
 			$date = $template->get_date();
 
 			if ($sync == false) $sync = $data == null;
@@ -672,7 +429,7 @@ class Cortex_Admin {
 				acf_reset_fields($field_group['fields']);
 
 				$field_group = acf_import_field_group($field_group);
-				update_post_meta($field_group['ID'], '_cortex_block_guid', $guid);
+				update_post_meta($field_group['ID'], '_cortex_block_type', $type);
 				update_post_meta($field_group['ID'], '_cortex_block_date', $date);
 
 				acf_update_setting('json', true);
@@ -687,13 +444,7 @@ class Cortex_Admin {
 	 */
 	public function save_post($id) {
 
-		// because save_post is always called twice
-		if (wp_is_post_revision($id)) {
-			return;
-		}
-
-		// or even more
-		if ($this->has_been_saved($id)) {
+		if (wp_is_post_revision($id) || wp_is_post_autosave($id)) {
 			return;
 		}
 
@@ -701,62 +452,12 @@ class Cortex_Admin {
 
 		switch (get_post_type($id)) {
 
-			case 'cortex-block':
-				$this->save_block($id);
-				break;
-
 			case 'acf-field-group':
 				$this->save_post_acf_field_group($id);
 				break;
 		}
 
-		foreach (Cortex::get_post_types() as $post_type) if (get_post_type() === $post_type) {
-
-			$blocks = Cortex::get_blocks($id);
-
-			foreach ($blocks as &$block) {
-				if ($block->get_revision()) {
-					$block->set_revision(null);
-				}
-			}
-
-			Cortex::set_blocks($id, $blocks);
-		}
-
 		add_action('save_post', array($this, 'save_post'));
-	}
-
-	/**
-	 * Handles a save post of type cortex-block.
-	 * @method save_block
-	 * @since 0.1.0
-	 */
-	public function save_block($id) {
-
-		if ($this->inserting) {
-			return;
-		}
-
-		$post = get_post($id);
-
-		$revisions = wp_get_post_revisions($id);
-		$revision = array_shift($revisions);
-		$revision = array_shift($revisions);
-
-		if ($revision) {
-
-			$blocks = Cortex::get_blocks($post->post_parent);
-
-			foreach ($blocks as &$block) {
-				if ($block->get_id() === $id) {
-					$block->set_revision($revision->ID);
-				}
-			}
-
-			Cortex::set_blocks($post->post_parent, $blocks);
-		}
-
-		do_action('cortex/save_block', $post->post_parent, $post->ID);
 	}
 
 	/**
@@ -788,7 +489,8 @@ class Cortex_Admin {
 				$path = isset($_POST['cortex_block_template_path']) ? trim($_POST['cortex_block_template_path']) : null;
 				$name = isset($_POST['cortex_block_template_name']) ? trim($_POST['cortex_block_template_name']) : null;
 
-				if ($name == null || $name == '') {
+				if ($name == '' ||
+					$name == null) {
 					$name = $field_group['title'];
 				}
 
@@ -799,20 +501,20 @@ class Cortex_Admin {
 					}
 
 					$template = Cortex::create_block_template_folder($path, $field_group['title'], $name, $field_group);
-					update_post_meta($id, '_cortex_block_guid', $template->get_guid());
+					update_post_meta($id, '_cortex_block_type', $template->get_type());
 					update_post_meta($id, '_cortex_block_date', $template->get_date());
 
-					$defaults = Cortex::render_twig('cortex-empty-block-template.twig', array('fields' => $field_group['fields']), true);
-					$_POST['cortex_block']   = !empty($_POST['cortex_block'])   ? $_POST['cortex_block']   : $defaults;
-					$_POST['cortex_preview'] = !empty($_POST['cortex_preview']) ? $_POST['cortex_preview'] : $defaults;
+					$_POST['cortex_block'] = !empty($_POST['cortex_block']) ? $_POST['cortex_block'] : Cortex::render_template('cortex-empty-block-template.php', array(), true);
 
 				} else {
 
-					$template = Cortex::get_block_template(get_post_meta($id, '_cortex_block_guid', true));
+					$template = Cortex::get_block_template(get_post_meta($id, '_cortex_block_type', true));
+					$basename = Cortex::get_block_template(get_post_meta($id, '_cortex_block_type', true))->get_type();
 
-					$basename = basename($template->get_path());
 					if ($basename != $name) {
 						$template = Cortex::rename_block_template_folder($template, $name);
+						update_post_meta($id, '_cortex_block_type', $template->get_type());
+						update_post_meta($id, '_cortex_block_date', $template->get_date());
 					}
 				}
 
@@ -820,17 +522,19 @@ class Cortex_Admin {
 
 				if ($field_group['title'] != $title) {
 					$field_group['title'] = $title;
-					$template->update_block_json_file_name($title);
+					$template->update_config('name', $title);
 				}
 
-				$template->update_fields_json_file($field_group);
+				$template->update_field_file($field_group);
+
+				if (isset($_POST['cortex_block_file_type'])) $template->update_config('block_file_type', $_POST['cortex_block_file_type']);
+				if (isset($_POST['cortex_style_file_type'])) $template->update_config('style_file_type', $_POST['cortex_style_file_type']);
 
 				try {
 
 					$template->update_block_file(stripslashes($_POST['cortex_block']));
 					$template->update_style_file(stripslashes($_POST['cortex_style']));
 					$template->update_script_file(stripslashes($_POST['cortex_script']));
-					$template->update_preview_file(stripslashes($_POST['cortex_preview']));
 
 				} catch (Exception $e) {
 					$this->add_error($e->getMessage());
@@ -840,19 +544,35 @@ class Cortex_Admin {
 	}
 
 	/**
-	 * Handles a delete post of type cortex-block.
-	 * @method save_block
-	 * @since 0.1.0
+	 * @method filter_field_groups
+	 * @since 2.0.0
+	 * @hidden
 	 */
-	public function delete_post($id) {
+	public function filter_field_groups($query) {
 
-		remove_action('delete_post', array($this, 'delete_post'));
+		global $pagenow;
 
-		foreach (Cortex::get_post_types() as $post_type) if (get_post_type() === $post_type) {
-			Cortex::clear_blocks($id);
+		if ($pagenow == 'edit.php') {
+
+			if ($query->get('post_type') == 'acf-field-group') {
+
+				/*
+				 * This will hide blocks from the list since the meta
+				 * key is only applied to blocks.
+				 */
+
+				$meta_query =  array(
+					array(
+						'key'     => '_cortex_block_type',
+						'compare' => 'NOT EXISTS'
+					)
+				);
+
+				$query->set('meta_query', $meta_query);
+			}
 		}
 
-		add_action('delete_post', array($this, 'delete_post'));
+		return $query;
 	}
 
 	/**
@@ -872,20 +592,6 @@ class Cortex_Admin {
 		foreach (Cortex::session_take('cortex_errors', $default) as $message) {
 			echo sprintf('<div class="notice notice-error"><p>%s</p></div>', $message);
 		}
-	}
-
-	//--------------------------------------------------------------------------
-	// Duplicate Post Plugin Extension
-	//--------------------------------------------------------------------------
-
-	/**
-	 * Called when a page or post is duplicated.
-	 * @method dp_duplicate_post
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	public function dp_duplicate_post($new_post_id, $post, $status) {
-		Cortex::copy_blocks($post->ID, $new_post_id, true);
 	}
 
 	//--------------------------------------------------------------------------
@@ -921,7 +627,7 @@ class Cortex_Admin {
 	 */
 	private function is_update_block_page() {
 		global $pagenow;
-		return $pagenow === 'post.php' && isset($_GET['post']) && get_post_type($_GET['post']) === 'acf-field-group' && get_post_meta($_GET['post'], '_cortex_block_guid', true);
+		return $pagenow === 'post.php' && isset($_GET['post']) && get_post_type($_GET['post']) === 'acf-field-group' && get_post_meta($_GET['post'], '_cortex_block_type', true);
 	}
 
 	/**

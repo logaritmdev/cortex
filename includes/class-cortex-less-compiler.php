@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../vendor/lessphp/scss.inc.php";
+require_once __DIR__ . "/../vendor/lessphp/lessc.inc.php";
 
 class CortexLessCompiler {
 

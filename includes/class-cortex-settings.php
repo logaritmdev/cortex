@@ -75,15 +75,10 @@ class Cortex_Settings {
 	 * @since 0.1.0
 	 */
 	public function setup() {
-		$this->register('cortex_post_types');
 		$this->register('cortex_block_status');
 		$this->register('cortex_style_include_path');
 		$this->register('cortex_enqueue_styles_admin');
 		$this->register('cortex_enqueue_scripts_admin');
-		//$this->register_group('licence_key', __('Licence Key', 'cortex'));
-		//$this->register_field('licence_key', __('Licence Key', 'cortex'), 'licence_key');
-		$this->register_group('post_types', __('Post Types', 'cortex'));
-		$this->register_field('post_types', __('Post Types', 'cortex'), 'post_types');
 		$this->register_group('block_status', __('Blocks', 'cortex'));
 		$this->register_field('block_status', __('Blocks', 'cortex'), 'block_status');
 		$this->register_group('style', __('Styles Include Path', 'cortex'));
@@ -93,79 +88,16 @@ class Cortex_Settings {
 	}
 
 	/**
-	 * @method group_licence_key
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	public function group_licence_key($args) {
-		Cortex::render_twig('settings/cortex-licence-key-group.twig');
-	}
-
-	/**
-	 * @method field_licence_key
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	public function field_licence_key($args) {
-		Cortex::render_twig('settings/cortex-licence-key-field.twig');
-	}
-
-	/**
-	 * @method group_post_types
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	public function group_post_types($args) {
-		Cortex::render_twig('settings/cortex-post-types-group.twig');
-	}
-
-	/**
-	 * @method field_post_types
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	public function field_post_types($args) {
-
-		$option = get_option('cortex_post_types');
-
-		if ($option == false) {
-			$option = array('page' => 1);
-		}
-
-		$values = array();
-
-		foreach (get_post_types(array(), 'objects') as $post_type) {
-
-			if ($post_type->public == false) {
-				continue;
-			}
-
-			$name = $post_type->label;
-			$slug = $post_type->name;
-
-			$checked = $option == false || (isset($option[$slug]) && $option[$slug] == 1);
-
-			$values[] = array(
-				'name' => $name,
-				'slug' => $slug,
-				'checked' => $checked
-			);
-		}
-
-		Cortex::render_twig('settings/cortex-post-types-field.twig', array('values' => $values));
-	}
-
-	/**
 	 * @method group_block_status
 	 * @since 0.1.0
 	 * @hidden
 	 */
 	public function group_block_status($args) {
-		Cortex::render_twig('settings/cortex-block-status-group.twig');
+		Cortex::render_template('settings/cortex-block-status-group.php');
 	}
 
 	/**
-	 * @method field_post_types
+	 * @method field_block_status
 	 * @since 0.1.0
 	 * @hidden
 	 */
@@ -178,7 +110,7 @@ class Cortex_Settings {
 		foreach (Cortex::get_block_templates() as $block_template) {
 
 			$name = $block_template->get_name();
-			$slug = $block_template->get_guid();
+			$slug = $block_template->get_type();
 
 			$enabled = $option === false || !(isset($option[$slug])) || $option[$slug] == 'enabled';
 
@@ -189,7 +121,7 @@ class Cortex_Settings {
 			);
 		}
 
-		Cortex::render_twig('settings/cortex-block-status-field.twig', array('values' => $values));
+		Cortex::render_template('settings/cortex-block-status-field.php', array('values' => $values));
 	}
 
 	/**
