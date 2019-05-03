@@ -225,7 +225,7 @@ class Cortex {
 	 * @method create_block_template_folder
 	 * @since 0.1.0
 	 */
-	public static function create_block_template_folder($location, $name, $slug, $fields) {
+	public static function create_block_template_folder($location, $name, $slug, $fields, $block_type, $style_type) {
 
 		$path = '';
 
@@ -248,11 +248,37 @@ class Cortex {
 
 		$path = "$path/$slug";
 
-		@mkdir($path);
-		@mkdir("$path/assets");
-		@touch("$path/block.json");
-		@touch("$path/block.twig");
-		@touch("$path/fields.json");
+		if (is_dir($path) == false) {
+
+			mkdir($path);
+			mkdir("$path/assets");
+			touch("$path/assets/scripts.js");
+			touch("$path/assets/styles.css");
+			touch("$path/block.json");
+			touch("$path/fields.json");
+
+			switch ($block_type) {
+
+				case 'twig':
+					touch("$path/block.twig");
+					break;
+
+				case 'blade':
+					touch("$path/block.blade.php");
+					break;
+			}
+
+			switch ($style_type) {
+
+				case 'sass':
+					touch("$path/assets/styles.scss");
+					break;
+
+				case 'less':
+					touch("$path/assets/styles.less");
+					break;
+			}
+		}
 
 		$block = array(
 			'name' => $name,
@@ -471,7 +497,6 @@ class Cortex {
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 		$this->loader->add_action('admin_init', $plugin_admin, 'validate_dependencies');
-		$this->loader->add_action('admin_init', $plugin_admin, 'configure_timber');
 		$this->loader->add_action('admin_init', $plugin_admin, 'configure_meta_box');
 		$this->loader->add_action('admin_menu', $plugin_admin, 'configure_menu');
 		$this->loader->add_action('admin_head', $plugin_admin, 'configure_ui', 30);
@@ -499,9 +524,6 @@ class Cortex {
 		}
 
 		$plugin_public = new Cortex_Public($this, $this->get_plugin_name(), $this->get_plugin_version());
-
-		$this->loader->add_action('init', $plugin_public, 'configure_timber');
-		$this->loader->add_filter('home_url', $plugin_public, 'home_url');
 	}
 
 	/**
@@ -552,17 +574,7 @@ class Cortex {
 
 					if (($resizeW && $w > $resizeW) ||
 						($resizeH && $h > $resizeH)) {
-
-						/*
-							This is a huge and hopefully temporary hack. TimberLibrary has
-							some issues resizing images when the image url contains the
-							site language identifier. To fix this, in that exact moment,
-							we simply remove the language code from the URL.
-						*/
-
-						Cortex_Public::$resizing_image = true;
 						$image = \TimberImageHelper::resize($image, $resizeW, $resizeH);
-						Cortex_Public::$resizing_image = false;
 					}
 				}
 
