@@ -630,7 +630,7 @@ class Cortex_Admin {
 
 					$block->update_config_file($data);
 
-					$_POST['cortex_block'] = !empty($_POST['cortex_block']) ? $_POST['cortex_block'] : Cortex::render_template('cortex-empty-block-template.php', array(), true);
+					$_POST['cortex_block'] = !empty($_POST['cortex_block']) ? $_POST['cortex_block'] : '<section class="block"></section>';
 
 				} else {
 
