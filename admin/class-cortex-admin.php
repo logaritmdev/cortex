@@ -129,15 +129,6 @@ class Cortex_Admin {
 	}
 
 	/**
-	 * Configures Timber.
-	 * @method configure_timber
-	 * @since 0.1.0
-	 */
-	public function configure_timber() {
-		if (class_exists('Timber')) Timber::$locations = array(__DIR__ . '/../views');
-	}
-
-	/**
 	 * Configures the menu.
 	 * @method configure_menu
 	 * @since 0.1.0
@@ -529,7 +520,18 @@ class Cortex_Admin {
 						return;
 					}
 
-					$template = Cortex::create_block_template_folder($path, $field_group['title'], $name, $field_group);
+					$block_file_type = $_POST['cortex_block_file_type'];
+					$style_file_type = $_POST['cortex_style_file_type'];
+
+					$template = Cortex::create_block_template_folder(
+						$path,
+						$field_group['title'],
+						$name,
+						$field_group,
+						$block_file_type,
+						$style_file_type
+					);
+
 					update_post_meta($id, '_cortex_block_type', $template->get_type());
 					update_post_meta($id, '_cortex_block_date', $template->get_date());
 

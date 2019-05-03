@@ -1,5 +1,8 @@
 <?php
 
+// TODO
+// Finish this
+
 /**
  * Contains the data related to a block instance.
  * @class CortexBlock
@@ -134,15 +137,16 @@ class CortexBlock {
 	 */
 	public function display(array $data = array()) {
 
-		switch ($this->template->get_block_file_type()) {
+		$type = $this->template->get_block_file_type();
 
-			case 'twig':
-				$this->render_twig_template($data);
-				break;
+		if ($type == 'twig') {
+			$this->render_twig_template($data);
+			return;
+		}
 
-			case 'blade':
-				$this->render_blade_template($data);
-				break;
+		if ($type == 'blade') {
+			$this->render_blade_template($data);
+			return;
 		}
 	}
 
@@ -151,8 +155,8 @@ class CortexBlock {
 	 * @method render
 	 * @since 0.1.0
 	 */
-	public function render($context) {
-		return $context;
+	public function render($data) {
+		return $data;
 	}
 
 	//--------------------------------------------------------------------------
@@ -188,12 +192,9 @@ class CortexBlock {
 
 		$context = Timber::get_context();
 		$context['block'] = $this;
-		$context['post'] = Timber::get_post($this->post);
 
 		if ($data) {
-			foreach ($data as $key => $val) {
-				$context[$key] = $val;
-			}
+			$context = array_merge($context, $data);
 		}
 
 		Timber::render('block.twig', $this->render($context));
@@ -207,11 +208,11 @@ class CortexBlock {
 	 * @hidden
 	 */
 	protected function render_blade_template($file, $context) {
-
+		sage('blade')->render($file, $context);
 	}
 
 	//--------------------------------------------------------------------------
-	// Twig
+	// Template
 	//--------------------------------------------------------------------------
 
 	public function getId() { return $this->get_id(); }

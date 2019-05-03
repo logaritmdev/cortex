@@ -56,10 +56,14 @@
 
 		</div>
 
+		<?php
+			$type = $template ? $template->get_block_file_type() : 'twig';
+		?>
+
 		<div class="acf-input">
 			<ul class="acf-checkbox-list acf-bl">
-				<li><input type="radio" name="cortex_block_file_type" value="twig" <?php if ($template && $template->get_block_file_type() == 'twig'): ?> checked="checked" <?php endif ?>><label>Twig</label></li>
-				<li><input type="radio" name="cortex_block_file_type" value="blade" <?php if ($template && $template->get_block_file_type() == 'blade'): ?> checked="checked" <?php endif ?>><label>Blade</label></li>
+				<li><input type="radio" name="cortex_block_file_type" value="twig" <?php if ($type == 'twig'): ?> checked="checked" <?php endif ?>><label>Twig</label></li>
+				<li><input type="radio" name="cortex_block_file_type" value="blade" <?php if ($type == 'blade'): ?> checked="checked" <?php endif ?>><label>Blade</label></li>
 			</ul>
 		</div>
 
@@ -77,10 +81,14 @@
 
 		</div>
 
+		<?php
+			$type = $template ? $template->get_style_file_type() : 'sass';
+		?>
+
 		<div class="acf-input">
 			<ul class="acf-checkbox-list acf-bl">
-				<li><input type="radio" name="cortex_style_file_type" value="sass" <?php if ($template && $template->get_style_file_type() == 'sass'): ?> checked="checked" <?php endif ?>><label>Sass</label></li>
-				<li><input type="radio" name="cortex_style_file_type" value="less" <?php if ($template && $template->get_style_file_type() == 'less'): ?> checked="checked" <?php endif ?>><label>Less</label></li>
+				<li><input type="radio" name="cortex_style_file_type" value="sass" <?php if ($type == 'sass'): ?> checked="checked" <?php endif ?>><label>Sass</label></li>
+				<li><input type="radio" name="cortex_style_file_type" value="less" <?php if ($type == 'less'): ?> checked="checked" <?php endif ?>><label>Less</label></li>
 			</ul>
 		</div>
 
