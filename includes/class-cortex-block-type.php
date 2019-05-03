@@ -434,14 +434,14 @@ class CortexBlockType {
 	 * @method create_block
 	 * @since 2.0.0
 	 */
-	public function create_block($id = 0, $post = 0) {
+	public function create_block($id, $post) {
 
 		if ($this->class !== '' &&
 			$this->class !== 'CortexBlock') {
 			require_once $this->path . '/block.php';
 		}
 
-		return new $this->class($type, $post, $this);
+		return new $this->class($id, $post, $this);
 	}
 
 	/**

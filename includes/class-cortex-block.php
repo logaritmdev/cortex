@@ -1,8 +1,5 @@
 <?php
 
-// TODO
-// Finish this
-
 /**
  * Contains the data related to a block instance.
  * @class CortexBlock
@@ -13,6 +10,16 @@ class CortexBlock {
 	//--------------------------------------------------------------------------
 	// Static
 	//--------------------------------------------------------------------------
+
+	/**
+	 * The renderer classes.
+	 * @method renderers
+	 * @since 2.0.0
+	 */
+	public static $renderers = array(
+		'twig'  => 'CortexBlockTwigRenderer',
+		'blade' => 'CortexBlockBladeRenderer'
+	);
 
 	/**
 	 * Enqueue styles file.
@@ -30,6 +37,15 @@ class CortexBlock {
 	 */
 	public static function enqueue_scripts() {
 
+	}
+
+	/**
+	 * Returns the specified renderer.
+	 * @method get_renderer.
+	 * @since 2.0.0
+	 */
+	private static function get_renderer($type, $self) {
+		return isset(self::$renderers[$type]) ? new self::$renderers[$type]($self) : null;
 	}
 
 	//--------------------------------------------------------------------------
@@ -51,11 +67,18 @@ class CortexBlock {
 	private $post = 0;
 
 	/**
-	 * The block's template.
-	 * @property template
+	 * The block's type.
+	 * @property type
+	 * @since 2.0.0
+	 */
+	private $type = null;
+
+	/**
+	 * The block's renderer.
+	 * @property renderer
 	 * @since 0.1.0
 	 */
-	private $template = null;
+	private $renderer = null;
 
 	//--------------------------------------------------------------------------
 	// Accessors
@@ -98,21 +121,21 @@ class CortexBlock {
 	}
 
 	/**
-	 * Returns the block template.
-	 * @method get_template
+	 * Returns the block type.
+	 * @method get_type
 	 * @since 0.1.0
 	 */
-	public function get_template() {
-		return $this->template;
+	public function get_type() {
+		return $this->type;
 	}
 
 	/**
-	 * @method set_template
+	 * @method set_type
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private function set_template($template) {
-		$this->template = $template;
+	private function set_type($type) {
+		$this->type = $type;
 	}
 
 	//--------------------------------------------------------------------------
@@ -124,29 +147,28 @@ class CortexBlock {
 	 * @constructor
 	 * @since 0.1.0
 	 */
-	public function __construct($id, $post, $template) {
+	public function __construct($id, $post, CortexBlockType $type) {
 		$this->set_id($id);
 		$this->set_post($post);
-		$this->set_template($template);
+		$this->set_type($type);
 	}
 
 	/**
-	 * Renders the main template of this block.
+	 * Renders the main type of this block.
 	 * @method display
 	 * @since 0.1.0
 	 */
-	public function display(array $data = array()) {
+	public function display(array $vars = array()) {
 
-		$type = $this->template->get_block_file_type();
-
-		if ($type == 'twig') {
-			$this->render_twig_template($data);
-			return;
+		if ($this->renderer == null) {
+			$this->renderer = self::get_renderer(
+				$this->type->get_block_file_type(),
+				$this
+			);
 		}
 
-		if ($type == 'blade') {
-			$this->render_blade_template($data);
-			return;
+		if ($this->renderer) {
+			$this->renderer->render($this->render($vars));
 		}
 	}
 
@@ -165,58 +187,50 @@ class CortexBlock {
 
 	/**
 	 * @method get_link
-	 * @since 0.2.0
-	 */
-	public function get_link() {
-
-		$block_url = admin_url('admin-ajax.php') . '?action=render_block&post=' . $this->post . '&id=' . $this->id;
-		$block_lng = apply_filters('wpml_current_language', NULL);
-
-		if ($block_lng) {
-			$block_url = add_query_arg('lang', $block_lng, $block_url);
-		}
-
-		return $block_url;
-	}
-
-	/**
-	 * @function render_twig_template
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	protected function render_twig_template(array $data = array()) {
-
-		$locations = Timber::$locations;
-
-		array_unshift(Timber::$locations, $this->template->get_path());
-
-		$context = Timber::get_context();
-		$context['block'] = $this;
-
-		if ($data) {
-			$context = array_merge($context, $data);
-		}
-
-		Timber::render('block.twig', $this->render($context));
-
-		Timber::$locations = $locations;
-	}
-
-	/**
-	 * @function render_blade_template
 	 * @since 2.0.0
 	 * @hidden
 	 */
-	protected function render_blade_template($file, $context) {
+	public function get_link() {
+		return $this->append_lang(admin_url('admin-ajax.php') . '?action=render_block&post=' . $this->post . '&id=' . $this->id);
+	}
+
+	/**
+	 * @function render_twig_type
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	protected function render_twig_type(array $data = array()) {
+
+	}
+
+	/**
+	 * @function render_blade_type
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	protected function render_blade_type($file, $context) {
 		sage('blade')->render($file, $context);
 	}
 
 	//--------------------------------------------------------------------------
-	// Template
+	// WPML
+	//--------------------------------------------------------------------------
+
+	/**
+	 * @function append_lang
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	protected function append_lang($link) {
+		return (($lang = apply_filters('wpml_current_language', null)) == null) ? $link : add_query_arg('lang', $lang, $link);
+	}
+
+	//--------------------------------------------------------------------------
+	// type
 	//--------------------------------------------------------------------------
 
 	public function getId() { return $this->get_id(); }
 	public function getLink() { return $this->get_link(); }
 	public function getPost() { return $this->get_post(); }
-	public function getTemplate() { return $this->get_template(); }
+	public function gettype() { return $this->get_type(); }
 }

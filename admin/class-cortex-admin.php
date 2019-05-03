@@ -8,9 +8,6 @@ require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-meta-bo
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-sass-compiler.php';
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-less-compiler.php';
 
-// TODO
-// Cacher les meta boxes
-
 /**
  * The plugin's admin functionality.
  * @class Cortex_Admin
@@ -726,7 +723,6 @@ class Cortex_Admin {
 	//--------------------------------------------------------------------------
 	// Private API
 	//--------------------------------------------------------------------------
-
 
 	/**
 	 * Creates a new block template folder at the specified location.

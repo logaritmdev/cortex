@@ -3,6 +3,9 @@
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block.php';
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-type.php';
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-list.php';
+require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-renderer.php';
+require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-twig-renderer.php';
+require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-blade-renderer.php';
 
 /**
  * The core plugin class.
