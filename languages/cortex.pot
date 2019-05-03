@@ -280,47 +280,47 @@ msgstr ""
 msgid "Settings Saved"
 msgstr ""
 
-#: includes/class-cortex-block-template-list.php:23
+#: includes/class-cortex-block-type-list.php:23
 msgid "block"
 msgstr ""
 
-#: includes/class-cortex-block-template-list.php:24
+#: includes/class-cortex-block-type-list.php:24
 msgid "blocks"
 msgstr ""
 
-#: includes/class-cortex-block-template-list.php:36
+#: includes/class-cortex-block-type-list.php:36
 msgid "No blocks"
 msgstr ""
 
-#: includes/class-cortex-block-template-list.php:66
+#: includes/class-cortex-block-type-list.php:66
 msgid "Name"
 msgstr ""
 
-#: includes/class-cortex-block-template-list.php:67
+#: includes/class-cortex-block-type-list.php:67
 msgid "Hint"
 msgstr ""
 
-#: includes/class-cortex-block-template-list.php:68
+#: includes/class-cortex-block-type-list.php:68
 msgid "Group"
 msgstr ""
 
-#: includes/class-cortex-block-template-list.php:81
+#: includes/class-cortex-block-type-list.php:81
 msgid "Sync"
 msgstr ""
 
-#: includes/class-cortex-block-template-list.php:106
+#: includes/class-cortex-block-type-list.php:106
 msgid "Edit Fields"
 msgstr ""
 
-#: includes/class-cortex-block-template-list.php:126
+#: includes/class-cortex-block-type-list.php:126
 msgid "All Groups"
 msgstr ""
 
-#: includes/class-cortex-block-template-list.php:127
+#: includes/class-cortex-block-type-list.php:127
 msgid "Layout"
 msgstr ""
 
-#: includes/class-cortex-block-template-list.php:135
+#: includes/class-cortex-block-type-list.php:135
 msgid "Filter"
 msgstr ""
 

@@ -60,7 +60,7 @@
 
 				$.post(ajaxurl, {
 
-					'action': 'get_block_template_file_data',
+					'action': 'get_block_file_data',
 					'id': id,
 					'file': file
 
@@ -68,7 +68,7 @@
 
 					$.post(ajaxurl, {
 
-						'action': 'get_block_template_file_date',
+						'action': 'get_block_file_date',
 						'id': id,
 						'file': file
 
@@ -95,7 +95,7 @@
 
 				$.post(ajaxurl, {
 
-					'action': 'get_block_template_file_date',
+					'action': 'get_block_file_date',
 					'id': id,
 					'file': file
 

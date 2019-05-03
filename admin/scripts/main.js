@@ -140,10 +140,10 @@ $.attach('.cortex-modal', function(i, element) {
 })(jQuery);
 (function ($) {
 
-	$.attach('.cortex-admin-blocks-page', function (i, element) {
+	$.attach('.cortex-admin-blocks-page, .edit-php.post-type-acf-field-group', function (i, element) {
 
-		var createBlockModal = element.find('.cortex-create-block-modal')
-		var updateBlockModal = element.find('.cortex-update-block-modal')
+		var createBlockModal = $('.cortex-create-block-modal')
+		var updateBlockModal = $('.cortex-update-block-modal')
 
 		var onCreateBlockLinkClick = function (e) {
 			e.preventDefault()
@@ -158,6 +158,30 @@ $.attach('.cortex-modal', function(i, element) {
 		element.on('click', '.cortex-create-block-link', onCreateBlockLinkClick)
 		element.on('click', '.cortex-update-block-link', onUpdateBlockLinkClick)
 
+		/*
+		 * Opens blocks in ACF field group list in a popup
+		 */
+
+		element.find('.wp-list-table a').each(function (i, element) {
+
+			element = $(element)
+
+			var regex = /post\.php\?post=(\d+)&action=edit/mig
+			var value = element.attr('href')
+
+			var link = regex.exec(value);
+			if (link == null) {
+				return
+			}
+
+			var post = link[1]
+
+			$.each(CORTEX.blocks, function (i, block) {
+				if (block.ID == post) {
+					element.on('click', onUpdateBlockLinkClick)
+				}
+			})
+		})
 	})
 
 	$.attach('.cortex-create-block-modal, .cortex-update-block-modal', function (i, element) {
@@ -302,7 +326,7 @@ $.attach('.cortex-modal', function(i, element) {
 
 				$.post(ajaxurl, {
 
-					'action': 'get_block_template_file_data',
+					'action': 'get_block_file_data',
 					'id': id,
 					'file': file
 
@@ -310,7 +334,7 @@ $.attach('.cortex-modal', function(i, element) {
 
 					$.post(ajaxurl, {
 
-						'action': 'get_block_template_file_date',
+						'action': 'get_block_file_date',
 						'id': id,
 						'file': file
 
@@ -337,7 +361,7 @@ $.attach('.cortex-modal', function(i, element) {
 
 				$.post(ajaxurl, {
 
-					'action': 'get_block_template_file_date',
+					'action': 'get_block_file_date',
 					'id': id,
 					'file': file
 

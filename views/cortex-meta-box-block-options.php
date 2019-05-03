@@ -2,11 +2,11 @@
 
 	<?php if ($mode == 'create'): ?>
 
-		<div class="acf-field acf-field-checkbox" data-name="cortex_block_template_path" data-type="select">
+		<div class="acf-field acf-field-checkbox" data-name="cortex_block_path" data-type="select">
 
 			<div class="acf-label">
 
-				<label for="cortex_block_template_path"><?php _e('Location', 'cortex') ?></label>
+				<label for="cortex_block_path"><?php _e('Location', 'cortex') ?></label>
 
 				<p class="description">
 					<?php _e('The location where the block template will be created.', 'cortex') ?>
@@ -17,7 +17,7 @@
 			<div class="acf-input">
 				<ul class="acf-checkbox-list acf-bl">
 					<?php foreach ($locations as $location): ?>
-						<li><input type="radio" name="cortex_block_template_path" value="<?php echo $location ?>" checked="checked"><label><?php echo $location ?></label></li>
+						<li><input type="radio" name="cortex_block_path" value="<?php echo $location ?>" checked="checked"><label><?php echo $location ?></label></li>
 					<?php endforeach ?>
 				</ul>
 			</div>
@@ -26,11 +26,11 @@
 
 	<?php endif ?>
 
-	<div class="acf-field acf-field-text" data-name="cortex_block_template_name" data-type="text">
+	<div class="acf-field acf-field-text" data-name="cortex_block_slug" data-type="text">
 
 		<div class="acf-label">
 
-			<label for="cortex_block_template_name"><?php _e('Folder', 'cortex') ?></label>
+			<label for="cortex_block_slug"><?php _e('Folder', 'cortex') ?></label>
 
 			<p class="description">
 				<?php _e('The block template folder name, will default to the block name if empty.', 'cortex') ?>
@@ -39,16 +39,16 @@
 		</div>
 
 		<div class="acf-input">
-			<input type="text" id="cortex_block_template_name" name="cortex_block_template_name" value="<?php echo $template ? basename($template->get_path()) : '' ?>">
+			<input type="text" id="cortex_block_slug" name="cortex_block_slug" value="<?php echo $template ? basename($template->get_path()) : '' ?>">
 		</div>
 
 	</div>
 
-	<div class="acf-field acf-field-text" data-name="cortex_block_template_name" data-type="text">
+	<div class="acf-field acf-field-text" data-name="cortex_block_slug" data-type="text">
 
 		<div class="acf-label">
 
-			<label for="cortex_block_template_name"><?php _e('Template engine', 'cortex') ?></label>
+			<label for="cortex_block_slug"><?php _e('Template engine', 'cortex') ?></label>
 
 			<p class="description">
 
@@ -69,11 +69,11 @@
 
 	</div>
 
-	<div class="acf-field acf-field-text" data-name="cortex_block_template_name" data-type="text">
+	<div class="acf-field acf-field-text" data-name="cortex_block_slug" data-type="text">
 
 		<div class="acf-label">
 
-			<label for="cortex_block_template_name"><?php _e('Preprocessor engine', 'cortex') ?></label>
+			<label for="cortex_block_slug"><?php _e('Preprocessor engine', 'cortex') ?></label>
 
 			<p class="description">
 

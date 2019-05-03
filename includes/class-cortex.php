@@ -1,8 +1,8 @@
 <?php
 
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block.php';
-require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-template.php';
-require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-template-list.php';
+require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-type.php';
+require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-list.php';
 
 /**
  * The core plugin class.
@@ -16,18 +16,18 @@ class Cortex {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * The block groups.
-	 * @since 0.1.0
+	 * The groups.
+	 * @since 2.0.0
 	 * @hidden
 	 */
-	private static $block_groups = array();
+	private static $groups = array();
 
 	/**
-	 * The block templates.
-	 * @since 0.1.0
+	 * The blocks.
+	 * @since 2.0.0
 	 * @hidden
 	 */
-	private static $block_templates = array();
+	private static $blocks = array();
 
 	//--------------------------------------------------------------------------
 	// Static Methods
@@ -104,7 +104,7 @@ class Cortex {
 
 		global $post;
 
-		$template = self::get_block_template($type);
+		$template = self::get_block($type);
 
 		if ($template == null) {
 			return;
@@ -146,59 +146,93 @@ class Cortex {
 	}
 
 	/**
-	 * Returns the locations where blocks can be stored.
-	 * @method get_block_sources
-	 * @since 0.1.0
-	 */
-	public static function get_block_sources($paths) {
-
-		foreach (self::$block_templates as $template) {
-			$paths[] = $template->get_path();
-		}
-
-		return $paths;
-	}
-
-	/**
 	 * Returns the groups where blocks are categorized.
-	 * @method get_block_groups
-	 * @since 0.1.0
+	 * @method get_groups
+	 * @since 2.0.0
 	 */
-	public static function get_block_groups() {
-		return self::$block_groups;
+	public static function get_groups() {
+		return self::$groups;
 	}
 
 	/**
 	 * Indicates whether the specified block exists.
-	 * @method has_block_template
-	 * @since 0.1.0
+	 * @method has_block
+	 * @since 2.0.0
 	 */
-	public static function has_block_template($type) {
-		return isset(self::$block_templates[$type]);
+	public static function has_block($type) {
+		return isset(self::$blocks[$type]);
 	}
 
 	/**
 	 * Returns a block template.
-	 * @method get_block_template
-	 * @since 0.1.0
+	 * @method get_block
+	 * @since 2.0.0
 	 */
-	public static function get_block_template($type) {
-		return isset(self::$block_templates[$type]) ? self::$block_templates[$type] : null;
+	public static function get_block($type) {
+		return isset(self::$blocks[$type]) ? self::$blocks[$type] : null;
 	}
 
 	/**
 	 * Returns all block templates.
-	 * @method get_block_templates
-	 * @since 0.1.0
+	 * @method get_blocks
+	 * @since 2.0.0
 	 */
-	public static function get_block_templates() {
-		return self::$block_templates;
+	public static function get_blocks() {
+		return self::$blocks;
+	}
+
+	/**
+	 * Indicates whether a block exists template using its ACF id.
+	 * @method has_block_by_id
+	 * @since 2.0.0
+	 */
+	public static function has_block_by_id($id) {
+
+		foreach (acf_get_field_groups() as $group) {
+
+			if (isset($group['ID']) && $group['ID'] == $id) {
+
+				$block_type = acf_maybe_get($group, '@block_type');
+				$block_name = acf_maybe_get($group, '@block_name');
+
+				if ($block_type &&
+					$block_name) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns a block template using its ACF id.
+	 * @method get_block_by_id
+	 * @since 2.0.0
+	 */
+	public static function get_block_by_id($id) {
+
+		foreach (acf_get_field_groups() as $group) {
+
+			if (isset($group['ID']) && $group['ID'] == $id) {
+
+				$block_type = acf_maybe_get($group, '@block_type');
+				$block_name = acf_maybe_get($group, '@block_name');
+
+				if ($block_type &&
+					$block_name) {
+					return self::get_block($block_type);
+				}
+			}
+		}
+
+		return null;
 	}
 
 	/**
 	 * Returns the absolute locations where blocks are stored.
 	 * @method get_block_locations
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public static function get_block_locations() {
 		return apply_filters('cortex/block_locations', array(WP_PLUGIN_DIR . '/cortex/blocks', get_template_directory() . '/blocks'));
@@ -207,7 +241,7 @@ class Cortex {
 	/**
 	 * Returns the relative locations where blocks are stored.
 	 * @method get_relative_block_locations
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public static function get_relative_block_locations() {
 
@@ -222,19 +256,19 @@ class Cortex {
 
 	/**
 	 * Creates a new block template folder at the specified location.
-	 * @method create_block_template_folder
-	 * @since 0.1.0
+	 * @method create_block_folder
+	 * @since 2.0.0
 	 */
-	public static function create_block_template_folder($location, $name, $slug, $fields, $block_type, $style_type) {
+	public static function create_block_folder($location, $name, $block_type, $style_type) {
 
 		$path = '';
 
-		foreach (Cortex::get_block_locations() as $candidate) {
+		foreach (Cortex::get_block_locations() as $folder) {
 
-			$base = str_replace(WP_CONTENT_DIR, '', $candidate);
+			$base = str_replace(WP_CONTENT_DIR, '', $folder);
 
 			if ($base === $location) {
-				$path = $candidate;
+				$path = $folder;
 				break;
 			}
 		}
@@ -244,150 +278,41 @@ class Cortex {
 			return;
 		}
 
-		$slug = self::generate_block_template_slug($slug);
+		$dest = "$path/$name";
 
-		$path = "$path/$slug";
+		if (is_dir($dest) === false) {
 
-		if (is_dir($path) == false) {
-
-			mkdir($path);
-			mkdir("$path/assets");
-			touch("$path/assets/scripts.js");
-			touch("$path/assets/styles.css");
-			touch("$path/block.json");
-			touch("$path/fields.json");
+			mkdir($dest);
+			mkdir("$dest/assets");
+			touch("$dest/assets/scripts.js");
+			touch("$dest/assets/styles.css");
+			touch("$dest/block.json");
+			touch("$dest/fields.json");
 
 			switch ($block_type) {
 
 				case 'twig':
-					touch("$path/block.twig");
+					touch("$dest/block.twig");
 					break;
 
 				case 'blade':
-					touch("$path/block.blade.php");
+					touch("$dest/block.blade.php");
 					break;
 			}
 
 			switch ($style_type) {
 
 				case 'sass':
-					touch("$path/assets/styles.scss");
+					touch("$dest/assets/styles.scss");
 					break;
 
 				case 'less':
-					touch("$path/assets/styles.less");
+					touch("$dest/assets/styles.less");
 					break;
 			}
 		}
 
-		$block = array(
-			'name' => $name,
-			'icon' => '',
-			'hint' => '',
-			'group' => ''
-		);
-
-		$type = self::generate_block_template_type($path);
-
-		$template = new CortexBlockTemplate(
-			$type,
-			$path,
-			$block['name'],
-			$block['icon'],
-			$block['hint'],
-			$block['group'],
-			'',
-			$fields
-		);
-
-		$template->update_config_file($block);
-
-		return $template;
-	}
-
-	/**
-	 * Creates a new block template folder at the specified location.
-	 * @method rename_block_template_folder
-	 * @since 0.1.0
-	 */
-	public static function rename_block_template_folder($template, $name) {
-
-		global $wpdb;
-
-		$slug = self::generate_block_template_slug($name);
-
-		$old_path = $template->get_path();
-		$old_type = $template->get_type();
-
-		if (file_exists($old_path) == false) {
-			return $template;
-		}
-
-		unset(self::$block_templates[$old_type]);
-
-		$new_path = explode('/', $old_path);
-		array_pop($new_path);
-		$new_path = implode('/', $new_path);
-		$new_path = $new_path . '/' . $slug;
-
-		$new_type = self::generate_block_template_type($new_path);
-
-		rename(
-			$old_path,
-			$new_path
-		);
-
-		$wpdb->query("
-			UPDATE
-				$wpdb->posts
-			SET
-				post_content = REPLACE(
-					post_content,
-					'<!-- wp:acf/$old_type',
-					'<!-- wp:acf/$new_type'
-				)
-		");
-
-		$new_template = new CortexBlockTemplate(
-			$new_type,
-			$new_path,
-			$name,
-			$template->get_icon(),
-			$template->get_hint(),
-			$template->get_group(),
-			$template->get_class()
-		);
-
-		$new_template->set_block_file_type($template->get_block_file_type());
-		$new_template->set_style_file_type($template->get_style_file_type());
-		$new_template->set_fields($template->get_fields());
-
-		self::$block_templates[$new_type] = $new_template;
-
-		return $new_template;
-	}
-
-	/**
-	 * @method generate_block_template_type
-	 * @since 2.0.0
-	 * @hidden
-	 */
-	private static function generate_block_template_type($path) {
-		return basename($path);
-	}
-
-	/**
-	 * @method generate_block_template_slug
-	 * @since 2.0.0
-	 * @hidden
-	 */
-	private static function generate_block_template_slug($name) {
-
-		$name = trim($name);
-		$name = preg_replace('/(?<!^)[A-Z]+/', ' $0', $name);
-		$name = preg_replace('/\s+/', '-', $name);
-
-		return sanitize_title($name);
+		return $dest;
 	}
 
 	//--------------------------------------------------------------------------
@@ -447,11 +372,10 @@ class Cortex {
 		$this->define_settings();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-		$this->define_acf_hooks();
 		$this->define_twig_hooks();
 
-		$this->loader->add_action('acf/init', $this, 'init');
-
+		$this->loader->add_action('acf/init', $this, 'load');
+		$this->loader->add_action('acf/get_field_groups', $this, 'load_field_groups', 30);
 		$this->loader->add_filter('block_categories', $this, 'register_categories', 10, 2);
 	}
 
@@ -497,19 +421,21 @@ class Cortex {
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 		$this->loader->add_action('admin_init', $plugin_admin, 'validate_dependencies');
+		$this->loader->add_action('admin_init', $plugin_admin, 'synchronize');
 		$this->loader->add_action('admin_init', $plugin_admin, 'configure_meta_box');
 		$this->loader->add_action('admin_menu', $plugin_admin, 'configure_menu');
 		$this->loader->add_action('admin_head', $plugin_admin, 'configure_ui', 30);
+		$this->loader->add_action('admin_footer', $plugin_admin, 'configure_footer');
 		$this->loader->add_action('save_post', $plugin_admin, 'save_post');
-		$this->loader->add_action('wp_loaded', $plugin_admin, 'synchronize');
-		$this->loader->add_action('pre_get_posts', $plugin_admin, 'filter_field_groups');
 		$this->loader->add_action('admin_notices', $plugin_admin, 'display_notices');
 
-		$this->loader->add_action('wp_ajax_get_block_template_file_date', $plugin_admin, 'get_block_template_file_date');
-		$this->loader->add_action('wp_ajax_get_block_template_file_data', $plugin_admin, 'get_block_template_file_data');
+		$this->loader->add_action('wp_ajax_get_block_file_date', $plugin_admin, 'get_block_file_date');
+		$this->loader->add_action('wp_ajax_get_block_file_data', $plugin_admin, 'get_block_file_data');
 		$this->loader->add_action('wp_ajax_render_block', $plugin_admin, 'render_block');
 		$this->loader->add_action('wp_ajax_nopriv_render_block', $plugin_admin, 'render_block');
-		$this->loader->add_filter('admin_body_class', $plugin_admin, 'configure_body_classes');
+
+		$this->loader->add_filter('admin_body_class', $plugin_admin, 'configure_body_classes', 40);
+		$this->loader->add_filter('the_title', $plugin_admin, 'filter_acf_field_group_title', 40, 2);
 	}
 
 	/**
@@ -534,15 +460,6 @@ class Cortex {
 	protected function define_settings() {
 		$plugin_settings = new Cortex_Settings($this, $this->get_plugin_name(), $this->get_plugin_version());
 		$this->loader->add_action('admin_init', $plugin_settings, 'setup');
-	}
-
-	/**
-	 * Register all of the hooks related to the advanced custom field plugin.
-	 * @method define_acf_hooks
-	 * @since 0.1.0
-	 */
-	protected function define_acf_hooks() {
-		$this->loader->add_filter('acf/get_field_groups', $this, 'acf_get_field_groups');
 	}
 
 	/**
@@ -593,10 +510,10 @@ class Cortex {
 
 	/**
 	 * Loads and store the block templates.
-	 * @method load_block_templates
+	 * @method load_blocks
 	 * @since 0.1.0
 	 */
-	protected function load_block_templates() {
+	protected function load_blocks() {
 
 		$this->for_each_location($this->get_block_locations(), '*', function($path) {
 
@@ -630,43 +547,153 @@ class Cortex {
 
 			$fields = $this->get_json($path, 'fields');
 
-			$template = new CortexBlockTemplate($type, $path, $data);
+			$template = new CortexBlockType($type, $path, $data);
 			$template->set_block_file_type($data['block_file_type']);
 			$template->set_style_file_type($data['style_file_type']);
 			$template->set_fields($fields);
 
-			self::$block_templates[$type] = $template;
-
+			self::$blocks[$type] = $template;
 		});
 	}
 
 	/**
 	 * Loads and store the block groups.
-	 * @method load_block_groups
-	 * @since 0.1.0
+	 * @method load_groups
+	 * @since 2.0.0
 	 */
-	protected function load_block_groups() {
-		foreach ($this->get_block_templates() as $template) {
-			self::$block_groups[sanitize_title($template->get_group())] = $template->get_group();
+	protected function load_groups() {
+		foreach ($this->get_blocks() as $template) {
+			self::$groups[sanitize_title($template->get_group())] = $template->get_group();
 		}
 	}
 
 	/**
-	 * Initializes the plugin at the appropriate time.
-	 * @method init
-	 * @since 0.1.0
+	 * Load the blocks.
+	 * @method load
+	 * @since 2.0.0
 	 */
-	public function init() {
-		if ($this->initialized == false) {
-			$this->initialized = true;
-			$this->load_block_templates();
-			$this->load_block_groups();
-			$this->register_blocks();
+	public function load() {
+
+		if ($this->initialized) {
+			return;
 		}
+
+		$this->load_blocks();
+		$this->load_groups();
+		$this->register_blocks();
+
+		$this->initialized = true;
 	}
 
 	/**
-	 * Register the ACF blocks.
+	 * Injects block attributes inside acf field groups.
+	 * @method load_field_groups
+	 * @since 2.0.0
+	 */
+	public function load_field_groups($groups) {
+
+		$blocks = array();
+
+		foreach (self::get_blocks() as $block) {
+
+			$fields = $block->get_fields();
+
+			$key = $fields['key'];
+
+			if ($key == '' ||
+				$key == null) {
+				continue;
+			}
+
+			$blocks[$key] = $block;
+		}
+
+		foreach ($groups as &$group) {
+
+			$key = $group['key'];
+
+			if ($key == '' ||
+				$key == null) {
+				continue;
+			}
+
+			$block = isset($blocks[$key]) ? $blocks[$key] : null;
+
+			if ($block) {
+
+				$fields = $block->get_fields();
+
+				$group = array_merge($group, array(
+
+					'@block_name' => $block->get_name(),
+					'@block_type' => $block->get_type(),
+					'@block_hint' => $block->get_hint(),
+					'@block_icon' => $block->get_icon(),
+
+					'@block_group' => $block->get_group(),
+					'@block_class' => $block->get_class(),
+
+					'active'      => $block->is_active(),
+					'hidden'      => $block->is_hidden(),
+					'modified'    => $fields['modified']
+				));
+
+				$group['location'] = array(
+					array(
+						array(
+							'param'    => 'block',
+							'operator' => '==',
+							'value'    => 'acf/' . $block->get_type()
+						),
+					)
+				);
+
+				unset($blocks[$key]);
+			}
+		}
+
+		foreach ($blocks as $block) {
+
+			$group = array(
+
+				'@block_name' => $block->get_name(),
+				'@block_type' => $block->get_type(),
+				'@block_hint' => $block->get_hint(),
+				'@block_icon' => $block->get_icon(),
+
+				'@block_group' => $block->get_group(),
+				'@block_class' => $block->get_class(),
+
+				'active'      => $block->is_active(),
+				'hidden'      => $block->is_hidden(),
+				'modified'    => $fields['modified']
+			);
+
+			$groups[] = array_merge(
+				$block->get_fields(),
+				$group
+			);
+		}
+
+		return $groups;
+	}
+
+	/**
+	 * Register Gutenberg categories.
+	 * @method register_categories
+	 * @since 2.0.0
+	 */
+	public function register_categories($categories, $post) {
+
+		foreach (self::get_groups() as $slug => $title) {
+			$categories[] = array('slug' => $slug, 'title' => $title);
+		}
+
+		return $categories;
+	}
+
+	/**
+	 * Register Gutenberg blocks.
 	 * @method register_blocks
 	 * @since 2.0.0
 	 */
@@ -675,7 +702,7 @@ class Cortex {
 		$enqueue_style = get_option('cortex_enqueue_style_admin');
 		$enqueue_script = get_option('cortex_enqueue_style_admin');
 
-		foreach (self::get_block_templates() as $template) {
+		foreach (self::get_blocks() as $template) {
 
 			$render = function($block, $content, $preview, $post) use($template, $enqueue_style, $enqueue_script) {
 
@@ -728,23 +755,8 @@ class Cortex {
 				},
 
 				'render_callback' => $render,
-
 			));
 		}
-	}
-
-	/**
-	 * Register the blocks categories.
-	 * @method register_categories
-	 * @since 2.0.0
-	 */
-	public function register_categories($categories, $post) {
-
-		foreach (self::get_block_groups() as $slug => $title) {
-			$categories[] = array('slug' => $slug, 'title' => $title);
-		}
-
-		return $categories;
 	}
 
 	/**
@@ -781,41 +793,6 @@ class Cortex {
 	 */
 	public function get_plugin_version() {
 		return $this->plugin_version;
-	}
-
-	//--------------------------------------------------------------------------
-	// ACF Specifics
-	//--------------------------------------------------------------------------
-
-	/**
-	 * Returns the fields to display.
-	 * @methods acf_get_field_groups
-	 * @sine 0.1.0
-	 */
-	public function acf_get_field_groups($field_groups) {
-
-		global $post;
-
-		foreach ($field_groups as &$field_group) {
-
-			$template = self::get_block_template(get_post_meta($field_group['ID'], '_cortex_block_type', true));
-
-			if ($template == null) {
-				continue;
-			}
-
-			$field_group['location'] = array(
-				array(
-					array(
-						'param'    => 'block',
-						'operator' => '==',
-						'value'    => 'acf/' . $template->get_type()
-					),
-				)
-			);
-		}
-
-		return $field_groups;
 	}
 
 	//--------------------------------------------------------------------------

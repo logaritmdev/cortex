@@ -186,6 +186,13 @@
 	#delete-action {
 		display: none;
 	}
+
+	#acf-field-group-locations,
+	#acf-field-group-options,
+	#commentstatusdiv,
+	#commentsdiv {
+		display: none !important;
+	}
 }
 
 .cortex-update-block-page {

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Contains the data related to a block template.
- * @class CortexBlockTemplate
- * @since 0.1.0
+ * Contains the block definition data.
+ * @class CortexBlockType
+ * @since 2.0.0
  */
-class CortexBlockTemplate {
+class CortexBlockType {
 
 	const CSS_FILE_PATH = 'assets/styles.css';
 	const LESS_FILE_PATH = 'assets/styles.less';
@@ -17,95 +17,111 @@ class CortexBlockTemplate {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * The block template's type.
+	 * the block's  type.
 	 * @property type
 	 * @since 2.0.0
 	 */
 	private $type = null;
 
 	/**
-	 * The block template's location.
+	 * the block's  location.
 	 * @property path
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	private $path = null;
 
 	/**
-	 * The block template's name.
+	 * the block's  name.
 	 * @property name
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	private $name = null;
 
 	/**
-	 * The block template's icon.
+	 * the block's  icon.
 	 * @property icon
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	private $icon = null;
 
 	/**
-	 * The block template's hint.
+	 * the block's  hint.
 	 * @property hint
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	private $hint = null;
 
 	/**
-	 * The block template's class.
+	 * the block's  class.
 	 * @property class
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	private $class = null;
 
 	/**
-	 * The block template's group.
+	 * the block's  group.
 	 * @property group
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	private $group = 'Common';
 
 	/**
-	 * The block template's fields.
+	 * the block's  fields.
 	 * @property fields
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	private $fields = null;
 
 	/**
-	 * The block template's block file extension.
+	 * the block's  block file extension.
 	 * @property block_file_type
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	private $block_file_type = 'twig';
 
 	/**
-	 * The block template's style file extension.
+	 * the block's  style file extension.
 	 * @property style_file_type
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
-	private $style_file_type = '';
+	private $style_file_type = 'sass';
 
 	/**
-	 * The block template's verison.
+	 * the block's  verison.
 	 * @property active
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	private $version = '1.0.0';
 
 	/**
-	 * Whether the block template is active.
+	 * Whether the block is active.
 	 * @property active
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	private $active = true;
+
+	/**
+	 * Whether the block is hidden.
+	 * @property active
+	 * @since 2.0.0
+	 */
+	private $hidden = false;
 
 	//--------------------------------------------------------------------------
 	// Accessors
 	//--------------------------------------------------------------------------
 
 	/**
-	 * Returns the block template's type.
+	 * Assigns the block's type.
+	 * @method set_type
+	 * @since 2.0.0
+	 */
+	public function set_type($type) {
+		$this->type = $type;
+	}
+
+	/**
+	 * Returns the block's type.
 	 * @method get_type
 	 * @since 2.0.0
 	 */
@@ -114,99 +130,117 @@ class CortexBlockTemplate {
 	}
 
 	/**
-	 * Returns the block template's path.
+	 * Assigns the block's path.
+	 * @method set_path
+	 * @since 2.0.0
+	 */
+	public function set_path($path) {
+		$this->path = $path;
+	}
+
+	/**
+	 * Returns the block's path.
 	 * @method get_path
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_path() {
 		return $this->path;
 	}
 
 	/**
-	 * Returns the block template's name.
+	 * Assigns the block's name.
+	 * @method set_name
+	 * @since 2.0.0
+	 */
+	public function set_name($name) {
+		$this->name = $name;
+	}
+
+	/**
+	 * Returns the block's name.
 	 * @method get_name
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_name() {
 		return $this->name;
 	}
 
 	/**
-	 * Returns the block template's icon.
+	 * Returns the block's icon.
 	 * @method get_icon
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_icon() {
 		return $this->icon;
 	}
 
 	/**
-	 * Returns the block template's hint.
+	 * Returns the block's hint.
 	 * @method get_hint
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_hint() {
 		return $this->hint;
 	}
 
 	/**
-	 * Returns the block template's class.
+	 * Returns the block's class.
 	 * @method get_class
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_class() {
 		return $this->class;
 	}
 
 	/**
-	 * Returns the block template's group.
+	 * Returns the block's group.
 	 * @method get_group
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_group() {
 		return $this->group;
 	}
 
 	/**
-	 * Assigns the block template's fields.
+	 * Assigns the block's fields.
 	 * @method set_fields
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function set_fields($fields) {
 		$this->fields = $fields;
 	}
 
 	/**
-	 * Returns the block template's fields.
+	 * Returns the block's fields.
 	 * @method get_fields
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_fields() {
 		return $this->fields;
 	}
 
 	/**
-	 * Returns the block template's block file extension.
+	 * Returns the block's block file extension.
 	 * @method get_block_file_type
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_block_file_type() {
 		return $this->block_file_type;
 	}
 
 	/**
-	 * Assigns the block template's block file extension.
+	 * Assigns the block's block file extension.
 	 * @method set_block_file_type
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function set_block_file_type($type) {
 		$this->block_file_type = $type;
 	}
 
 	/**
-	 * Returns the block template's block file modification date.
+	 * Returns the block's block file modification date.
 	 * @method get_block_file_date
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_block_file_date() {
 		return @filemtime($this->get_block_file_path());
@@ -215,34 +249,34 @@ class CortexBlockTemplate {
 	/**
 	 * Returns the block tempalte's block file path.
 	 * @method get_block_file_path
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_block_file_path() {
 		return sprintf('%s/block.%s', $this->path, $this->block_file_type);
 	}
 
 	/**
-	 * Returns the block template's block file content.
+	 * Returns the block's block file content.
 	 * @method get_block_file_content
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_block_file_content() {
 		return @file_get_contents($this->get_block_file_path());
 	}
 
 	/**
-	 * Returns the block template's style file extension.
+	 * Returns the block's style file extension.
 	 * @method get_style_file_type
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_style_file_type() {
 		return $this->style_file_type;
 	}
 
 	/**
-	 * Assigns the block template's style file extension.
+	 * Assigns the block's style file extension.
 	 * @method set_style_file_type
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function set_style_file_type($type) {
 		$this->style_file_type = $type;
@@ -251,16 +285,16 @@ class CortexBlockTemplate {
 	/**
 	 * Returns block template's style file modification date.
 	 * @method get_style_file_date
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_style_file_date() {
 		return @filemtime($this->get_style_file_path());
 	}
 
 	/**
-	 * Returns the block template's style file path.
+	 * Returns the block's style file path.
 	 * @method get_style_file_path
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_style_file_path() {
 
@@ -273,9 +307,9 @@ class CortexBlockTemplate {
 	}
 
 	/**
-	 * Returns the block template's style file url.
+	 * Returns the block's style file url.
 	 * @method get_style_file_url
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_style_file_url() {
 		return is_readable($this->get_style_file_path()) && filesize($this->get_style_file_path()) ? $this->get_link() . '/' . self::CSS_FILE_PATH : null;
@@ -284,50 +318,50 @@ class CortexBlockTemplate {
 	/**
 	 * Returns block template's style file content.
 	 * @method get_style_file_content
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_style_file_content() {
 		return @file_get_contents($this->get_style_file_path());
 	}
 
 	/**
-	 * Returns the block template's script file modification date.
+	 * Returns the block's script file modification date.
 	 * @method get_script_file_date
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_script_file_date() {
 		return @filemtime($this->get_script_file_path());
 	}
 
 	/**
-	 * Returns the block template's script file path.
+	 * Returns the block's script file path.
 	 * @method get_script_file_path
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_script_file_path() {
 		return sprintf('%s/%s', $this->path, self::SCRIPT_FILE_PATH);
 	}
 
 	/**
- 	 * Returns the block template's script file url.
+ 	 * Returns the block's script file url.
  	 * @method get_style_file_url
- 	 * @since 0.1.0
+ 	 * @since 2.0.0
  	 */
 	  public function get_script_file_url() {
 		return is_readable($this->get_script_file_path()) && filesize($this->get_script_file_path()) ? $this->get_link() . '/' . self::SCRIPT_FILE_PATH : null;
 	}
 
 	/**
-	 * Returns the block template's script file content.
+	 * Returns the block's script file content.
 	 * @method get_script_file_content
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_script_file_content() {
 		return @file_get_contents($this->get_script_file_path());
 	}
 
 	/**
-	 * Returns the block template's url.
+	 * Returns the block's url.
 	 * @method get_link
 	 * @since 2.0.0
 	 */
@@ -336,9 +370,9 @@ class CortexBlockTemplate {
 	}
 
 	/**
-	 * Returns the block template's fields.json update date.
+	 * Returns the block's fields.json update date.
 	 * @method get_date
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function get_date() {
 		return @filemtime(sprintf('%s/fields.json', $this->path));
@@ -347,10 +381,19 @@ class CortexBlockTemplate {
 	/**
 	 * Returns whether the block is active.
 	 * @method get_parent_region
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function is_active() {
 		return $this->active;
+	}
+
+	/**
+	 * Returns whether the block is active.
+	 * @method get_parent_region
+	 * @since 2.0.0
+	 */
+	public function is_hidden() {
+		return $this->hidden;
 	}
 
 	//--------------------------------------------------------------------------
@@ -360,7 +403,7 @@ class CortexBlockTemplate {
 	/**
 	 * Initializes the block template.
 	 * @cosntructor
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function __construct($type, $path, $data) {
 
@@ -377,17 +420,21 @@ class CortexBlockTemplate {
 		$this->hint = isset($data['hint']) ? $data['hint'] : $this->hint;
 		$this->class = isset($data['class']) ? $data['class'] : $this->class;
 		$this->group = isset($data['group']) ? $data['group'] : $this->group;
+		$this->active = isset($data['active']) ? $data['active'] : $this->active;
+		$this->hidden = isset($data['hidden']) ? $data['hidden'] : $this->hidden;
 		$this->version = isset($data['version']) ? $data['version'] : $this->version;
 
-		$this->active = $blocks_status == false || !isset($blocks_status[$type]) || $blocks_status[$type] == 'enabled';
+		if ($this->active) {
+			$this->active = $blocks_status == false || !isset($blocks_status[$type]) || $blocks_status[$type] == 'enabled';
+		}
 	}
 
 	/**
 	 * Creates a block from this template.
 	 * @method create_block
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
-	public function create_block($type = 0, $post = 0) {
+	public function create_block($id = 0, $post = 0) {
 
 		if ($this->class !== '' &&
 			$this->class !== 'CortexBlock') {
@@ -420,7 +467,7 @@ class CortexBlockTemplate {
 	/**
 	 * Updates the block file.
 	 * @method update_block_file
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function update_block_file($data) {
 		file_put_contents($this->get_block_file_path(), $data);
@@ -429,7 +476,7 @@ class CortexBlockTemplate {
 	/**
 	 * Updates the style file.
 	 * @method update_style_file
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function update_style_file($data) {
 
@@ -444,7 +491,7 @@ class CortexBlockTemplate {
 	/**
 	 * Updates the style file.
 	 * @method update_script_file
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function update_script_file($data) {
 		file_put_contents($this->get_script_file_path(), $data);
@@ -453,7 +500,7 @@ class CortexBlockTemplate {
 	/**
 	 * Updates the fields json file.
 	 * @method update_field_file
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function update_field_file(array $data) {
 		file_put_contents("{$this->path}/fields.json", acf_json_encode($data));
@@ -462,7 +509,7 @@ class CortexBlockTemplate {
 	/**
 	 * Enqueue styles file.
 	 * @method enqueue_style
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function enqueue_styles() {
 		if ($url = $this->get_style_file_url()) wp_enqueue_style($this->type, $url, array(), $this->version , 'all');
@@ -472,7 +519,7 @@ class CortexBlockTemplate {
 	/**
 	 * Enqueue scripts file.
 	 * @method enqueue_scripts.
-	 * @since 0.1.0
+	 * @since 2.0.0
 	 */
 	public function enqueue_scripts() {
 		if ($url = $this->get_script_file_url()) wp_enqueue_script($this->type,  $url, array(), $this->version, true);

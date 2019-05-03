@@ -1,13 +1,13 @@
 <?php
 
 require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-// TODO retouch
+
 /**
- * @class CortexBlockTemplateList
- * @since 0.1.0
+ * @class CortexBlockList
+ * @since 0.2.0
  * @hidden
  */
-class CortexBlockTemplateList extends WP_List_Table {
+class CortexBlockList extends WP_List_Table {
 
 	//--------------------------------------------------------------------------
 	// Methods
@@ -15,7 +15,7 @@ class CortexBlockTemplateList extends WP_List_Table {
 
 	/**
 	 * @constructor
-	 * @since 0.1.0
+	 * @since 0.2.0
 	 */
 	function __construct() {
 
@@ -29,7 +29,7 @@ class CortexBlockTemplateList extends WP_List_Table {
 
 	/**
 	 * @method no_items
-	 * @since 0.1.0
+	 * @since 0.2.0
 	 * @hidden
 	 */
 	public function no_items() {
@@ -38,17 +38,15 @@ class CortexBlockTemplateList extends WP_List_Table {
 
 	/**
 	 * @method column_default
-	 * @since 0.1.0
+	 * @since 0.2.0
 	 * @hidden
 	 */
-	public function column_default($field_group, $column_name) {
-
-		$template = $this->get_block_template($field_group);
+	public function column_default($group, $column_name) {
 
 		switch ($column_name) {
-			case 'icon': return $this->get_icon($template);
-			case 'name': return $this->get_name($template);
-			case 'category': return $template->get_group();
+			case 'icon':     return $this->get_icon($group['@block_icon']);
+			case 'name':     return $this->get_name($group['@block_name']);
+			case 'category': return $group['@block_group'];
 
 			default:
 				return '';
@@ -57,7 +55,7 @@ class CortexBlockTemplateList extends WP_List_Table {
 
 	/**
 	 * @method get_columns
-	 * @since 0.1.0
+	 * @since 0.2.0
 	 * @hidden
 	 */
 	public function get_columns() {
@@ -73,7 +71,7 @@ class CortexBlockTemplateList extends WP_List_Table {
 
 	/**
 	 * @method get_bulk_actions
-	 * @since 0.1.0
+	 * @since 0.2.0
 	 * @hidden
 	 */
 	public function get_bulk_actions() {
@@ -82,34 +80,29 @@ class CortexBlockTemplateList extends WP_List_Table {
 
 	/**
 	 * @method column_cb
-	 * @since 0.1.0
+	 * @since 0.2.0
 	 * @hidden
 	 */
-	public function column_cb($field_group) {
+	public function column_cb($group) {
         return sprintf(
-            '<input type="checkbox" name="block_template[]" value="%s" />', $field_group['ID']
+            '<input type="checkbox" name="block[]" value="%s" />', $group['ID']
         );
     }
 
 	/**
 	 * @method column_name
-	 * @since 0.1.0
+	 * @since 0.2.0
 	 * @hidden
 	 */
-	public function column_name($field_group) {
-
-		$edit_fields_url = sprintf('post.php?post=%s&action=edit&mode=cortex-block', $field_group['ID']);
-
-		$actions = array(
-			//'edit_fields'  => sprintf('<a class="cortex-update-block-link" href="%s">%s</a>', $edit_fields_url, __('Edit Fields', 'cortex')),
+	public function column_name($group) {
+		return sprintf('
+			<strong><a class="row-title cortex-update-block-link" href="%s">%s</a></strong>', sprintf('post.php?post=%s&action=edit&mode=cortex-block', $group['ID']), stripslashes($group['@block_name'])
 		);
-
-		return sprintf('<strong><a class="row-title cortex-update-block-link" href="%s">%s</a></strong> %s', $edit_fields_url, $this->get_block_template($field_group)->get_name(), $this->row_actions($actions));
 	}
 
 	/**
 	 * @method extra_tablename
-	 * @since 0.1.0
+	 * @since 0.2.0
 	 * @hidden
 	 */
 	public function extra_tablenav($which) {
@@ -118,7 +111,7 @@ class CortexBlockTemplateList extends WP_List_Table {
 
 	/**
 	 * @method prepare_items
-	 * @since 0.1.0
+	 * @since 0.2.0
 	 * @hidden
 	 */
 	public function prepare_items() {
@@ -137,34 +130,35 @@ class CortexBlockTemplateList extends WP_List_Table {
 			$columns_sorted,
 		);
 
-		$rows = array();
+		$blocks = array();
+		$groups = acf_get_field_groups();
 
-		foreach (acf_get_field_groups() as $field_group) {
+		foreach ($groups as $group) {
 
-			$template = $this->get_block_template($field_group);
-			if ($template == null) {
+			$block_name = acf_maybe_get($group, '@block_name');
+			$block_type = acf_maybe_get($group, '@block_type');
+
+			if ($block_name == null ||
+				$block_type == null) {
 				continue;
 			}
 
-			if ($template->is_active() === false) {
-				continue;
+			if ($group['active'] && $group['hidden'] == false) {
+				$blocks[] = $group;
 			}
-
-			$rows[] = $field_group;
 		}
 
-		$limit = 15;
-		$index = $this->get_pagenum() - 1;
-		$total = count($rows);
+		$limit = 40;
+		$total = count($blocks);
 
 		$this->set_pagination_args(array('total_items' => $total, 'per_page' => $limit));
 
-		$this->items = array_slice($rows, $index * $limit, $limit);
+		$this->items = array_slice($blocks, ($this->get_pagenum() - 1) * $limit, $limit);
 	}
 
 	/**
 	 * @method process_bulk_action
-	 * @since 0.1.0
+	 * @since 0.2.0
 	 * @hidden
 	 */
   	public function process_bulk_action() {
@@ -176,10 +170,10 @@ class CortexBlockTemplateList extends WP_List_Table {
 	 * @since 2.0.0
 	 * @hidden
 	 */
-	private function get_name($template) {
+	private function get_name($group) {
 		return (
-			'<div class="cortex-block-name">' . $template->get_name() . '</div>' .
-			'<div class="cortex-block-hint">' . $template->get_hint() . '</div>'
+			'<div class="cortex-block-name">' . $group['@block_name'] . '</div>' .
+			'<div class="cortex-block-hint">' . $group['@block_hint'] . '</div>'
 		);
 	}
 
@@ -188,9 +182,9 @@ class CortexBlockTemplateList extends WP_List_Table {
 	 * @since 2.0.0
 	 * @hidden
 	 */
-	private function get_icon($template) {
+	private function get_icon($group) {
 
-		$icon = $template->get_icon();
+		$icon = acf_maybe_get($group, '@block_icon');
 
 		if ($icon == '' ||
 			$icon == null) {
@@ -236,14 +230,12 @@ class CortexBlockTemplateList extends WP_List_Table {
 		return preg_match_all('/(<svg)([^<]*|[^>]*)/s', $icon);
 	}
 
-
-
 	/**
-	 * @method get_block_template
-	 * @since 0.1.0
+	 * @method get_block
+	 * @since 0.2.0
 	 * @hidden
 	 */
-	private function get_block_template($field_group) {
-		return Cortex::get_block_template(get_post_meta($field_group['ID'], '_cortex_block_type', true));
+	private function get_block($group) {
+		return Cortex::get_block(Cortex::get_acf_field_group_block_type($group));
 	}
 }

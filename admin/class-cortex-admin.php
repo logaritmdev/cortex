@@ -8,6 +8,9 @@ require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-meta-bo
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-sass-compiler.php';
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-less-compiler.php';
 
+// TODO
+// Cacher les meta boxes
+
 /**
  * The plugin's admin functionality.
  * @class Cortex_Admin
@@ -88,6 +91,19 @@ class Cortex_Admin {
 			'home_url'  => home_url(),
 			'admin_url' => admin_url(),
 
+			'blocks' => array_filter(acf_get_field_groups(), function($group) {
+
+				$block_type = acf_maybe_get($group, '@block_type');
+				$block_name = acf_maybe_get($group, '@block_name');
+
+				if ($block_type &&
+					$block_name) {
+					return true;
+				}
+
+				return false;
+			})
+
 		));
 	}
 
@@ -104,12 +120,6 @@ class Cortex_Admin {
 				'name' => 'Advanced Custom Fields',
 				'slug' => 'advanced-custom-fields-pro/acf.php',
 				'version' => '5.8.0-RC2'
-			),
-
-			array(
-				'name' => 'Timber Library',
-				'slug' => 'timber-library/timber.php',
-				'version' => '1.3.0'
 			)
 
 		);
@@ -160,13 +170,6 @@ class Cortex_Admin {
 	 * @since 0.1.0
 	 */
 	public function configure_ui() {
-
-		if ($this->is_create_block_page() ||
-			$this->is_update_block_page()) {
-			remove_meta_box('acf-field-group-locations', 'acf-field-group', 'normal');
-			remove_meta_box('acf-field-group-options', 'acf-field-group', 'normal');
-		}
-
 		remove_meta_box('icl_div_config', 'cortex-block', 'normal');
 	}
 
@@ -207,6 +210,70 @@ class Cortex_Admin {
 	}
 
 	/**
+	 * Adds global html.
+	 * @method configure_footer
+	 * @since 2.0.0
+	 */
+	public function configure_footer() {
+
+		?>
+
+			<div class="cortex-modal cortex-create-block-modal">
+				<div class="cortex-modal-content">
+					<div class="cortex-modal-content-head">
+						<div class="cortex-modal-content-head-title"><?php _e('Create Block', 'cortex') ?></div>
+						<div class="cortex-modal-content-head-close">
+							<button type="button" class="cortex-modal-close">
+								<span class="cortex-modal-close-icon">
+									<span class="screen-reader-text"><?php _e('Close', 'cortex') ?></span>
+								</span>
+							</button>
+						</div>
+					</div>
+					<div class="cortex-modal-content-body">
+						<iframe></iframe>
+					</div>
+				</div>
+			</div>
+
+			<div class="cortex-modal cortex-update-block-modal">
+				<div class="cortex-modal-content">
+					<div class="cortex-modal-content-head">
+						<div class="cortex-modal-content-head-title"><?php _e('Edit Block', 'cortex') ?></div>
+						<div class="cortex-modal-content-head-close">
+							<button type="button" class="cortex-modal-close">
+								<span class="cortex-modal-close-icon">
+									<span class="screen-reader-text"><?php _e('Close', 'cortex') ?></span>
+								</span>
+							</button>
+						</div>
+					</div>
+					<div class="cortex-modal-content-body">
+						<iframe></iframe>
+					</div>
+				</div>
+			</div>
+
+		<?php
+	}
+
+	/**
+	 * Filters the block title in the field group page
+	 * @method configure_meta_box
+	 * @since 0.1.0
+	 */
+	public function filter_acf_field_group_title($title, $id) {
+
+		global $pagenow;
+
+		if ($pagenow === 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] == 'acf-field-group') {
+			return Cortex::has_block_by_id($id) ? ('[Block] ' . $title) : $title;
+		}
+
+		return $title;
+	}
+
+	/**
 	 * Renders the admin blocks page.
 	 * @method admin_blocks_page
 	 * @since 0.1.0
@@ -217,7 +284,7 @@ class Cortex_Admin {
 			add_settings_error('cortex_messages', 'cortex_message', __('Settings Saved', 'cortex'), 'updated');
  		}
 
-		$list = new CortexBlockTemplateList();
+		$list = new CortexBlockList();
 		$list->prepare_items();
 
 		Cortex::render_template('cortex-admin-blocks-page.php', array('list' => $list));
@@ -291,15 +358,15 @@ class Cortex_Admin {
 
 	/**
 	 * Returns the modification date of a specific block template file.
-	 * @method get_block_template_file_date
+	 * @method get_block_file_date
 	 * @since 0.1.0
 	 */
-	public function get_block_template_file_date() {
+	public function get_block_file_date() {
 
-		$id = $_POST['id'];
+		$id   = $_POST['id'];
 		$file = $_POST['file'];
 
-		$block = Cortex::get_block_template($id);
+		$block = Cortex::get_block($id);
 
 		if ($block == null) {
 			exit;
@@ -323,15 +390,15 @@ class Cortex_Admin {
 
 	/**
 	 * Returns the content of a specific block template file.
-	 * @method get_block_template_file_data
+	 * @method get_block_file_data
 	 * @since 0.1.0
 	 */
-	public function get_block_template_file_data() {
+	public function get_block_file_data() {
 
+		$id   = $_POST['id'];
 		$file = $_POST['file'];
-		$id = $_POST['id'];
 
-		$block = Cortex::get_block_template($id);
+		$block = Cortex::get_block($id);
 
 		if ($block == null) {
 			exit;
@@ -360,100 +427,98 @@ class Cortex_Admin {
 	 */
 	public function synchronize() {
 
-		global $pagenow;
-
-		if (class_exists('acf') === false || ($pagenow == 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] == 'acf-field-group')) {
+		if (defined('DOING_AJAX') ||
+			defined('DOING_CRON') ||
+			defined('DOING_SYNC')) {
 			return;
 		}
 
-		$groups = array();
+		$groups = acf_get_field_groups();
 
-		foreach (acf_get_field_groups() as $field_group) {
+		if (empty($groups)) {
+			return;
+		}
 
-			$type = get_post_meta($field_group['ID'], '_cortex_block_type', true);
-			$date = get_post_meta($field_group['ID'], '_cortex_block_date', true);
+		$sync = array();
 
-			if ($type == '') {
-				continue;
-			}
+		foreach ($groups as $group) {
 
-			$date = (int) $date;
+			$id         = acf_maybe_get($group, 'ID');
+			$block_name = acf_maybe_get($group, '@block_name');
+			$block_type = acf_maybe_get($group, '@block_type');
+			$modified   = acf_maybe_get($group, 'modified', 0);
 
-			if (isset($groups[$type])) {
+			if ($block_name == null ||
+				$block_type == null) {
 
 				/*
-				 * Sometimes a group will be duplicated. I have no idea how this
-				 * happens but for the time being the solution will be to automaticaly
-				 * delete the duplicate.
+				 * There are not local file definition for this block but
+				 * it could have been a delete block. In this case we remove
+				 * the field group
 				 */
 
-				acf_delete_field_group($field_group['ID']);
+				$is_block = $this->get_acf_field_group_meta_flag($id);
 
-				$this->add_notice("
-					The block $type has been delete because it has been
-					duplicated. Make sure your content is still intact and
-					report the error if it broke something.
-				");
+				if ($is_block) {
+
+					acf_delete_field_group($group['ID']);
+
+					$this->add_notice("
+						The block {$group['title']} has been delete because it is no longer
+						present within a searchable block folder.
+					");
+				}
 
 				continue;
 			}
 
-			$groups[$type] = array(
-				'fields' => $field_group,
-				'date' => $date,
-				'type' => $type,
-			);
+			/*
+			 * The the group id is null it means this file has been loaded
+			 * locally only and has not been synced.
+			 */
 
-			if (Cortex::has_block_template($type) == false) {
-
-				acf_delete_field_group($field_group['ID']);
-
-				$this->add_notice("
-					The block $type has been delete because it is no longer
-					present within a searchable block folder.
-				");
+			if ($id == null) {
+				$sync[$group['key']] = $group;
+			} elseif ($modified && $modified > get_post_modified_time('U', true, $group['ID'], true)) {
+				$sync[$group['key']] = $group;
 			}
 		}
 
-		foreach (Cortex::get_block_templates() as $type => $template) {
+		if (empty($sync)) {
+			return;
+		}
 
-			$template_fields = $template->get_fields();
+		define('DOING_SYNC', true);
 
-			if (empty($template_fields) === true) {
-				continue;
+		foreach ($sync as $key => $val) {
+
+			$block_type = acf_maybe_get($group, '@block_type');
+			$block_name = acf_maybe_get($group, '@block_name');
+
+			$this->add_notice("
+				Block <b>$block_name</b> in folder <b>$block_type</b> has been synchronized.
+			");
+
+			/*
+			 * Unset these block related properties when syncing. We want them
+			 * to be loaded from local files only
+			 */
+
+			unset($sync[$key]['@block_name']);
+			unset($sync[$key]['@block_type']);
+			unset($sync[$key]['@block_hint']);
+			unset($sync[$key]['@block_icon']);
+			unset($sync[$key]['@block_group']);
+			unset($sync[$key]['@block_class']);
+			unset($sync[$key]['active']);
+			unset($sync[$key]['hidden']);
+			unset($sync[$key]['modified']);
+
+			if (acf_have_local_fields($key)) {
+				$sync[$key]['fields'] = acf_get_local_fields($key);
 			}
 
-			$sync = false;
-			$data = isset($groups[$type]) ? $groups[$type] : null;
-			$date = $template->get_date();
-
-			if ($sync == false) $sync = $data == null;
-			if ($sync == false) $sync = $date > $data['date'];
-
-			if ($sync) {
-
-				$id = $data ? $data['fields']['ID'] : 0;
-
-				acf_update_setting('json', false);
-
-				$field_group = acf_get_local_field_group($template_fields['key']);
-				$field_group['ID'] = $id;
-				$field_group['key'] = $template_fields['key'];
-				$field_group['title'] = $template_fields['title'];
-				$field_group['fields'] = $template_fields['fields'];
-
-				acf_reset_fields($field_group['fields']);
-
-				$field_group = acf_import_field_group($field_group);
-				update_post_meta($field_group['ID'], '_cortex_block_type', $type);
-				update_post_meta($field_group['ID'], '_cortex_block_date', $date);
-
-				acf_update_setting('json', true);
-
-				$this->add_notice("
-					Blocks from your blocks folder have been synchronized.
-				");
-			}
+			acf_import_field_group($sync[$key]);
 		}
 	}
 
@@ -464,55 +529,73 @@ class Cortex_Admin {
 	 */
 	public function save_post($id) {
 
-		if (wp_is_post_revision($id) || wp_is_post_autosave($id)) {
+		if (wp_is_post_revision($id) ||
+			wp_is_post_autosave($id)) {
 			return;
 		}
 
-		remove_action('save_post', array($this, 'save_post'));
-
-		switch (get_post_type($id)) {
-
-			case 'acf-field-group':
-				$this->save_post_acf_field_group($id);
-				break;
+		if (defined('DOING_AJAX') ||
+			defined('DOING_CRON')) {
+			return;
 		}
 
-		add_action('save_post', array($this, 'save_post'));
+		$post_type = get_post_type($id);
+
+		if ($post_type == 'acf-field-group') {
+			$this->save_field_group($id);
+		}
 	}
 
 	/**
 	 * Updates the fields json file of a block when its structure changes.
-	 * @method save_post_acf_field_group
-	 * @since 0.1.0
+	 * @method save_field_group
+	 * @since 2.0.0
 	 */
-	public function save_post_acf_field_group($id) {
+	public function save_field_group($id) {
 
 		global $pagenow;
 
-		if ($pagenow === 'post.php') {
+		$doing_sync   = defined('DOING_SYNC');
+		$create_block = isset($_POST['cortex_create_block']);
+		$update_block = isset($_POST['cortex_update_block']);
 
-			$create_block = isset($_POST['cortex_create_block']);
-			$update_block = isset($_POST['cortex_update_block']);
+		if ($doing_sync ||
+			$create_block ||
+			$update_block) {
+
+			/*
+			 * This prevents ACF from creating json file because we want to
+			 * keep manage the json file by ourselves.
+			 */
+
+			 acf_update_setting('json', false);
+		}
+
+		if ($doing_sync) {
+
+			/*
+			 * We need to set the meta flag when syncin a new field here
+			 * because otherwise it would not be set.
+			 */
+
+			$this->set_acf_field_group_meta_flag($id);
+			return;
+		}
+
+		if ($pagenow === 'post.php') {
 
 			if ($create_block ||
 				$update_block) {
 
-				acf_update_setting('json', false);
+				$group = $this->get_acf_field_group($id);
 
-				$field_group = $this->get_field_group($id);
-
-				if (empty($field_group['title'])) {
+				if (empty($group['title'])) {
 					return;
 				}
 
-				$template = null;
-				$path = isset($_POST['cortex_block_template_path']) ? trim($_POST['cortex_block_template_path']) : null;
-				$name = isset($_POST['cortex_block_template_name']) ? trim($_POST['cortex_block_template_name']) : null;
-
-				if ($name == '' ||
-					$name == null) {
-					$name = $field_group['title'];
-				}
+				$block = null;
+				$path = isset($_POST['cortex_block_path']) ? trim($_POST['cortex_block_path']) : null;
+				$slug = isset($_POST['cortex_block_slug']) ? trim($_POST['cortex_block_slug']) : null;
 
 				if ($create_block) {
 
@@ -520,90 +603,105 @@ class Cortex_Admin {
 						return;
 					}
 
-					$block_file_type = $_POST['cortex_block_file_type'];
-					$style_file_type = $_POST['cortex_style_file_type'];
+					if ($slug == '' ||
+						$slug == null) {
+						$slug = $group['title'];
+					}
 
-					$template = Cortex::create_block_template_folder(
+					$slug = self::generate_block_slug($slug);
+					$type = self::generate_block_type($slug);
+
+					$path = Cortex::create_block_folder(
 						$path,
-						$field_group['title'],
-						$name,
-						$field_group,
-						$block_file_type,
-						$style_file_type
+						$slug,
+						$_POST['cortex_block_file_type'],
+						$_POST['cortex_style_file_type']
 					);
 
-					update_post_meta($id, '_cortex_block_type', $template->get_type());
-					update_post_meta($id, '_cortex_block_date', $template->get_date());
+					$data = array(
+						'name' => $group['title'],
+						'icon' => '',
+						'hint' => '',
+						'group' => ''
+					);
+
+					$block = new CortexBlockType(
+						$type,
+						$path,
+						$data
+					);
+
+					$block->update_config_file($data);
 
 					$_POST['cortex_block'] = !empty($_POST['cortex_block']) ? $_POST['cortex_block'] : Cortex::render_template('cortex-empty-block-template.php', array(), true);
 
 				} else {
 
-					$template = Cortex::get_block_template(get_post_meta($id, '_cortex_block_type', true));
-					$basename = Cortex::get_block_template(get_post_meta($id, '_cortex_block_type', true))->get_type();
+					$block = Cortex::get_block_by_id($id);
 
-					if ($basename != $name) {
-						$template = Cortex::rename_block_template_folder($template, $name);
-						update_post_meta($id, '_cortex_block_type', $template->get_type());
-						update_post_meta($id, '_cortex_block_date', $template->get_date());
+					if ($block == null) {
+
+						/*
+						 * This method is called twice. The second time though
+						 * if the block has been renamed, it won't be found.
+						 * This is ok, but just stop here
+						 */
+
+						 return;
+					}
+
+					if ($slug) {
+
+						$slug = self::generate_block_slug($slug);
+						$type = self::generate_block_type($slug);
+
+						if ($block->get_type() != $type) {
+							self::rename_block_folder($block, $slug);
+						}
+					}
+
+					$title = $_POST['post_title'];
+
+					if ($group['title'] != $title) {
+						$group['title'] = $title;
+						$block->update_config('name', $title);
 					}
 				}
 
-				$title = $_POST['post_title'];
+				/*
+				 * Sets a meta value on the field group id to indicate that
+				 * this field group is a block. This is only used to determine
+				 * if a block as been removed or to filter the list.
+				 */
 
-				if ($field_group['title'] != $title) {
-					$field_group['title'] = $title;
-					$template->update_config('name', $title);
-				}
+				$this->set_acf_field_group_meta_flag($id);
 
-				$template->update_field_file($field_group);
+				/*
+				 * Add the modified date to the field group. This will be used
+				 * later as a way to determine whether the block must be
+				 * synced.
+				 */
 
-				if (isset($_POST['cortex_block_file_type'])) $template->update_config('block_file_type', $_POST['cortex_block_file_type']);
-				if (isset($_POST['cortex_style_file_type'])) $template->update_config('style_file_type', $_POST['cortex_style_file_type']);
+				$group['modified'] = get_post_modified_time('U', true, $id, true);
+
+				$block->update_field_file($group);
+
+				if (isset($_POST['cortex_block_file_type'])) $block->update_config('block_file_type', $_POST['cortex_block_file_type']);
+				if (isset($_POST['cortex_style_file_type'])) $block->update_config('style_file_type', $_POST['cortex_style_file_type']);
 
 				try {
 
-					$template->update_block_file(stripslashes($_POST['cortex_block']));
-					$template->update_style_file(stripslashes($_POST['cortex_style']));
-					$template->update_script_file(stripslashes($_POST['cortex_script']));
+					$block->update_block_file(stripslashes($_POST['cortex_block']));
+					$block->update_style_file(stripslashes($_POST['cortex_style']));
+					$block->update_script_file(stripslashes($_POST['cortex_script']));
 
 				} catch (Exception $e) {
+
 					$this->add_error($e->getMessage());
+
 				}
 			}
 		}
-	}
-
-	/**
-	 * @method filter_field_groups
-	 * @since 2.0.0
-	 * @hidden
-	 */
-	public function filter_field_groups($query) {
-
-		global $pagenow;
-
-		if ($pagenow == 'edit.php') {
-
-			if ($query->get('post_type') == 'acf-field-group') {
-
-				/*
-				 * This will hide blocks from the list since the meta
-				 * key is only applied to blocks.
-				 */
-
-				$meta_query =  array(
-					array(
-						'key'     => '_cortex_block_type',
-						'compare' => 'NOT EXISTS'
-					)
-				);
-
-				$query->set('meta_query', $meta_query);
-			}
-		}
-
-		return $query;
 	}
 
 	/**
@@ -629,6 +727,73 @@ class Cortex_Admin {
 	// Private API
 	//--------------------------------------------------------------------------
 
+
+	/**
+	 * Creates a new block template folder at the specified location.
+	 * @method rename_block_folder
+	 * @since 2.0.0
+	 */
+	public static function rename_block_folder($block, $slug) {
+
+		global $wpdb;
+
+		$old_path = $block->get_path();
+		$old_type = $block->get_type();
+
+		if (file_exists($old_path) == false) {
+			return $block;
+		}
+
+		$new_path = explode('/', $old_path);
+		array_pop($new_path);
+		$new_path = implode('/', $new_path);
+		$new_path = $new_path . '/' . $slug;
+
+		$new_type = self::generate_block_type($new_path);
+
+		rename(
+			$old_path,
+			$new_path
+		);
+
+		$wpdb->query("
+			UPDATE
+				$wpdb->posts
+			SET
+				post_content = REPLACE(
+					post_content,
+					'<!-- wp:acf/$old_type',
+					'<!-- wp:acf/$new_type'
+				)
+		");
+
+		$block->set_type($new_type);
+		$block->set_path($new_path);
+	}
+
+	/**
+	 * @method generate_block_type
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	private static function generate_block_type($path) {
+		return basename($path);
+	}
+
+	/**
+	 * @method generate_block_slug
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	private static function generate_block_slug($name) {
+
+		$name = trim($name);
+		$name = preg_replace('/(?<!^)[A-Z]+/', ' $0', $name);
+		$name = preg_replace('/\s+/', '-', $name);
+
+		return sanitize_title($name);
+	}
+
 	/**
 	 * @method is_create_block_page
 	 * @since 0.1.0
@@ -646,19 +811,37 @@ class Cortex_Admin {
 	 */
 	private function is_update_block_page() {
 		global $pagenow;
-		return $pagenow === 'post.php' && isset($_GET['post']) && get_post_type($_GET['post']) === 'acf-field-group' && get_post_meta($_GET['post'], '_cortex_block_type', true);
+		return $pagenow === 'post.php' && isset($_GET['post']) && get_post_type($_GET['post']) === 'acf-field-group' && Cortex::has_block_by_id($_GET['post']);
 	}
 
 	/**
 	 * Retrieve the field group data.
-	 * @method get_field_group
-	 * @since 0.1.0
+	 * @method get_acf_ield_group
+	 * @since 2.0.0
 	 */
-	private function get_field_group($id) {
-		$field_group = acf_get_field_group($id);
-		$field_group['fields'] = acf_get_fields($field_group);
-		$field_group = acf_prepare_field_group_for_export($field_group);
-		return $field_group;
+	private function get_acf_field_group($id) {
+		$group = acf_get_field_group($id);
+		$group['fields'] = acf_get_fields($group);
+		$group = acf_prepare_field_group_for_export($group);
+		return $group;
+	}
+
+	/**
+	 * Returns the acf field group is block flag.
+	 * @method get_acf_field_group_meta_flag
+	 * @since 2.0.0
+	 */
+	public static function get_acf_field_group_meta_flag($id) {
+		return get_post_meta($id, '_is_block', true);
+	}
+
+	/**
+	 * Sets the acf field group is block flag.
+	 * @method get_acf_field_group_meta_flag
+	 * @since 2.0.0
+	 */
+	public static function set_acf_field_group_meta_flag($id) {
+		update_post_meta($id, '_is_block', true);
 	}
 
 	/**

@@ -119,10 +119,10 @@ class Cortex_Settings {
 
 		$values = array();
 
-		foreach (Cortex::get_block_templates() as $block_template) {
+		foreach (Cortex::get_blocks() as $block) {
 
-			$name = $block_template->get_name();
-			$slug = $block_template->get_type();
+			$name = $block->get_name();
+			$slug = $block->get_type();
 
 			$enabled = $option === false || (isset($option[$slug]) == false) || $option[$slug] === 'enabled';
 
