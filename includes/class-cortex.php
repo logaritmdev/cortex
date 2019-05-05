@@ -453,6 +453,8 @@ class Cortex {
 		}
 
 		$plugin_public = new Cortex_Public($this, $this->get_plugin_name(), $this->get_plugin_version());
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_block_assets');
+
 	}
 
 	/**
@@ -745,6 +747,12 @@ class Cortex {
 				'enquele_script' => '',
 				'enqueue_assets' => function() use ($template, $enqueue_style, $enqueue_script) {
 
+					/*
+					 * Unless I'm doing something wrong, it seems that blocks styles and scripts
+					 * are included in the footer. On non-admin page that can be problematic so the public
+					 * class enqueue_block_assets method, will handle the assets instead of this one.
+					 */
+
 					if (is_admin() && (isset($_REQUEST['action']) == false || $_REQUEST['action'] != 'render_block')) {
 
 						if ($enqueue_style) $template->enqueue_styles();
@@ -753,8 +761,6 @@ class Cortex {
 						return;
 					}
 
-					$template->enqueue_styles();
-					$template->enqueue_scripts();
 				},
 
 				'render_callback' => $render,

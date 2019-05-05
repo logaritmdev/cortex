@@ -47,4 +47,32 @@ class Cortex_Public {
 		$this->plugin_name = $plugin_name;
 		$this->plugin_version = $plugin_version;
 	}
+
+	/**
+	 * Enqueues the blocks styles and scripts at the top of the page.
+	 * @method enqueue_block_assets
+	 * @since 2.0.0
+	 */
+	public function enqueue_block_assets() {
+
+		global $post;
+
+		$blocks = parse_blocks($post->post_content);
+
+		foreach ($blocks as $block) {
+
+			$name = isset($block['attrs']['name']) ? $block['attrs']['name'] : null;
+
+			if ($name == null) {
+				continue;
+			}
+
+			$block = Cortex::get_block(str_replace('acf/', '', $name));
+
+			if ($block) {
+				$block->enqueue_styles();
+				$block->enqueue_scripts();
+			}
+		}
+	}
 }

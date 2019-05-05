@@ -7,10 +7,10 @@
  */
 class CortexBlockType {
 
-	const CSS_FILE_PATH = 'assets/styles.css';
-	const LESS_FILE_PATH = 'assets/styles.less';
-	const SCSS_FILE_PATH = 'assets/styles.scss';
+	const STYLE_FILE_PATH = 'assets/styles.css';
 	const SCRIPT_FILE_PATH = 'assets/scripts.js';
+	const LESS_FILE_PATH = 'assets/styles.less';
+	const SASS_FILE_PATH = 'assets/styles.scss';
 
 	//--------------------------------------------------------------------------
 	// Properties
@@ -106,6 +106,9 @@ class CortexBlockType {
 	 * @since 2.0.0
 	 */
 	private $hidden = false;
+
+	private $style_file_path;
+	private $script_file_path;
 
 	//--------------------------------------------------------------------------
 	// Accessors
@@ -300,10 +303,10 @@ class CortexBlockType {
 
 		switch ($this->style_file_type) {
 			case 'less': return sprintf('%s/%s', $this->path, self::LESS_FILE_PATH);
-			case 'scss': return sprintf('%s/%s', $this->path, self::SCSS_FILE_PATH);
+			case 'scss': return sprintf('%s/%s', $this->path, self::SASS_FILE_PATH);
 		}
 
-		return sprintf('%s/%s', $this->path, self::CSS_FILE_PATH);
+		return sprintf('%s/%s', $this->path, $this->style_file_path);
 	}
 
 	/**
@@ -312,7 +315,7 @@ class CortexBlockType {
 	 * @since 2.0.0
 	 */
 	public function get_style_file_url() {
-		return is_readable($this->get_style_file_path()) && filesize($this->get_style_file_path()) ? $this->get_link() . '/' . self::CSS_FILE_PATH : null;
+		return is_readable($this->get_style_file_path()) && filesize($this->get_style_file_path()) ? $this->get_link() . '/' . $this->style_file_path : null;
   	}
 
 	/**
@@ -339,7 +342,7 @@ class CortexBlockType {
 	 * @since 2.0.0
 	 */
 	public function get_script_file_path() {
-		return sprintf('%s/%s', $this->path, self::SCRIPT_FILE_PATH);
+		return sprintf('%s/%s', $this->path, $this->script_file_path);
 	}
 
 	/**
@@ -348,7 +351,7 @@ class CortexBlockType {
  	 * @since 2.0.0
  	 */
 	  public function get_script_file_url() {
-		return is_readable($this->get_script_file_path()) && filesize($this->get_script_file_path()) ? $this->get_link() . '/' . self::SCRIPT_FILE_PATH : null;
+		return is_readable($this->get_script_file_path()) && filesize($this->get_script_file_path()) ? $this->get_link() . '/' . $this->script_file_path : null;
 	}
 
 	/**
@@ -427,6 +430,9 @@ class CortexBlockType {
 		if ($this->active) {
 			$this->active = $blocks_status == false || !isset($blocks_status[$type]) || $blocks_status[$type] == 'enabled';
 		}
+
+		$this->script_file_path = apply_filters('cortex/script_file_path', self::SCRIPT_FILE_PATH, $this);
+		$this->style_file_path = apply_filters('cortex/style_file_path', self::STYLE_FILE_PATH, $this);
 	}
 
 	/**
@@ -483,8 +489,8 @@ class CortexBlockType {
 		file_put_contents($this->get_style_file_path(), $data);
 
 		switch ($this->style_file_type) {
-			case 'scss': file_put_contents($this->path . '/' . self::CSS_FILE_PATH, CortexSassCompiler::compile($data)); break;
-			case 'less': file_put_contents($this->path . '/' . self::CSS_FILE_PATH, CortexLessCompiler::compile($data)); break;
+			case 'scss': file_put_contents($this->path . '/' . self::STYLE_FILE_PATH, CortexSassCompiler::compile($data)); break;
+			case 'less': file_put_contents($this->path . '/' . self::STYLE_FILE_PATH, CortexLessCompiler::compile($data)); break;
 		}
 	}
 
