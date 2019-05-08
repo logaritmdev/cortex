@@ -206,8 +206,6 @@
 	}
 }
 
-/* Block List */
-
 /* Gutenberg */
 
 .wp-block {
@@ -228,4 +226,37 @@
 	border: 1px solid #e2e4e7;
 	border-radius: 4px;
 	padding: 12px;
+}
+
+.acf-block-body .acf-block-fields {
+	border: none !important;
+}
+
+.acf-block-body > div > .acf-block-fields > .acf-field {
+	padding: 0px 0px 10px 0px !important;
+}
+
+.acf-field-group .acf-fields {
+	background: rgba(245, 245, 245, 0.5) !important;
+}
+
+/* Gutenberg */
+
+.mce-tinymce {
+	box-shadow: none !important;
+}
+
+.mce-top-part::before {
+	box-shadow: none !important
+}
+
+.edit-post-visual-editor .editor-block-list__block {
+	&:after {
+		background: #e8e9ec;
+		content: "";
+		display: block;
+		height: 2px;
+		margin-left: -90px;
+		margin-right: -90px;
+	}
 }
