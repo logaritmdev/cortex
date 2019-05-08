@@ -18,7 +18,7 @@ class CortexBlockBladeRenderer extends CortexBlockRenderer {
 	 */
 	public function render(array $vars = array()) {
 
-		if ($this->blade == null) {
+		if ($this->blade === null) {
 
 			$container = Container::getInstance();
 

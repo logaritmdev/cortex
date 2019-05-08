@@ -14,7 +14,7 @@ class CortexBlockTwigRenderer extends CortexBlockRenderer {
 	 */
 	public function render(array $vars = array()) {
 
-		if (Timber::$locations == null) {
+		if (Timber::$locations === null) {
 			Timber::$locations = array();
 		}
 

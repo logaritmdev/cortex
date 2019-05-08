@@ -112,8 +112,8 @@ class Cortex_Settings {
 
 		$option = get_option('cortex_block_status');
 
-		if ($option == '' ||
-			$option == null) {
+		if ($option === '' ||
+			$option === null) {
 			$option = array();
 		}
 
@@ -124,7 +124,7 @@ class Cortex_Settings {
 			$name = $block->get_name();
 			$slug = $block->get_type();
 
-			$enabled = $option === false || (isset($option[$slug]) == false) || $option[$slug] === 'enabled';
+			$enabled = $option === false || (isset($option[$slug]) === false) || $option[$slug] === 'enabled';
 
 			$values[] = array(
 				'name' => $name,
@@ -177,8 +177,8 @@ class Cortex_Settings {
 		<fieldset>
 			<table>
 				<tr>
-					<td style="padding:0px 12px 0px 0px"><input type="radio" name="cortex_environment" value="dev" <?php echo get_option('cortex_environment') == 'dev' ? 'checked' : '' ?> /> Development</td>
-					<td style="padding:0px 12px 0px 0px"><input type="radio" name="cortex_environment" value="prod" <?php echo get_option('cortex_environment') == 'prod' ? 'checked' : '' ?> /> Production</td>
+					<td style="padding:0px 12px 0px 0px"><input type="radio" name="cortex_environment" value="dev" <?php echo get_option('cortex_environment') === 'dev' ? 'checked' : '' ?> /> Development</td>
+					<td style="padding:0px 12px 0px 0px"><input type="radio" name="cortex_environment" value="prod" <?php echo get_option('cortex_environment') === 'prod' ? 'checked' : '' ?> /> Production</td>
 				</tr>
 			</table>
 		</fieldset>

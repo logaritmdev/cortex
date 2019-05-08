@@ -129,8 +129,8 @@
 			editor.getSession().setValue(value)
 			editor.getSession().on('change', update)
 
-			var file = element.attr('data-file')
 			var id = element.attr('data-id')
+			var file = element.attr('data-file')
 			var date = element.attr('data-date')
 
 			var button = $('<div class="cortex-reload"></div>')

@@ -263,7 +263,7 @@ class Cortex_Admin {
 
 		global $pagenow;
 
-		if ($pagenow === 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] == 'acf-field-group') {
+		if ($pagenow === 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] === 'acf-field-group') {
 			return Cortex::has_block_by_id($id) ? ('[Block] ' . $title) : $title;
 		}
 
@@ -307,7 +307,7 @@ class Cortex_Admin {
 
 		$post = get_post($post);
 
-		if ($post == null) {
+		if ($post === null) {
 			return;
 		}
 
@@ -318,12 +318,12 @@ class Cortex_Admin {
 
 			foreach ($blocks as $block) {
 
-				if (isset($block['attrs']['id']) == false ||
-					isset($block['attrs']['name']) == false) {
+				if (isset($block['attrs']['id']) === false ||
+					isset($block['attrs']['name']) === false) {
 					continue;
 				}
 
-				if ($block['attrs']['id'] == $id) {
+				if ($block['attrs']['id'] === $id) {
 					$target = acf_get_block_type($block['attrs']['name']);
 					break;
 				}
@@ -365,7 +365,7 @@ class Cortex_Admin {
 
 		$block = Cortex::get_block($id);
 
-		if ($block == null) {
+		if ($block === null) {
 			exit;
 		}
 
@@ -397,7 +397,7 @@ class Cortex_Admin {
 
 		$block = Cortex::get_block($id);
 
-		if ($block == null) {
+		if ($block === null) {
 			exit;
 		}
 
@@ -445,8 +445,8 @@ class Cortex_Admin {
 			$block_type = acf_maybe_get($group, '@block_type');
 			$modified   = acf_maybe_get($group, 'modified', 0);
 
-			if ($block_name == null ||
-				$block_type == null) {
+			if ($block_name === null ||
+				$block_type === null) {
 
 				/*
 				 * There are not local file definition for this block but
@@ -474,7 +474,7 @@ class Cortex_Admin {
 			 * locally only and has not been synced.
 			 */
 
-			if ($id == null) {
+			if ($id === null) {
 				$sync[$group['key']] = $group;
 			} elseif ($modified && $modified > get_post_modified_time('U', true, $group['ID'], true)) {
 				$sync[$group['key']] = $group;
@@ -538,7 +538,7 @@ class Cortex_Admin {
 
 		$post_type = get_post_type($id);
 
-		if ($post_type == 'acf-field-group') {
+		if ($post_type === 'acf-field-group') {
 			$this->save_field_group($id);
 		}
 	}
@@ -596,12 +596,12 @@ class Cortex_Admin {
 
 				if ($create_block) {
 
-					if ($path == null) {
+					if ($path === null) {
 						return;
 					}
 
-					if ($slug == '' ||
-						$slug == null) {
+					if ($slug === '' ||
+						$slug === null) {
 						$slug = $group['title'];
 					}
 
@@ -636,7 +636,7 @@ class Cortex_Admin {
 
 					$block = Cortex::get_block_by_id($id);
 
-					if ($block == null) {
+					if ($block === null) {
 
 						/*
 						 * This method is called twice. The second time though
@@ -736,7 +736,7 @@ class Cortex_Admin {
 		$old_path = $block->get_path();
 		$old_type = $block->get_type();
 
-		if (file_exists($old_path) == false) {
+		if (file_exists($old_path) === false) {
 			return $block;
 		}
 
@@ -849,7 +849,7 @@ class Cortex_Admin {
 
 		$data = @get_plugin_data(WP_PLUGIN_DIR . '/' . $plugin);
 
-		if ($data == null) {
+		if ($data === null) {
 			return false;
 		}
 

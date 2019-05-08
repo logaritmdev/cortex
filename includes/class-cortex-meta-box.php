@@ -28,9 +28,7 @@ class CortexMetaBox {
 	 * @since 0.1.0
 	 */
 	public function __construct($name, $slug, $post_type = 'post', array $options = array(), $context = 'normal', $priority = 'high') {
-
 		$this->options = $options;
-
 		add_meta_box($slug, $name, array($this, 'render'), $post_type, $context, $priority);
 	}
 

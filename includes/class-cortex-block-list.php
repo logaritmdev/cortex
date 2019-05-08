@@ -138,12 +138,12 @@ class CortexBlockList extends WP_List_Table {
 			$block_name = acf_maybe_get($group, '@block_name');
 			$block_type = acf_maybe_get($group, '@block_type');
 
-			if ($block_name == null ||
-				$block_type == null) {
+			if ($block_name === null ||
+				$block_type === null) {
 				continue;
 			}
 
-			if ($group['active'] && $group['hidden'] == false) {
+			if ($group['active'] && $group['hidden'] === false) {
 				$blocks[] = $group;
 			}
 		}
@@ -186,8 +186,8 @@ class CortexBlockList extends WP_List_Table {
 
 		$icon = acf_maybe_get($group, '@block_icon');
 
-		if ($icon == '' ||
-			$icon == null) {
+		if ($icon === '' ||
+			$icon === null) {
 			$icon = plugins_url('../admin/images/icon.svg', __FILE__);
 		}
 

@@ -63,7 +63,7 @@ class Cortex_Public {
 
 			$name = isset($block['attrs']['name']) ? $block['attrs']['name'] : null;
 
-			if ($name == null) {
+			if ($name === null) {
 				continue;
 			}
 

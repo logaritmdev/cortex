@@ -160,15 +160,22 @@ class CortexBlock {
 	 */
 	public function display(array $vars = array()) {
 
-		if ($this->renderer == null) {
+		if ($this->renderer === null) {
 			$this->renderer = self::get_renderer(
 				$this->type->get_block_file_type(),
 				$this
 			);
 		}
 
+		$vars = $this->render($vars);
+
+		if ($vars === null) {
+			var_dump($vars);
+			trigger_error('The block render method must return an array, ' . $vars . ' given');
+		}
+
 		if ($this->renderer) {
-			$this->renderer->render($this->render($vars));
+			$this->renderer->render($vars);
 		}
 	}
 
@@ -222,7 +229,7 @@ class CortexBlock {
 	 * @hidden
 	 */
 	protected function append_lang($link) {
-		return (($lang = apply_filters('wpml_current_language', null)) == null) ? $link : add_query_arg('lang', $lang, $link);
+		return (($lang = apply_filters('wpml_current_language', null)) === null) ? $link : add_query_arg('lang', $lang, $link);
 	}
 
 	//--------------------------------------------------------------------------

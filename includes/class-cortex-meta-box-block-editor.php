@@ -37,6 +37,6 @@ class CortexMetaBoxBlockEditor extends CortexMetaBox {
 	 */
 	private function get_block() {
 		global $post;
-		return Cortex::get_block(get_post_meta($post->ID, '_cortex_block_type', true));
+		return Cortex::get_block_by_id($post->ID);
 	}
 }

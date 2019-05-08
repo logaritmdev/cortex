@@ -412,7 +412,7 @@ class CortexBlockType {
 
 		static $blocks_status = null;
 
-		if ($blocks_status == null) {
+		if ($blocks_status === null) {
 			$blocks_status = get_option('cortex_block_status');
 		}
 
@@ -428,11 +428,13 @@ class CortexBlockType {
 		$this->version = isset($data['version']) ? $data['version'] : $this->version;
 
 		if ($this->active) {
-			$this->active = $blocks_status == false || !isset($blocks_status[$type]) || $blocks_status[$type] == 'enabled';
+			$this->active = $blocks_status === false || !isset($blocks_status[$type]) || $blocks_status[$type] === 'enabled';
 		}
 
-		$this->script_file_path = apply_filters('cortex/script_file_path', self::SCRIPT_FILE_PATH, $this);
 		$this->style_file_path = apply_filters('cortex/style_file_path', self::STYLE_FILE_PATH, $this);
+		$this->script_file_path = apply_filters('cortex/script_file_path', self::SCRIPT_FILE_PATH, $this);
+
+		$this->include_class();
 	}
 
 	/**
@@ -441,12 +443,6 @@ class CortexBlockType {
 	 * @since 2.0.0
 	 */
 	public function create_block($id, $post) {
-
-		if ($this->class !== '' &&
-			$this->class !== 'CortexBlock') {
-			require_once $this->path . '/block.php';
-		}
-
 		return new $this->class($id, $post, $this);
 	}
 
@@ -530,6 +526,21 @@ class CortexBlockType {
 	public function enqueue_scripts() {
 		if ($url = $this->get_script_file_url()) wp_enqueue_script($this->type,  $url, array(), $this->version, true);
 		$this->class::enqueue_scripts();
+	}
+
+	/**
+	 * Includes the cortex block class.
+	 * @method include_class.
+	 * @since 2.0.0
+	 */
+	private function include_class() {
+
+		if ($this->class === '' ||
+			$this->class === 'CortexBlock') {
+			return;
+		}
+
+		require_once $this->path . '/block.php';
 	}
 
 	/**

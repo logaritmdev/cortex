@@ -70,7 +70,7 @@ class Cortex {
 	 */
 	public static function session_add($key, $val) {
 
-		if (self::session_has($key) == false) {
+		if (self::session_has($key) === false) {
 			self::session_set($key, array());
 		}
 
@@ -87,7 +87,7 @@ class Cortex {
 	 */
 	public static function session_take($key, $default = null) {
 
-		if (self::session_has($key) == false) {
+		if (self::session_has($key) === false) {
 			return $default;
 		}
 
@@ -109,7 +109,7 @@ class Cortex {
 
 		$template = self::get_block($type);
 
-		if ($template == null) {
+		if ($template === null) {
 			return;
 		}
 
@@ -193,7 +193,7 @@ class Cortex {
 
 		foreach (acf_get_field_groups() as $group) {
 
-			if (isset($group['ID']) && $group['ID'] == $id) {
+			if (isset($group['ID']) && $group['ID'] === $id) {
 
 				$block_type = acf_maybe_get($group, '@block_type');
 				$block_name = acf_maybe_get($group, '@block_name');
@@ -217,7 +217,7 @@ class Cortex {
 
 		foreach (acf_get_field_groups() as $group) {
 
-			if (isset($group['ID']) && $group['ID'] == $id) {
+			if (isset($group['ID']) && $group['ID'] === $id) {
 
 				$block_type = acf_maybe_get($group, '@block_type');
 				$block_name = acf_maybe_get($group, '@block_name');
@@ -453,8 +453,7 @@ class Cortex {
 		}
 
 		$plugin_public = new Cortex_Public($this, $this->get_plugin_name(), $this->get_plugin_version());
-		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_block_assets');
-
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_block_assets', 40);
 	}
 
 	/**
@@ -605,8 +604,8 @@ class Cortex {
 
 			$key = $fields['key'];
 
-			if ($key == '' ||
-				$key == null) {
+			if ($key === '' ||
+				$key === null) {
 				continue;
 			}
 
@@ -617,8 +616,8 @@ class Cortex {
 
 			$key = $group['key'];
 
-			if ($key == '' ||
-				$key == null) {
+			if ($key === '' ||
+				$key === null) {
 				continue;
 			}
 
@@ -753,7 +752,7 @@ class Cortex {
 					 * class enqueue_block_assets method, will handle the assets instead of this one.
 					 */
 
-					if (is_admin() && (isset($_REQUEST['action']) == false || $_REQUEST['action'] != 'render_block')) {
+					if (is_admin() && (isset($_REQUEST['action']) === false || $_REQUEST['action'] != 'render_block')) {
 
 						if ($enqueue_style) $template->enqueue_styles();
 						if ($enqueue_script) $template->enqueue_scripts();
@@ -845,7 +844,7 @@ class Cortex {
 
 		$contents = @file_get_contents($path . '/' . $file . '.json');
 
-		if ($contents == null) {
+		if ($contents === null) {
 			return array();
 		}
 
