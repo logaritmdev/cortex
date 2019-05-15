@@ -170,7 +170,6 @@ class CortexBlock {
 		$vars = $this->render($vars);
 
 		if ($vars === null) {
-			var_dump($vars);
 			trigger_error('The block render method must return an array, ' . $vars . ' given');
 		}
 

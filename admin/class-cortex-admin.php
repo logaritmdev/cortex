@@ -116,7 +116,7 @@ class Cortex_Admin {
 			array(
 				'name' => 'Advanced Custom Fields',
 				'slug' => 'advanced-custom-fields-pro/acf.php',
-				'version' => '5.8.0-RC2'
+				'version' => '5.8.0'
 			)
 
 		);
@@ -264,7 +264,12 @@ class Cortex_Admin {
 		global $pagenow;
 
 		if ($pagenow === 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] === 'acf-field-group') {
-			return Cortex::has_block_by_id($id) ? ('[Block] ' . $title) : $title;
+
+			$block = Cortex::get_block_by_id($id);
+
+			if ($block) {
+				$title = sprintf('[%s] %s %s', __('Block', 'cortex'), $title, $block->is_hidden() ? ('(' . __('Hidden', 'cortex') . ')') : '');
+			}
 		}
 
 		return $title;
@@ -489,8 +494,8 @@ class Cortex_Admin {
 
 		foreach ($sync as $key => $val) {
 
-			$block_type = acf_maybe_get($group, '@block_type');
-			$block_name = acf_maybe_get($group, '@block_name');
+			$block_type = acf_maybe_get($val, '@block_type');
+			$block_name = acf_maybe_get($val, '@block_name');
 
 			$this->add_notice("
 				Block <b>$block_name</b> in folder <b>$block_type</b> has been synchronized.
@@ -507,13 +512,12 @@ class Cortex_Admin {
 			unset($sync[$key]['@block_icon']);
 			unset($sync[$key]['@block_group']);
 			unset($sync[$key]['@block_class']);
-			unset($sync[$key]['active']);
 			unset($sync[$key]['hidden']);
 			unset($sync[$key]['modified']);
 
-			if (acf_have_local_fields($key)) {
-				$sync[$key]['fields'] = acf_get_local_fields($key);
-			}
+			$fields = Cortex::get_block($block_type)->get_fields();
+
+			$sync[$key]['fields'] = $fields['fields'];
 
 			acf_import_field_group($sync[$key]);
 		}

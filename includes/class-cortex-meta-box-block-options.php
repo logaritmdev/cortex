@@ -27,7 +27,7 @@ class CortexMetaBoxBlockOptions extends CortexMetaBox {
 	 */
 	protected function load($context) {
 		$context['locations'] = Cortex::get_relative_block_locations();
-		$context['template'] = $this->get_block();
+		$context['block'] = $this->get_block();
 		return $context;
 	}
 

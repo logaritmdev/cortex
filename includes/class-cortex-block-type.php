@@ -107,7 +107,18 @@ class CortexBlockType {
 	 */
 	private $hidden = false;
 
+	/**
+	 * The style file path.
+	 * @property style_file_path
+	 * @since 2.0.0
+	 */
 	private $style_file_path;
+
+	/**
+	 * The script file path.
+	 * @property script_file_path
+	 * @since 2.0.0
+	 */
 	private $script_file_path;
 
 	//--------------------------------------------------------------------------
@@ -438,12 +449,12 @@ class CortexBlockType {
 	}
 
 	/**
-	 * Creates a block from this template.
-	 * @method create_block
+	 * Displays the current block.
+	 * @method display
 	 * @since 2.0.0
 	 */
-	public function create_block($id, $post) {
-		return new $this->class($id, $post, $this);
+	public function display($id, $post, $data) {
+		(new $this->class($id, $post, $this))->display($data ? $data : array());
 	}
 
 	/**
@@ -514,7 +525,13 @@ class CortexBlockType {
 	 * @since 2.0.0
 	 */
 	public function enqueue_styles() {
-		if ($url = $this->get_style_file_url()) wp_enqueue_style($this->type, $url, array(), $this->version , 'all');
+
+		$url = apply_filters('cortex/enqueued_style_url', $this->get_style_file_url(), $this);
+
+		if ($url) {
+			wp_enqueue_style($this->type, $url, array(), $this->version , 'all');
+		}
+
 		$this->class::enqueue_styles();
 	}
 
@@ -524,7 +541,13 @@ class CortexBlockType {
 	 * @since 2.0.0
 	 */
 	public function enqueue_scripts() {
-		if ($url = $this->get_script_file_url()) wp_enqueue_script($this->type,  $url, array(), $this->version, true);
+
+		$url = apply_filters('cortex/enqueued_script_url', $this->get_script_file_url(), $this);
+
+		if ($url) {
+			wp_enqueue_script($this->type,  $url, array(), $this->version, true);
+		}
+
 		$this->class::enqueue_scripts();
 	}
 
@@ -536,6 +559,7 @@ class CortexBlockType {
 	private function include_class() {
 
 		if ($this->class === '' ||
+			$this->class === null ||
 			$this->class === 'CortexBlock') {
 			return;
 		}

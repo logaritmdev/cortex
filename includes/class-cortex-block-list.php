@@ -143,9 +143,14 @@ class CortexBlockList extends WP_List_Table {
 				continue;
 			}
 
-			if ($group['active'] && $group['hidden'] === false) {
-				$blocks[] = $group;
+			$block = Cortex::get_block($block_type);
+
+			if ($block &&
+				$block->is_hidden()) {
+				continue;
 			}
+
+			$blocks[] = $group;
 		}
 
 		$limit = 40;

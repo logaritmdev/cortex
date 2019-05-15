@@ -26,7 +26,7 @@ class CortexMetaBoxStyleEditor extends CortexMetaBox {
 	 * @since 2.0.0
 	 */
 	protected function load($context) {
-		$context['template'] = $this->get_block();
+		$context['block'] = $this->get_block();
 		return $context;
 	}
 

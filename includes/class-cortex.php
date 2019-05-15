@@ -107,23 +107,15 @@ class Cortex {
 
 		global $post;
 
-		$template = self::get_block($type);
+		$block = self::get_block($type);
 
-		if ($template === null) {
+		if ($block === null) {
 			return;
 		}
 
-		$block = $template->create_block(
-			0,
-			$post,
-			$template
-		);
-
-		if ($block) {
-			$block->get_template()->enqueue_scripts();
-			$block->get_template()->enqueue_styles();
-			$block->display(get_fields());
-		}
+		$block->enqueue_styles();
+		$block->enqueue_scripts();
+		$block->display(0, $post, $data);
 	}
 
 	/**
@@ -191,6 +183,8 @@ class Cortex {
 	 */
 	public static function has_block_by_id($id) {
 
+		$id = (int) $id;
+
 		foreach (acf_get_field_groups() as $group) {
 
 			if (isset($group['ID']) && $group['ID'] === $id) {
@@ -214,6 +208,8 @@ class Cortex {
 	 * @since 2.0.0
 	 */
 	public static function get_block_by_id($id) {
+
+		$id = (int) $id;
 
 		foreach (acf_get_field_groups() as $group) {
 
@@ -475,8 +471,8 @@ class Cortex {
 
 		add_filter('get_twig', function($twig) {
 
-			$twig->addFunction(new \Twig_SimpleFunction('render_block', function($template, $data) {
-				self::render_block($template, $data);
+			$twig->addFunction(new \Twig_SimpleFunction('render_block', function($type, $data) {
+				self::render_block($type, $data);
 			}));
 
 			$twig->addFilter(new \Twig_SimpleFilter('resized', function($image, $resizeW = null, $resizeH = null, $format = null) {
@@ -551,12 +547,12 @@ class Cortex {
 
 			$fields = $this->get_json($path, 'fields');
 
-			$template = new CortexBlockType($type, $path, $data);
-			$template->set_block_file_type($data['block_file_type']);
-			$template->set_style_file_type($data['style_file_type']);
-			$template->set_fields($fields);
+			$block = new CortexBlockType($type, $path, $data);
+			$block->set_block_file_type($data['block_file_type']);
+			$block->set_style_file_type($data['style_file_type']);
+			$block->set_fields($fields);
 
-			self::$blocks[$type] = $template;
+			self::$blocks[$type] = $block;
 		});
 	}
 
@@ -566,8 +562,8 @@ class Cortex {
 	 * @since 2.0.0
 	 */
 	protected function load_groups() {
-		foreach ($this->get_blocks() as $template) {
-			self::$groups[sanitize_title($template->get_group())] = $template->get_group();
+		foreach ($this->get_blocks() as $block) {
+			self::$groups[sanitize_title($block->get_group())] = $block->get_group();
 		}
 	}
 
@@ -639,7 +635,8 @@ class Cortex {
 
 					'active'      => $block->is_active(),
 					'hidden'      => $block->is_hidden(),
-					'modified'    => $fields['modified']
+					'modified'    => $fields['modified'],
+
 				));
 
 				$group['location'] = array(
@@ -706,25 +703,19 @@ class Cortex {
 		$enqueue_style = get_option('cortex_enqueue_style_admin');
 		$enqueue_script = get_option('cortex_enqueue_style_admin');
 
-		foreach (self::get_blocks() as $template) {
+		foreach (self::get_blocks() as $block) {
 
-			$render = function($block, $content, $preview, $post) use($template, $enqueue_style, $enqueue_script) {
+			if ($block->is_hidden()) {
+				continue;
+			}
+
+			$render = function($block_data, $content, $preview, $post) use($block, $enqueue_style, $enqueue_script) {
 
 				if ($preview) {
 					echo '<div class="previewed">';
 				}
 
-				$id = $block['id'];
-
-				$block = $template->create_block(
-					$id,
-					$post,
-					$template
-				);
-
-				if ($block) {
-					$block->display(get_fields() ?: []);
-				}
+				$block->display($block_data['id'], $post, get_fields());
 
 				if ($preview) {
 					echo '</div>';
@@ -732,19 +723,19 @@ class Cortex {
 
 			};
 
-			$category = sanitize_title($template->get_group());
+			$category = sanitize_title($block->get_group());
 
 			acf_register_block(array(
 
-				'name'        => $template->get_type(),
-				'title'       => $template->get_name(),
-				'description' => $template->get_hint(),
-				'icon'        => $template->get_icon(),
+				'name'        => $block->get_type(),
+				'title'       => $block->get_name(),
+				'description' => $block->get_hint(),
+				'icon'        => $block->get_icon(),
 				'category'    => $category,
 
 				'enqueue_style'  => '',
 				'enquele_script' => '',
-				'enqueue_assets' => function() use ($template, $enqueue_style, $enqueue_script) {
+				'enqueue_assets' => function() use ($block, $enqueue_style, $enqueue_script) {
 
 					/*
 					 * Unless I'm doing something wrong, it seems that blocks styles and scripts
@@ -754,8 +745,8 @@ class Cortex {
 
 					if (is_admin() && (isset($_REQUEST['action']) === false || $_REQUEST['action'] != 'render_block')) {
 
-						if ($enqueue_style) $template->enqueue_styles();
-						if ($enqueue_script) $template->enqueue_scripts();
+						if ($enqueue_style) $block->enqueue_styles();
+						if ($enqueue_script) $block->enqueue_scripts();
 
 						return;
 					}

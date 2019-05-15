@@ -57,21 +57,44 @@ class Cortex_Public {
 
 		global $post;
 
+		if ($post == null) {
+			return;
+		}
+
 		$blocks = parse_blocks($post->post_content);
+
+		if ($blocks) {
+			$this->process_block_assets($blocks);
+		}
+	}
+
+	/**
+	 * Enqueues the blocks styles and scripts at the top of the page.
+	 * @method enqueue_block_assets
+	 * @since 2.0.0
+	 */
+	private function process_block_assets($blocks) {
+
+		if ($blocks == null) {
+			return;
+		}
 
 		foreach ($blocks as $block) {
 
 			$name = isset($block['attrs']['name']) ? $block['attrs']['name'] : null;
 
-			if ($name === null) {
-				continue;
+			if ($name) {
+				if ($block = Cortex::get_block(str_replace('acf/', '', $name))) {
+					$block->enqueue_styles();
+					$block->enqueue_scripts();
+					continue;
+				}
 			}
 
-			$block = Cortex::get_block(str_replace('acf/', '', $name));
+			$inner = isset($block['innerBlocks']) ? $block['innerBlocks'] : null;
 
-			if ($block) {
-				$block->enqueue_styles();
-				$block->enqueue_scripts();
+			if ($inner) {
+				$this->process_block_assets($inner);
 			}
 		}
 	}

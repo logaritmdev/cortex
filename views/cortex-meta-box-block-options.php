@@ -39,7 +39,7 @@
 		</div>
 
 		<div class="acf-input">
-			<input type="text" id="cortex_block_slug" name="cortex_block_slug" value="<?php echo $template ? basename($template->get_path()) : '' ?>">
+			<input type="text" id="cortex_block_slug" name="cortex_block_slug" value="<?php echo $block ? basename($block->get_path()) : '' ?>">
 		</div>
 
 	</div>
@@ -57,7 +57,7 @@
 		</div>
 
 		<?php
-			$type = $template ? $template->get_block_file_type() : 'twig';
+			$type = $block ? $block->get_block_file_type() : 'twig';
 		?>
 
 		<div class="acf-input">
@@ -82,7 +82,7 @@
 		</div>
 
 		<?php
-			$type = $template ? $template->get_style_file_type() : 'sass';
+			$type = $block ? $block->get_style_file_type() : 'sass';
 		?>
 
 		<div class="acf-input">
