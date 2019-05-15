@@ -249,14 +249,3 @@
 .mce-top-part::before {
 	box-shadow: none !important
 }
-
-.edit-post-visual-editor .editor-block-list__block {
-	&:after {
-		background: #e8e9ec;
-		content: "";
-		display: block;
-		height: 2px;
-		margin-left: -90px;
-		margin-right: -90px;
-	}
-}
