@@ -321,6 +321,7 @@ $.attach('.cortex-modal', function(i, element) {
 					var h = $(canvas).attr('height')
 
 					element.css('padding-bottom', (h / w) * 100 + '%')
+					element.addClass('loaded')
 
 					var data = canvas.toDataURL()
 

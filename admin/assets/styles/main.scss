@@ -232,6 +232,18 @@
 	}
 }
 
+.cortex-preview-spinner {
+	@include absolute(top 50% left 50%);
+	background: url(../images/spinner.gif) no-repeat;
+	background-size: 20px 20px;
+	content: "";
+	display: block;
+	margin-top: -10px;
+	margin-left: -10px;
+	height: 20px;
+	width: 20px;
+}
+
 /* Gutenberg */
 
 .wp-block {
@@ -277,7 +289,7 @@
 	}
 
 	textarea {
-		box-shadow: none;
+		border: none;
 	}
 }
 
@@ -340,13 +352,12 @@
 /* ACF */
 
 .acf-label {
-	font-size: 15px;
+	font-size: 13.5px;
 }
 
 .acf-block-preview {
-	border: 1px solid #e2e4e7;
-	border-radius: 4px;
-	padding: 12px;
+	padding: 0px;
+	min-height: 100px;
 }
 
 .acf-block-body .acf-block-fields {
@@ -358,7 +369,7 @@
 }
 
 .acf-block-body > div > .acf-block-fields > .acf-field {
-	padding: 0px 0px 10px 0px !important;
+	padding: 0px 0px 20px 0px !important;
 }
 
 .acf-field-group .acf-fields {
