@@ -454,7 +454,16 @@ class CortexBlockType {
 	 * @since 2.0.0
 	 */
 	public function display($id, $post, $data) {
-		(new $this->class($id, $post, $this))->display($data ? $data : array());
+		(new $this->class($id, $post, $this))->display($data);
+	}
+
+	/**
+	 * Previews the current block.
+	 * @method preview
+	 * @since 2.0.0
+	 */
+	public function preview($id, $post, $data) {
+		(new $this->class($id, $post, $this))->preview($data);
 	}
 
 	/**

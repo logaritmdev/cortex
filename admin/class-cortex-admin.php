@@ -255,9 +255,9 @@ class Cortex_Admin {
 	}
 
 	/**
-	 * Filters the block title in the field group page
-	 * @method configure_meta_box
-	 * @since 0.1.0
+	 * Filters the block title in the field group page.
+	 * @method filter_acf_field_group_title
+	 * @since 2.0.0
 	 */
 	public function filter_acf_field_group_title($title, $id) {
 
@@ -307,17 +307,18 @@ class Cortex_Admin {
 	 */
 	public function render_block() {
 
-		$id   = $_REQUEST['id'];
-		$post = $_REQUEST['post'];
-
-		$post = get_post($post);
+		$id   = isset($_REQUEST['id'])   ? $_REQUEST['id']   : null;
+		$mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : null;
+		$post = isset($_REQUEST['post']) ? $_REQUEST['post'] : null;
 
 		if ($post === null) {
 			return;
 		}
 
 		$target = null;
-		$blocks = parse_blocks($post->post_content);
+		$blocks = parse_blocks(get_post($post)->post_content);
+
+		$render = null;
 
 		if ($blocks) {
 
@@ -329,13 +330,15 @@ class Cortex_Admin {
 				}
 
 				if ($block['attrs']['id'] === $id) {
-					$target = acf_get_block_type($block['attrs']['name']);
+					$render = $block;
 					break;
 				}
 			}
 		}
 
-		if ($target) {
+		if ($render) {
+
+			wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'scripts/main.js', array('jquery'), $this->plugin_version, false);
 
 			?>
 
@@ -347,9 +350,37 @@ class Cortex_Admin {
 					<meta name="viewport" content="width=device-width, initial-scale=1">
 					<?php wp_head() ?>
 				</head>
-				<body>
-					<?php acf_render_block($target, '', false, $post->ID); ?>
-					<?php wp_footer() ?>
+				<body class="preview">
+
+					<?php
+
+						$name = $render['attrs']['name'];
+
+						$block = Cortex::get_block(str_replace('acf/', '', $name));
+						$block->enqueue_styles();
+						$block->enqueue_scripts();
+
+						if ($mode == 'preview') {
+
+							/*
+							 * In preview mode, the data used to render will be
+							 * set in the post meta. This way, the most recent
+							 * data will be used even if the post has not
+							 * been saved.
+							 */
+
+							 $block->display($id, $post, CortexPreview::get_preview_vars($id, $post));
+
+						} else {
+
+							acf_render_block($render['attrs'], '', false, $post);
+
+						}
+
+						wp_footer()
+
+					?>
+
 				</body>
 				</html>
 			<?php
@@ -722,6 +753,26 @@ class Cortex_Admin {
 		foreach (Cortex::session_take('cortex_errors', $default) as $message) {
 			echo sprintf('<div class="notice notice-error"><p>%s</p></div>', $message);
 		}
+	}
+
+	/**
+	 * Saves the preview file.
+	 * @method save_preview
+	 * @since 2.0.0
+	 */
+	public function save_preview() {
+
+		$id   = $_POST['id'];
+		$post = $_POST['post'];
+		$hash = $_POST['hash'];
+		$data = $_POST['data'];
+
+		$w = $_POST['w'];
+		$h = $_POST['h'];
+
+		CortexPreview::save_preview($id, $post, $hash, $data, array($w, $h));
+
+		exit;
 	}
 
 	//--------------------------------------------------------------------------

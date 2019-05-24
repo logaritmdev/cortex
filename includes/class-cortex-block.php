@@ -154,11 +154,25 @@ class CortexBlock {
 	}
 
 	/**
+	 * Renders this block.
+	 * @method render
+	 * @since 0.1.0
+	 */
+	public function render($data) {
+		return $data;
+	}
+
+	/**
 	 * Renders the main type of this block.
 	 * @method display
 	 * @since 0.1.0
 	 */
-	public function display(array $vars = array()) {
+	public function display($vars = null) {
+
+		if ($vars == null ||
+			$vars == false) {
+			$vars = array();
+		}
 
 		if ($this->renderer === null) {
 			$this->renderer = self::get_renderer(
@@ -179,13 +193,73 @@ class CortexBlock {
 	}
 
 	/**
-	 * Renders this block.
-	 * @method render
-	 * @since 0.1.0
+	 * Renders a preview of this block
+	 * @method preview
+	 * @since 2.0.0
 	 */
-	public function render($data) {
-		return $data;
+	public function preview($vars = null) {
+
+		$hash = CortexPreview::generate_preview_hash($this->id, $this->post, $vars);
+
+		$preview_hash = CortexPreview::get_preview_hash($this->id, $this->post);
+		$preview_size = CortexPreview::get_preview_size($this->id, $this->post);
+		$preview_src  = CortexPreview::get_preview_src($this->id, $this->post);
+		$preview_url  = CortexPreview::get_preview_url($this->id, $this->post);
+
+		if ($preview_hash != $hash || is_readable($preview_src) == false) {
+
+			$preview_hash = $hash;
+			$preview_url  = '';
+			$preview_src  = '';
+
+			/*
+			 * This will set the preview data to render the preview with. If
+			 * we don't don this, the preview will use the previously saved
+			 * data which might be out of sync with the current data.
+			 */
+
+			CortexPreview::set_preview_vars($this->id, $this->post, $vars);
+		}
+
+		$preview_w = $preview_size[0];
+		$preview_h = $preview_size[1];
+		$ratio = 0;
+
+		if ($preview_w &&
+			$preview_h) {
+			$ratio = $preview_h / $preview_w * 100;
+		}
+
+		?>
+			<div
+				class="cortex-preview"
+				data-hash="<?php echo $hash ?>"
+				data-preview-width="<?php echo $preview_w ?>"
+				data-preview-height="<?php echo $preview_h ?>"
+				style="padding-bottom: <?php echo $ratio ?>%">
+
+				<?php if ($preview_url): ?>
+
+					<div class="cortex-preview-image" style="background-image: url('<?php echo $preview_url ?>')"></div>
+
+				<?php else: ?>
+
+					<script type="text/javascript">
+						(function() {
+							Cortex.generatePreview("<?php echo $this->id ?>", "<?php echo $this->post ?>", "<?php echo $hash ?>", "<?php echo $this->get_link() ?>");
+						})(jQuery);
+					</script>
+
+					<div class="cortex-preview-spinner">
+
+					</div>
+
+				<?php endif ?>
+
+			</div>
+		<?php
 	}
+
 
 	//--------------------------------------------------------------------------
 	// Private API

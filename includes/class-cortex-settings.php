@@ -81,7 +81,6 @@ class Cortex_Settings {
 		$this->register('cortex_environment');
 		$this->register('cortex_enqueue_style_admin');
 		$this->register('cortex_enqueue_script_admin');
-		$this->register('cortex_preview_server');
 
 		$this->register_group('block_status', __('Blocks', 'cortex'));
 		$this->register_field('block_status', __('Blocks', 'cortex'), 'block_status');
@@ -91,7 +90,6 @@ class Cortex_Settings {
 		$this->register_group('settings', __('Settings', 'cortex'));
 		$this->register_field('enqueue_style_admin', __('Enqueue block style on admin page', 'cortex'), 'settings');
 		$this->register_field('enqueue_script_admin', __('Enqueue block script on admin page', 'cortex'), 'settings');
-		$this->register_field('preview_server', __('Preview Server', 'cortex'), 'settings');
 	}
 
 	/**
@@ -207,20 +205,6 @@ class Cortex_Settings {
 		?>
 		<fieldset>
 			<input type="checkbox" name="cortex_enqueue_script_admin" value="true" <?php echo get_option('cortex_enqueue_script_admin') ? 'checked' : '' ?> />
-		</fieldset>
-		<?php
-	}
-
-	/**
-	 * @method field_preview_server
-	 * @since 2.0.0
-	 * @hidden
-	 */
-	public function field_preview_server($args) {
-		?>
-		<fieldset>
-			<input type="text" name="cortex_preview_server" value="<?php echo esc_attr(get_option('cortex_preview_server')) ?>" size="60" /><br>
-			<p class="description"><?php echo __('Optionnal.', 'cortex'); ?></p>
 		</fieldset>
 		<?php
 	}

@@ -2,6 +2,7 @@
   "dependencies": {
     "main.js": {
       "files": [
+        "scripts/vendors/html2canvas.min.js",
         "scripts/plugins/jquery-attach.js",
         "scripts/components/cortex-modal.js",
         "scripts/components/cortex-editor.js",

@@ -6,6 +6,7 @@ require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-l
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-renderer.php';
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-twig-renderer.php';
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-blade-renderer.php';
+require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-preview.php';
 
 /**
  * The core plugin class.
@@ -431,6 +432,7 @@ class Cortex {
 		$this->loader->add_action('wp_ajax_get_block_file_date', $plugin_admin, 'get_block_file_date');
 		$this->loader->add_action('wp_ajax_get_block_file_data', $plugin_admin, 'get_block_file_data');
 		$this->loader->add_action('wp_ajax_render_block', $plugin_admin, 'render_block');
+		$this->loader->add_action('wp_ajax_save_preview', $plugin_admin, 'save_preview');
 		$this->loader->add_action('wp_ajax_nopriv_render_block', $plugin_admin, 'render_block');
 
 		$this->loader->add_filter('admin_body_class', $plugin_admin, 'configure_body_classes', 40);
@@ -712,13 +714,9 @@ class Cortex {
 			$render = function($block_data, $content, $preview, $post) use($block, $enqueue_style, $enqueue_script) {
 
 				if ($preview) {
-					echo '<div class="previewed">';
-				}
-
-				$block->display($block_data['id'], $post, get_fields());
-
-				if ($preview) {
-					echo '</div>';
+					$block->preview($block_data['id'], $post, get_fields());
+				} else {
+					$block->display($block_data['id'], $post, get_fields());
 				}
 
 			};
