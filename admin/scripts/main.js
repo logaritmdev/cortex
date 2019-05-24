@@ -287,18 +287,26 @@ $.attach('.cortex-modal', function(i, element) {
 
 			var iframe = $('<iframe></iframe>')
 			iframe.css('width', '1440px')
-			iframe.css('height', 'auto')
+			iframe.css('height', '1000px')
 			iframe.css('pointer-events', 'none')
 			iframe.css('position', 'absolute')
 			iframe.css('opacity', '0')
 			iframe.appendTo(document.body)
 
-			iframe.attr('src', url + '&mode=preview').on('load', function () {
+			url = url + '&mode=preview'
 
-				var body = iframe.contents().find('body').get(0)
-				if (body == null) {
+			iframe.attr('src', url).on('load', function () {
+
+				console.log('render url', url)
+
+				var contents = iframe.contents()
+				if (contents == null) {
 					return
 				}
+
+				var body = contents.find('body').get(0)
+
+				iframe.height($(body).height())
 
 				/**
 				 * Uses html2canvas library to generate a screenshot. Display
@@ -306,7 +314,12 @@ $.attach('.cortex-modal', function(i, element) {
 				 * can store it as an image.
 				 */
 
-				html2canvas(body).then(function (canvas) {
+				html2canvas(body, {
+					logging: true,
+					profile: true,
+					useCORS: true,
+					allowTaint: true
+				}).then(function (canvas) {
 
 					iframe.remove()
 
