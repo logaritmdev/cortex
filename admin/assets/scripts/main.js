@@ -15,10 +15,10 @@
 
 			var iframe = $('<iframe></iframe>')
 			iframe.css('width', '1440px')
-			iframe.css('height', '1000px')
-			iframe.css('pointer-events', 'none')
-			iframe.css('position', 'absolute')
+			iframe.css('height', '0px')
 			iframe.css('opacity', '0')
+			iframe.css('position', 'fixed')
+			iframe.css('pointer-events', 'none')
 			iframe.appendTo(document.body)
 
 			url = url + '&mode=preview'
@@ -32,39 +32,36 @@
 					return
 				}
 
-				var body = contents.find('body').get(0)
+				var body = contents.find('body')
+				var node = contents.find('body').children().eq(0)
 
-				iframe.height($(body).height())
+				var height = body.get(0).scrollHeight
+				height += parseFloat(node.css('margin-top')) || 0
+				height += parseFloat(node.css('margin-bottom')) || 0
 
-				/**
-				 * Uses html2canvas library to generate a screenshot. Display
-				 * the canvas and send the image data to the server so it
-				 * can store it as an image.
-				 */
+				body.css('height', height)
 
-				html2canvas(body, {
-					logging: true,
-					profile: true,
-					useCORS: true,
-					allowTaint: true
-				}).then(function (canvas) {
+				iframe.height(height).get(0).contentWindow.postMessage(JSON.stringify({
+					action: 'render_preview',
+					target: hash
+				}), '*')
+			})
 
-					iframe.remove()
+			var onMessage = function (e) {
 
-					$(canvas).addClass('cortex-preview-image')
-					$(canvas).css('width', '100%')
-					$(canvas).css('height', 'auto')
+				var data = e.data
+				if (data) {
+					data = JSON.parse(data)
+				}
+
+				if (data.action == 'render_complete' &&
+					data.target == hash) {
+
+					var image = new Image()
+					image.src = data.data
 
 					element.empty()
-					element.append(canvas)
-
-					var w = $(canvas).attr('width')
-					var h = $(canvas).attr('height')
-
-					element.css('padding-bottom', (h / w) * 100 + '%')
-					element.addClass('loaded')
-
-					var data = canvas.toDataURL()
+					element.append(image)
 
 					$.ajax({
 						url: ajaxurl,
@@ -74,13 +71,17 @@
 							id: id,
 							post: post,
 							hash: hash,
-							data: data,
-							w: w,
-							h: h
+							data: data.data,
+							w: image.naturalWidth,
+							h: image.naturalHeight
 						}
 					})
-				})
-			})
+
+					window.removeEventListener('message', onMessage)
+				}
+			}
+
+			window.addEventListener('message', onMessage)
 		}
 	}
 

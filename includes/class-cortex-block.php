@@ -199,6 +199,11 @@ class CortexBlock {
 	 */
 	public function preview($vars = null) {
 
+		if (get_option('cortex_generate_previews') == false) {
+			$this->display($vars);
+			return;
+		}
+
 		$hash = CortexPreview::generate_preview_hash($this->id, $this->post, $vars);
 
 		$preview_hash = CortexPreview::get_preview_hash($this->id, $this->post);
@@ -235,8 +240,7 @@ class CortexBlock {
 				class="cortex-preview"
 				data-hash="<?php echo $hash ?>"
 				data-preview-width="<?php echo $preview_w ?>"
-				data-preview-height="<?php echo $preview_h ?>"
-				style="padding-bottom: <?php echo $ratio ?>%">
+				data-preview-height="<?php echo $preview_h ?>">
 
 				<?php if ($preview_url): ?>
 
@@ -257,6 +261,9 @@ class CortexBlock {
 				<?php endif ?>
 
 			</div>
+
+
+
 		<?php
 	}
 

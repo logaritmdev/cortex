@@ -78,7 +78,7 @@ class Cortex_Settings {
 
 		$this->register('cortex_block_status');
 		$this->register('cortex_style_include_path');
-		$this->register('cortex_environment');
+		$this->register('cortex_generate_previews');
 		$this->register('cortex_enqueue_style_admin');
 		$this->register('cortex_enqueue_script_admin');
 
@@ -86,8 +86,8 @@ class Cortex_Settings {
 		$this->register_field('block_status', __('Blocks', 'cortex'), 'block_status');
 		$this->register_group('style', __('Styles Include Path', 'cortex'));
 		$this->register_field('style_include_path', __('Styles Include Path', 'cortex'), 'style');
-		$this->register_field('environment', __('Environment', 'cortex'), 'style');
 		$this->register_group('settings', __('Settings', 'cortex'));
+		$this->register_field('generate_previews', __('Generates previews images', 'cortex'), 'settings');
 		$this->register_field('enqueue_style_admin', __('Enqueue block style on admin page', 'cortex'), 'settings');
 		$this->register_field('enqueue_script_admin', __('Enqueue block script on admin page', 'cortex'), 'settings');
 	}
@@ -166,19 +166,14 @@ class Cortex_Settings {
 	}
 
 	/**
-	 * @method field_environment
+	 * @method field_generate_previews
 	 * @since 2.0.0
 	 * @hidden
 	 */
-	public function field_environment($args) {
+	public function field_generate_previews($args) {
 		?>
 		<fieldset>
-			<table>
-				<tr>
-					<td style="padding:0px 12px 0px 0px"><input type="radio" name="cortex_environment" value="dev" <?php echo get_option('cortex_environment') === 'dev' ? 'checked' : '' ?> /> Development</td>
-					<td style="padding:0px 12px 0px 0px"><input type="radio" name="cortex_environment" value="prod" <?php echo get_option('cortex_environment') === 'prod' ? 'checked' : '' ?> /> Production</td>
-				</tr>
-			</table>
+			<input type="checkbox" name="cortex_generate_previews" value="true" <?php echo get_option('cortex_generate_previews') ? 'checked' : '' ?> />
 		</fieldset>
 		<?php
 	}

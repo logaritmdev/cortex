@@ -381,6 +381,44 @@ class Cortex_Admin {
 
 					?>
 
+					<script type="text/javascript">
+
+						window.addEventListener('message', function(e) {
+
+							var data = e.data
+							if (data) {
+								data = JSON.parse(data)
+							}
+
+							if (data.action == 'render_preview') {
+
+								let w = window.innerWidth
+								let h = window.innerHeight
+								let b = getComputedStyle(document.body).backgroundColor
+
+								domtoimage.toPng(document.body.children[0], {
+									bgcolor:b,
+									width: w,
+									height: w
+								}).then(function(url) {
+
+									if (parent) {
+										parent.postMessage(JSON.stringify({
+											'action': 'render_complete',
+											'target': data.target,
+											'data': url
+										}))
+									}
+
+								})
+							}
+
+						})
+
+					</script>
+
+					<script type="text/javascript" src="<?php echo plugins_url('/assets/scripts/vendors/dom-to-image.min.js', __FILE__) ?>"></script>
+
 				</body>
 				</html>
 			<?php
@@ -496,10 +534,13 @@ class Cortex_Admin {
 
 					acf_delete_field_group($group['ID']);
 
+					/*
+					The title is missing. Remove this message for now.
 					$this->add_notice("
 						The block {$group['title']} has been delete because it is no longer
 						present within a searchable block folder.
 					");
+					*/
 				}
 
 				continue;
@@ -813,8 +854,19 @@ class Cortex_Admin {
 			SET
 				post_content = REPLACE(
 					post_content,
-					'<!-- wp:acf/$old_type',
-					'<!-- wp:acf/$new_type'
+					'acf/$old_type',
+					'acf/$new_type'
+				)
+		");
+
+		$wpdb->query("
+			UPDATE
+				$wpdb->posts
+			SET
+				post_content = REPLACE(
+					post_content,
+					'acf\\\\/$old_type',
+					'acf\\\\/$new_type'
 				)
 		");
 

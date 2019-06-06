@@ -211,16 +211,10 @@
 .cortex-preview {
 
 	@include relative;
+	min-height: 100px;
+	max-height: 500px;
 
 	.cortex-preview-image, canvas {
-
-		@include absolute(
-			top 0px
-			left 0px
-			right 0px
-			bottom 0px
-		);
-
 		background-position: center center;
 		background-repeat: no-repeat;
 		background-size: contain;
@@ -228,7 +222,7 @@
 		max-width: none;
 		max-height: none;
 		height: auto;
-		width: auto;
+		width: 100%;
 	}
 }
 
@@ -246,14 +240,18 @@
 
 /* Gutenberg */
 
+.edit-post-layout__content {
+	overflow-x: hidden;
+}
+
 .wp-block {
 
-	max-width: none;
+	max-width: 960px;
 	padding-top: 36px;
 	padding-bottom: 36px;
 
 	&:first-child:before {
-		@include absolute(left -46px right -46px top 0);
+		@include absolute(left -1000px right -1000px top 0);
 		background: rgba(#b3bcc0, 0.5);
 		content: "";
 		display: block;
@@ -261,7 +259,7 @@
 	}
 
 	&:not(:last-child):after {
-		@include absolute(left -46px right -46px bottom 0);
+		@include absolute(left -1000px right -1000px top 0);
 		background: rgba(#b3bcc0, 0.5);
 		content: "";
 		display: block;
@@ -287,10 +285,6 @@
 	.mce-top-part::before {
 		box-shadow: none !important
 	}
-
-	textarea {
-		border: none;
-	}
 }
 
 .editor-post-title {
@@ -306,14 +300,16 @@
 .editor-block-list__block-edit {
 
 	&:after {
-		@include absolute(top -68px left -62px bottom -68px);
+		@include absolute(top -50px left -50px);
+		border-radius: 12px;
 		background: #0073aa;
 		content: "";
 		display: block;
 		opacity: 0;
 		transition: opacity;
 		transition-duration: 350ms;
-		width: 6px;
+		height: 24px;
+		width: 24px;
 	}
 
 	.is-hovered & {
@@ -356,8 +352,41 @@
 }
 
 .acf-block-preview {
-	padding: 0px;
-	min-height: 100px;
+
+	@include relative;
+	border: 1px solid #e5e5e5;
+	min-height: 100px !important;
+	max-height: 600px !important;
+	overflow: hidden;
+	padding: 12px;
+
+	&:before {
+		background: #f5f5f5;
+		border-bottom: 1px solid #e5e5e5;
+		content: "Preview";
+		display: block;
+		font-family: Sans-Serif;
+		font-size: 11px;
+		font-weight: normal;
+		margin-top: -12px;
+		margin-left: -12px;
+		margin-right: -12px;
+		margin-bottom: 12px;
+		padding: 12px;
+		padding-top: 6px;
+		padding-bottom: 6px;
+		text-transform: uppercase;
+		z-index: 1000;
+	}
+
+	&:after {
+		@include absolute(left 0 right 0 bottom 0);
+		background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+		content: "";
+		display: block;
+		height: 50px;
+		z-index: 1000;
+	}
 }
 
 .acf-block-body .acf-block-fields {
@@ -370,8 +399,4 @@
 
 .acf-block-body > div > .acf-block-fields > .acf-field {
 	padding: 0px 0px 20px 0px !important;
-}
-
-.acf-field-group .acf-fields {
-	background: rgba(245, 245, 245, 0.5) !important;
 }

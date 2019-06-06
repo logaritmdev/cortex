@@ -541,7 +541,7 @@ class CortexBlockType {
 			wp_enqueue_style($this->type, $url, array(), $this->version , 'all');
 		}
 
-		$this->class::enqueue_styles();
+		call_user_func(array($this->class, 'enqueue_styles'));
 	}
 
 	/**
@@ -557,7 +557,7 @@ class CortexBlockType {
 			wp_enqueue_script($this->type,  $url, array(), $this->version, true);
 		}
 
-		$this->class::enqueue_scripts();
+		call_user_func(array($this->class, 'enqueue_scripts'));
 	}
 
 	/**
