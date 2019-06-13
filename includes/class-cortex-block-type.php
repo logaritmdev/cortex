@@ -538,7 +538,7 @@ class CortexBlockType {
 		$url = apply_filters('cortex/enqueued_style_url', $this->get_style_file_url(), $this);
 
 		if ($url) {
-			wp_enqueue_style($this->type, $url, array(), $this->version , 'all');
+			wp_enqueue_style('cortex/' . $this->type, $url, array(), $this->version , 'all');
 		}
 
 		call_user_func(array($this->class, 'enqueue_styles'));
@@ -554,7 +554,7 @@ class CortexBlockType {
 		$url = apply_filters('cortex/enqueued_script_url', $this->get_script_file_url(), $this);
 
 		if ($url) {
-			wp_enqueue_script($this->type,  $url, array(), $this->version, true);
+			wp_enqueue_script('cortex/' . $this->type,  $url, array(), $this->version, true);
 		}
 
 		call_user_func(array($this->class, 'enqueue_scripts'));
