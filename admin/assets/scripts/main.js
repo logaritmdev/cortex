@@ -4,48 +4,12 @@
 
 	var Cortex = window.Cortex = {
 
+		/**
+		 * Generates a preview of the specified block.
+		 * @method generatePreview
+		 * @since 2.0.0
+		 */
 		generatePreview: function (id, post, hash, url, vars) {
-
-			var element = $('[data-hash="' + hash + '"]')
-
-			/**
-			 * Loads the block preview url within an iframe. Once loaded it
-			 * will be used to generate a canvas based screen shot.
-			 */
-
-			var iframe = $('<iframe></iframe>')
-			iframe.css('width', '1440px')
-			iframe.css('height', '0px')
-			iframe.css('opacity', '0')
-			iframe.css('position', 'fixed')
-			iframe.css('pointer-events', 'none')
-			iframe.appendTo(document.body)
-
-			url = url + '&mode=preview'
-
-			iframe.attr('src', url).on('load', function () {
-
-				console.log('render url', url)
-
-				var contents = iframe.contents()
-				if (contents == null) {
-					return
-				}
-
-				var body = contents.find('body')
-				var node = contents.find('body').children().eq(0)
-
-				var height = body.get(0).scrollHeight
-				height += parseFloat(node.css('margin-top')) || 0
-				height += parseFloat(node.css('margin-bottom')) || 0
-
-				body.css('height', height)
-
-				iframe.height(height).get(0).contentWindow.postMessage(JSON.stringify({
-					action: 'render_preview',
-					target: hash
-				}), '*')
-			})
 
 			var onMessage = function (e) {
 
@@ -82,6 +46,52 @@
 			}
 
 			window.addEventListener('message', onMessage)
+
+			var dispatch = function (iframe, data) {
+				iframe.get(0).contentWindow.postMessage(JSON.stringify(data), '*')
+			}
+
+			var element = $('[data-hash="' + hash + '"]')
+
+			/**
+			 * Loads the block preview url within an iframe. Once loaded it
+			 * will be used to generate a canvas based screen shot.
+			 */
+
+			var iframe = $('<iframe></iframe>')
+			iframe.css('width', 1440)
+			iframe.css('height', 0)
+			iframe.css('opacity', 0)
+			iframe.css('position', 'fixed')
+			iframe.css('pointer-events', 'none')
+			iframe.appendTo(document.body)
+
+			url = url + '&mode=preview'
+
+			iframe.attr('src', url).on('load', function () {
+
+				console.log('render url', url)
+
+				var contents = iframe.contents()
+				if (contents == null) {
+					return
+				}
+
+				var body = contents.find('body')
+				var fchild = body.find(':first')
+				var lchild = body.find(':last')
+
+				var height = body.get(0).scrollHeight
+				height += parseFloat(fchild.css('margin-top')) || 0
+				height += parseFloat(lchild.css('margin-bottom')) || 0
+
+				body.css('height', height)
+
+				dispatch(iframe, {
+					action: 'render_preview',
+					target: hash
+				})
+			})
 		}
 	}
 
