@@ -250,7 +250,7 @@ class CortexBlock {
 
 					<script type="text/javascript">
 						(function() {
-							Cortex.generatePreview("<?php echo $this->id ?>", "<?php echo $this->post ?>", "<?php echo $hash ?>", "<?php echo $this->get_link() ?>");
+							Cortex.generatePreview("<?php echo $this->id ?>", "<?php echo $this->post ?>", "<?php echo $hash ?>", "<?php echo $this->get_preview_link() ?>");
 						})(jQuery);
 					</script>
 
@@ -278,6 +278,15 @@ class CortexBlock {
 	 * @hidden
 	 */
 	public function get_link() {
+		return $this->type->get_link();
+	}
+
+	/**
+	 * @method get_preview_link
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	public function get_preview_link() {
 		return $this->append_lang(admin_url('admin-ajax.php') . '?action=render_block&post=' . $this->post . '&id=' . $this->id);
 	}
 
@@ -316,8 +325,23 @@ class CortexBlock {
 	// type
 	//--------------------------------------------------------------------------
 
-	public function getId() { return $this->get_id(); }
-	public function getLink() { return $this->get_link(); }
-	public function getPost() { return $this->get_post(); }
-	public function gettype() { return $this->get_type(); }
+	public function getId() {
+		return $this->get_id();
+	}
+
+	public function getLink() {
+		return $this->get_link();
+	}
+
+	public function getPreviewLink() {
+		return $this->get_preview_link();
+	}
+
+	public function getPost() {
+		return $this->get_post();
+	}
+
+	public function getType() {
+		return $this->get_type();
+	}
 }
