@@ -302,6 +302,28 @@ class Cortex_Admin {
 	}
 
 	/**
+	 * Adds the block title to the fields.
+	 * @method render_fields
+	 * @since 2.0.0
+	 */
+	public function render_fields($fields, $post_id) {
+
+		extract(acf_request_args(array(
+			'block' => false,
+		)));
+
+		$block = wp_unslash($block);
+		$block = json_decode($block, true);
+		$block = acf_prepare_block($block);
+
+		if ($block) {
+			echo '<div class="acf-block-title">' . $block['title'] . '</div>';
+		}
+
+		return $fields;
+	}
+
+	/**
 	 * @method render_block
 	 * @since 0.1.0
 	 */

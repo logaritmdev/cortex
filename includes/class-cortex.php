@@ -435,6 +435,8 @@ class Cortex {
 		$this->loader->add_action('wp_ajax_save_preview', $plugin_admin, 'save_preview');
 		$this->loader->add_action('wp_ajax_nopriv_render_block', $plugin_admin, 'render_block');
 
+		$this->loader->add_action('acf/pre_render_fields', $plugin_admin, 'render_fields', 10, 2);
+
 		$this->loader->add_filter('admin_body_class', $plugin_admin, 'configure_body_classes', 40);
 		$this->loader->add_filter('the_title', $plugin_admin, 'filter_acf_field_group_title', 40, 2);
 	}
@@ -730,6 +732,11 @@ class Cortex {
 				'description' => $block->get_hint(),
 				'icon'        => $block->get_icon(),
 				'category'    => $category,
+
+				'align'		=> 'wide',
+				'supports'	=> array(
+					'align' => false,
+				),
 
 				'enqueue_style'  => '',
 				'enquele_script' => '',

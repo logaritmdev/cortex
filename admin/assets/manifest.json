@@ -19,7 +19,7 @@
     }
   },
   "config": {
-    "devUrl": "http://jackalopefest.tribu.test"
+    "devUrl": "http://domain.test"
   },
   "paths": {
     "dist": "../",
