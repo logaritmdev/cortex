@@ -176,8 +176,8 @@ class Cortex_Admin {
 	 * @since 0.1.0
 	 */
 	public function configure_body_classes($classes) {
-		if ($this->is_create_block_page()) $classes = $classes . 'cortex-create-block-page';
-		if ($this->is_update_block_page()) $classes = $classes . 'cortex-update-block-page';
+		if ($this->is_create_block_page()) $classes = $classes . ' cortex-create-block-page';
+		if ($this->is_update_block_page()) $classes = $classes . ' cortex-update-block-page';
 		return $classes;
 	}
 
