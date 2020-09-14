@@ -73,6 +73,13 @@ class CortexBlockType {
 	private $fields = null;
 
 	/**
+	 * the block's attributes.
+	 * @property fields
+	 * @since 2.1.0
+	 */
+	private $attributes = [];
+
+	/**
 	 * the block's  block file extension.
 	 * @property block_file_type
 	 * @since 2.0.0
@@ -231,6 +238,15 @@ class CortexBlockType {
 	 */
 	public function get_fields() {
 		return $this->fields;
+	}
+
+	/**
+	 * Returns the block's attribute.
+	 * @method get_attribute
+	 * @since 2.1.0
+	 */
+	public function get_attribute($name, $default = null) {
+		return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
 	}
 
 	/**
@@ -437,6 +453,7 @@ class CortexBlockType {
 		$this->active = isset($data['active']) ? $data['active'] : $this->active;
 		$this->hidden = isset($data['hidden']) ? $data['hidden'] : $this->hidden;
 		$this->version = isset($data['version']) ? $data['version'] : $this->version;
+		$this->attributes = isset($data['attributes']) ? $data['attributes'] : $this->attributes;
 
 		if ($this->active) {
 			$this->active = $blocks_status === false || !isset($blocks_status[$type]) || $blocks_status[$type] === 'enabled';

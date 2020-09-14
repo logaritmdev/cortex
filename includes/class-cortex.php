@@ -531,6 +531,7 @@ class Cortex {
 					'icon' => '',
 					'class' => 'CortexBlock',
 					'group' => 'Common',
+					'attributes' => [],
 					'block_file_type' => 'twig',
 					'style_file_type' => 'sass',
 					'disabled' => false,
@@ -714,6 +715,12 @@ class Cortex {
 			}
 
 			$render = function($block_data, $content, $preview, $post) use($block, $enqueue_style, $enqueue_script) {
+
+				// https://support.advancedcustomfields.com/forums/topic/preview-parm-on-acf_register_block_type-callback-fn/
+
+				if (is_object($preview)) {
+					$preview = is_admin();
+				}
 
 				if ($preview) {
 					$block->preview($block_data['id'], $post, get_fields());

@@ -74,6 +74,13 @@ class CortexBlock {
 	private $type = null;
 
 	/**
+	 * The block's classes.
+	 * @property classes
+	 * @since 2.0.0
+	 */
+	private $classes = [];
+
+	/**
 	 * The block's renderer.
 	 * @property renderer
 	 * @since 0.1.0
@@ -148,9 +155,36 @@ class CortexBlock {
 	 * @since 0.1.0
 	 */
 	public function __construct($id, $post, CortexBlockType $type) {
+
 		$this->set_id($id);
 		$this->set_post($post);
 		$this->set_type($type);
+
+		$this->classes = $this->type->get_attribute('class', []);
+
+		$base = 'block';
+		$name = basename($this->type->get_path());
+
+		array_unshift($this->classes, $name);
+		array_unshift($this->classes, $base);
+	}
+
+	/**
+	 * Appends a CSS class to the block.
+	 * @method append_class
+	 * @since 2.1.0
+	 */
+	public function append_class($class, $condition = true) {
+		if ($condition) array_push($this->classes, $class);
+	}
+
+	/**
+	 * Removes a CSS class from the block.
+	 * @method remove_class
+	 * @since 2.1.0
+	 */
+	public function remove_class($class, $condition = true) {
+		if ($condition) unset($this->classes[array_search($this->classes, $class)]);
 	}
 
 	/**
@@ -262,11 +296,8 @@ class CortexBlock {
 
 			</div>
 
-
-
 		<?php
 	}
-
 
 	//--------------------------------------------------------------------------
 	// Private API
@@ -329,19 +360,33 @@ class CortexBlock {
 		return $this->get_id();
 	}
 
-	public function getLink() {
-		return $this->get_link();
+	public function getType() {
+		return $this->get_type();
 	}
 
-	public function getPreviewLink() {
-		return $this->get_preview_link();
+	public function getLink() {
+		return $this->get_link();
 	}
 
 	public function getPost() {
 		return $this->get_post();
 	}
 
-	public function getType() {
-		return $this->get_type();
+	public function getAttributes() {
+
+		$id = $this->type->get_attribute('id');
+
+		if ($id == null) {
+			$id = $this->get_id();
+			$id = str_replace('block_', 'block-', $id);
+		}
+
+		$classes = implode(' ', $this->classes);
+
+		return sprintf('id="%s" class="%s"', $id, $classes);
+	}
+
+	public function getPreviewLink() {
+		return $this->get_preview_link();
 	}
 }
