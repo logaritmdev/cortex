@@ -250,6 +250,15 @@ class CortexBlockType {
 	}
 
 	/**
+	 * Returns the block's attributes.
+	 * @method get_attributes
+	 * @since 2.1.0
+	 */
+	public function get_attributes() {
+		return $this->attributes;
+	}
+
+	/**
 	 * Returns the block's block file extension.
 	 * @method get_block_file_type
 	 * @since 2.0.0

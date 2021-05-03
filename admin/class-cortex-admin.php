@@ -728,7 +728,7 @@ class Cortex_Admin {
 
 					$block->update_config_file($data);
 
-					$_POST['cortex_block'] = !empty($_POST['cortex_block']) ? $_POST['cortex_block'] : '<section class="block"></section>';
+					$_POST['cortex_block'] = !empty($_POST['cortex_block']) ? $_POST['cortex_block'] : '<section {{ block.attributes }}></section>';
 
 				} else {
 
