@@ -116,7 +116,7 @@ class Cortex {
 
 		$block->enqueue_styles();
 		$block->enqueue_scripts();
-		$block->display(0, $post, $data);
+		$block->display(0, $post->ID, $data);
 	}
 
 	/**
