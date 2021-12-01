@@ -306,15 +306,56 @@ class Cortex_Admin {
 	 * @method render_fields
 	 * @since 2.0.0
 	 */
-	public function render_fields($fields, $post_id) {
+	public function render_fields($fields, $block_id) {
+
+		global $post;
+
+		static $blocks = null;
+
+		// if ($blocks == null) {
+		// 	var_dump(
+		// 		$args = acf_request_args(
+		// 			array(
+		// 				'block'   => false,
+		// 				'post_id' => 0,
+		// 				'query'   => array(),
+		// 			)
+		// 		)
+
+		// 	);
+		// 	// $blocks = parse_blocks(get_post($block_id)->post_content);
+		// 	// var_dump($blocks);
+		// 	// var_dump($fields);
+		// 	exit;
+		// }
 
 		extract(acf_request_args(array(
 			'block' => false,
 		)));
 
-		$block = wp_unslash($block);
-		$block = json_decode($block, true);
-		$block = acf_prepare_block($block);
+		if ($block) {
+
+			$block = wp_unslash($block);
+			$block = json_decode($block, true);
+			$block = acf_prepare_block($block);
+
+		} else {
+
+			if ($blocks == null) {
+				$blocks = parse_blocks($post->post_content);
+			}
+
+			foreach ($blocks as $entry) {
+
+				if ($entry['blockName'] == null) {
+					continue;
+				}
+
+				if ($entry['attrs']['id'] == $block_id) {
+					$block = acf_get_block_type($entry['blockName']);
+				}
+			}
+		}
 
 		if ($block) {
 			echo '<div class="acf-block-title">' . $block['title'] . '</div>';
