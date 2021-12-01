@@ -312,23 +312,6 @@ class Cortex_Admin {
 
 		static $blocks = null;
 
-		// if ($blocks == null) {
-		// 	var_dump(
-		// 		$args = acf_request_args(
-		// 			array(
-		// 				'block'   => false,
-		// 				'post_id' => 0,
-		// 				'query'   => array(),
-		// 			)
-		// 		)
-
-		// 	);
-		// 	// $blocks = parse_blocks(get_post($block_id)->post_content);
-		// 	// var_dump($blocks);
-		// 	// var_dump($fields);
-		// 	exit;
-		// }
-
 		extract(acf_request_args(array(
 			'block' => false,
 		)));
