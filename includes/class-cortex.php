@@ -376,7 +376,7 @@ class Cortex {
 
 		$this->loader->add_action('acf/init', $this, 'load');
 		$this->loader->add_action('acf/get_field_groups', $this, 'load_field_groups', 30);
-		$this->loader->add_filter('block_categories', $this, 'register_categories', 10, 2);
+		$this->loader->add_filter('block_categories_all', $this, 'register_categories', 10, 2);
 	}
 
 	/**
