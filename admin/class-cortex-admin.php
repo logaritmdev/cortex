@@ -418,20 +418,15 @@ class Cortex_Admin {
 								let h = window.innerHeight
 								let b = getComputedStyle(document.body).backgroundColor
 
-								domtoimage.toPng(document.body.children[0], {
-									bgcolor:b,
-									width: w,
-									height: w
-								}).then(function(url) {
-
+								html2canvas(document.body.children[0]).then(function(canvas) {
+									
 									if (parent) {
 										parent.postMessage(JSON.stringify({
 											'action': 'render_complete',
 											'target': data.target,
-											'data': url
+											'data': canvas.toDataURL()
 										}))
 									}
-
 								})
 							}
 
@@ -439,7 +434,7 @@ class Cortex_Admin {
 
 					</script>
 
-					<script type="text/javascript" src="<?php echo plugins_url('/assets/scripts/vendors/dom-to-image.min.js', __FILE__) ?>"></script>
+					<script type="text/javascript" src="<?php echo plugins_url('/assets/scripts/vendors/html-2-canvas.min.js', __FILE__) ?>"></script>
 
 				</body>
 				</html>
