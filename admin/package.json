@@ -1,0 +1,45 @@
+{
+  "name": "cortex-admin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Jean-Philippe Dery",
+  "repository": "",
+  "license": "MIT",
+  "scripts": {
+    "clean": "gulp clean --gulpfile ./assets/build/gulpfile.js --cwd ./",
+    "build": "gulp build --gulpfile ./assets/build/gulpfile.js --cwd ./",
+    "build:images": "gulp images --gulpfile ./assets/build/gulpfile.js --cwd ./",
+    "build:styles": "gulp styles --gulpfile ./assets/build/gulpfile.js --cwd ./",
+    "build:scripts": "gulp scripts --gulpfile ./assets/build/gulpfile.js --cwd ./",
+    "build:prod": "gulp build --production --gulpfile ./assets/build/gulpfile.js --cwd ./",
+    "start": "gulp watch --gulpfile ./assets/build/gulpfile.js --cwd ./"
+  },
+  "engines": {
+    "node": ">= 8.5.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.6",
+    "autoprefixer": "^10.3.6",
+    "babelify": "^10.0.0",
+    "browser-sync": "^2.27.5",
+    "browserify": "^17.0.0",
+    "gulp": "^4.0.2",
+    "gulp-bro": "^2.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-cssnano": "^2.1.3",
+    "gulp-dart-sass": "^1.0.2",
+    "gulp-flatten": "^0.4.0",
+    "gulp-if": "^3.0.0",
+    "gulp-imagemin": "^7.1.0",
+    "gulp-postcss": "^9.0.1",
+    "gulp-util": "^3.0.8",
+    "gulp-webp": "^4.0.1",
+    "merge-stream": "^2.0.0",
+    "sass": "^1.42.1",
+    "sass-graph": "^3.0.5",
+    "through2": "^4.0.2",
+    "uglifyify": "^5.0.2"
+  }
+}

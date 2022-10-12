@@ -1,35 +1,34 @@
-(function($) {
-"use strict"
+(function ($) {
 
-$.attach('.cortex-modal', function(i, element) {
+	$.attach('.cortex-modal', function (i, element) {
 
-	//--------------------------------------------------------------------------
-	// Callbacks
-	//--------------------------------------------------------------------------
+		//--------------------------------------------------------------------------
+		// Callbacks
+		//--------------------------------------------------------------------------
 
-	/**
-	 * @callback onPresent
-	 * @since 0.1.0
-	 */
-	element.on('present', function() {
-		element.toggleClass('cortex-modal-visible', true)
+		/**
+		 * @callback onPresent
+		 * @since 0.1.0
+		 */
+		element.on('present', function () {
+			element.toggleClass('cortex-modal-visible', true)
+		})
+
+		/**
+		 * @callback onDismiss
+		 * @since 0.1.0
+		 */
+		element.on('dismiss', function () {
+			element.toggleClass('cortex-modal-visible', false)
+		})
+
+		//--------------------------------------------------------------------------
+		// Events
+		//--------------------------------------------------------------------------
+
+		element.on('click', '.cortex-modal-close', function () {
+			element.trigger('dismiss')
+		})
 	})
-
-	/**
-	 * @callback onDismiss
-	 * @since 0.1.0
-	 */
-	element.on('dismiss', function() {
-		element.toggleClass('cortex-modal-visible', false)
-	})
-
-	//--------------------------------------------------------------------------
-	// Events
-	//--------------------------------------------------------------------------
-
-	element.on('click', '.cortex-modal-close', function() {
-		element.trigger('dismiss')
-	})
-})
 
 })(jQuery);

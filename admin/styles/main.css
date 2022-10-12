@@ -1,5 +1,449 @@
-.cortex-modal{position:fixed;top:0;right:0;bottom:0;left:0;display:-moz-flex;display:-ms-flexbox;display:flex;-moz-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-ms-flex-align:center;-moz-align-items:center;align-items:center;-ms-flex-pack:center;-moz-justify-content:center;justify-content:center;background:rgba(0,0,0,.7);min-height:360px;min-width:360px;opacity:0;padding:32px;transition-property:opacity,visibility;transition-duration:.25s;visibility:hidden;z-index:159900}.cortex-modal.cortex-modal-visible{opacity:1;visibility:visible}.cortex-modal.cortex-modal-loading:after{position:absolute;top:50%;left:50%;background:url(../images/spinner.gif) no-repeat;background-size:20px 20px;content:"";display:block;margin-top:-10px;margin-left:-10px;height:20px;width:20px}.cortex-modal-content{position:relative;background:#f1f1f1;box-shadow:0 5px 15px rgba(0,0,0,.7);height:100%;transition-property:transform,opacity,visibility;transition-duration:.25s;transform:scale(.95);width:100%}.cortex-modal-visible .cortex-modal-content{transform:scale(1)}.cortex-modal-content-head{position:absolute;top:0;right:0;left:0;display:-moz-flex;display:-ms-flexbox;display:flex;-moz-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-ms-flex-align:center;-moz-align-items:center;align-items:center;-ms-flex-pack:start;-moz-justify-content:flex-start;justify-content:flex-start;background:#fcfcfc;border:none;border-bottom:1px solid #ddd;font-size:20px;font-weight:600;height:50px;padding-left:16px;padding-right:16px;z-index:100}.cortex-modal-content-body{position:absolute;top:50px;right:0;bottom:0;left:0;opacity:1;overflow:hidden;transition-property:transform,opacity,visibility;transition-duration:.15s;z-index:50}.cortex-modal-loading .cortex-modal-content-body{opacity:0}.cortex-modal-close{position:absolute;top:0;right:0;background:0 0;border:1px solid transparent;color:#666;cursor:pointer;height:50px;margin:0;outline:0;padding:0;width:50px;z-index:1000}.cortex-modal-close-icon:before{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;content:"\f158";font:normal 20px/1 dashicons;speak:none;vertical-align:middle}.cortex-create-block-modal iframe,.cortex-update-block-modal iframe{height:100%;width:100%}.cortex-admin-blocks-page .wp-list-table .column-icon{width:20px}#cortex_block_editor .inside{margin:0;padding:0}#cortex_block_editor .cortex-block-editor{height:400px}#cortex_style_editor .inside{margin:0;padding:0}#cortex_style_editor .cortex-style-editor{height:400px}#cortex_script_editor .inside{margin:0;padding:0}#cortex_script_editor .cortex-script-editor{height:400px}#cortex_create_block .inside,#cortex_update_block .inside{padding:0;margin:0}@keyframes cortex-reload-rotate{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}.cortex-text-editor.invalid{position:relative;border:5px solid #dc3232}.cortex-text-editor .cortex-reload{position:absolute;top:12px;left:12px;background:#dc3232 url(../images/reload.svg) no-repeat 50%;background-size:18px 18px;border-radius:22px;cursor:pointer;height:32px;width:32px;z-index:1000}.cortex-text-editor .cortex-reload.cortex-reload-reloading{animation:cortex-reload-rotate infinite 1s linear}.cortex-text-editor .cortex-reload:hover{background-color:#f73a3a}.cortex-create-block-page .wrap,.cortex-update-block-page .wrap{margin:12px;margin-left:54px;margin-right:54px}.cortex-create-block-page .media-modal,.cortex-update-block-page .media-modal{bottom:100px}.cortex-create-block-page #wpcontent,.cortex-update-block-page #wpcontent{margin:0!important;padding:0;padding-bottom:100px}.cortex-create-block-page #adminmenumain,.cortex-create-block-page #footer-left,.cortex-create-block-page #footer-upgrade,.cortex-create-block-page #screen-meta-links,.cortex-create-block-page #wpadminbar,.cortex-create-block-page .wp-header-end,.cortex-create-block-page .wp-heading-inline,.cortex-update-block-page #adminmenumain,.cortex-update-block-page #footer-left,.cortex-update-block-page #footer-upgrade,.cortex-update-block-page #screen-meta-links,.cortex-update-block-page #wpadminbar,.cortex-update-block-page .wp-header-end,.cortex-update-block-page .wp-heading-inline{display:none!important}.cortex-create-block-page .update-nag,.cortex-update-block-page .update-nag{display:none}.cortex-create-block-page .page-title-action,.cortex-update-block-page .page-title-action{display:none!important}.cortex-create-block-page #postbox-container-1,.cortex-update-block-page #postbox-container-1{position:absolute;right:0;bottom:0;left:0}.cortex-create-block-page #poststuff,.cortex-update-block-page #poststuff{margin:0!important;padding:0!important}.cortex-create-block-page #post-body.columns-1,.cortex-create-block-page #post-body.columns-2,.cortex-create-block-page #post-body.columns-3,.cortex-update-block-page #post-body.columns-1,.cortex-update-block-page #post-body.columns-2,.cortex-update-block-page #post-body.columns-3{margin:0!important}.cortex-create-block-page #submitdiv,.cortex-update-block-page #submitdiv{position:fixed;right:0;bottom:0;left:0;border:none;border-top:1px solid #e5e5e5;box-shadow:none;margin:0;z-index:1000000}.cortex-create-block-page #submitdiv #minor-publishing,.cortex-create-block-page #submitdiv .handlediv,.cortex-create-block-page #submitdiv h2,.cortex-create-block-page #submitdiv h3,.cortex-update-block-page #submitdiv #minor-publishing,.cortex-update-block-page #submitdiv .handlediv,.cortex-update-block-page #submitdiv h2,.cortex-update-block-page #submitdiv h3{display:none}.cortex-create-block-page #submitdiv #major-publishing-actions,.cortex-update-block-page #submitdiv #major-publishing-actions{border:none;background:#fff}.cortex-create-block-page #delete-action,.cortex-update-block-page #delete-action{display:none}.cortex-create-block-page #acf-field-group-locations,.cortex-create-block-page #acf-field-group-options,.cortex-create-block-page #commentsdiv,.cortex-create-block-page #commentstatusdiv,.cortex-update-block-page #acf-field-group-locations,.cortex-update-block-page #acf-field-group-options,.cortex-update-block-page #commentsdiv,.cortex-update-block-page #commentstatusdiv{display:none!important}.cortex-update-block-page #delete-action,.cortex-update-block-page .page-title-action{display:none}.cortex-preview{position:relative;min-height:100px;max-height:500px}.cortex-preview .cortex-preview-image,.cortex-preview canvas{background-position:50%;background-repeat:no-repeat;background-size:contain;display:block;max-width:none;max-height:none;height:auto;width:100%}.cortex-preview-spinner{position:absolute;top:50%;left:50%;background:url(../images/spinner.gif) no-repeat;background-size:20px 20px;content:"";display:block;margin-top:-10px;margin-left:-10px;height:20px;width:20px}.edit-post-layout__content{background:#f5f5f5}.edit-post-layout__metaboxes{background:#fff}.edit-post-layout__metaboxes:not(:empty) .edit-post-meta-boxes-area{margin:0}.edit-post-layout__metaboxes .acf-postbox>.inside{padding:8px 6px!important}.mce-tinymce{box-shadow:none!important}.mce-toolbar-grp{background:#fff!important}.block-editor-block-list__layout .block-editor-block-list__block.is-focus-mode:not(.is-multi-selected){opacity:1}.block-editor-block-list__block.is-focus-mode:not(.is-multi-selected)>.block-editor-block-list__block-edit>.block-editor-block-contextual-toolbar{margin-left:0}.wp-block{max-width:960px;padding-top:24px;padding-bottom:24px}.wp-block .wp-block{padding-left:72px;padding-right:72px}.block-list-appender{padding-left:46px;padding-right:46px}.editor-inner-blocks{position:relative}.editor-inner-blocks:before{position:absolute;top:54px;bottom:0;left:0;background:#ccc;content:"";display:block;width:1px}.acf-block-title{font-weight:700;font-size:13px;padding:16px 20px;border-bottom:1px solid #eee;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
-/*# sourceMappingURL=main.css.map */
+.cortex-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  min-height: 360px;
+  min-width: 360px;
+  opacity: 0;
+  padding: 32px;
+  transition-property: opacity, visibility;
+  transition-duration: 250ms;
+  visibility: hidden;
+  z-index: 159900;
+}
+.cortex-modal.cortex-modal-visible {
+  opacity: 1;
+  visibility: visible;
+}
+.cortex-modal.cortex-modal-loading:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: url(../images/spinner.gif) no-repeat;
+  background-size: 20px 20px;
+  content: "";
+  display: block;
+  margin-top: -10px;
+  margin-left: -10px;
+  height: 20px;
+  width: 20px;
+}
+
+.cortex-modal-content {
+  position: relative;
+  background: #f1f1f1;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.7);
+  height: 100%;
+  transition-property: transform, opacity, visibility;
+  transition-duration: 250ms;
+  transform: scale(0.95);
+  width: 100%;
+}
+.cortex-modal-visible .cortex-modal-content {
+  transform: scale(1);
+}
+
+.cortex-modal-content-head {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  align-items: center;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  justify-content: flex-start;
+  background: #fcfcfc;
+  border: none;
+  border-bottom: 1px solid #dddddd;
+  font-size: 20px;
+  font-weight: 600;
+  height: 50px;
+  padding-left: 16px;
+  padding-right: 16px;
+  z-index: 100;
+}
+
+.cortex-modal-content-body {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 1;
+  overflow: hidden;
+  transition-property: transform, opacity, visibility;
+  transition-duration: 150ms;
+  z-index: 50;
+}
+.cortex-modal-loading .cortex-modal-content-body {
+  opacity: 0;
+}
+
+.cortex-modal-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: 0 0;
+  border: 1px solid transparent;
+  color: #666;
+  cursor: pointer;
+  height: 50px;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  width: 50px;
+  z-index: 1000;
+}
+
+.cortex-modal-close-icon:before {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  content: "\f158";
+  font: normal 20px/1 dashicons;
+  speak: none;
+  vertical-align: middle;
+}
+
+/* Create / Update Block Modal */
+.cortex-create-block-modal iframe,
+.cortex-update-block-modal iframe {
+  height: 100%;
+  width: 100%;
+}
+
+.cortex-admin-blocks-page .wp-list-table .column-icon {
+  width: 20px;
+}
+
+#cortex_block_editor .inside {
+  margin: 0px;
+  padding: 0px;
+}
+#cortex_block_editor .cortex-block-editor {
+  height: 400px;
+}
+
+#cortex_style_editor .inside {
+  margin: 0px;
+  padding: 0px;
+}
+#cortex_style_editor .cortex-style-editor {
+  height: 400px;
+}
+
+#cortex_script_editor .inside {
+  margin: 0px;
+  padding: 0px;
+}
+#cortex_script_editor .cortex-script-editor {
+  height: 400px;
+}
+
+#cortex_create_block .inside {
+  padding: 0px;
+  margin: 0px;
+}
+
+#cortex_update_block .inside {
+  padding: 0px;
+  margin: 0px;
+}
+
+@keyframes cortex-reload-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.cortex-text-editor.invalid {
+  position: relative;
+  border: 5px solid #dc3232;
+}
+.cortex-text-editor .cortex-reload {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #dc3232 url(../images/reload.svg) no-repeat center center;
+  background-size: 18px 18px;
+  border-radius: 22px;
+  cursor: pointer;
+  height: 32px;
+  width: 32px;
+  z-index: 1000;
+}
+.cortex-text-editor .cortex-reload.cortex-reload-reloading {
+  animation: cortex-reload-rotate infinite 1s linear;
+}
+.cortex-text-editor .cortex-reload:hover {
+  background-color: #f73a3a;
+}
+
+.cortex-create-block-page .wrap,
+.cortex-update-block-page .wrap {
+  margin: 12px;
+  margin-left: 54px;
+  margin-right: 54px;
+}
+.cortex-create-block-page .media-modal,
+.cortex-update-block-page .media-modal {
+  bottom: 100px;
+}
+.cortex-create-block-page #wpcontent,
+.cortex-update-block-page #wpcontent {
+  margin: 0px !important;
+  padding: 0px;
+  padding-bottom: 100px;
+}
+.cortex-create-block-page #wpadminbar,
+.cortex-update-block-page #wpadminbar {
+  display: none !important;
+}
+.cortex-create-block-page #adminmenumain,
+.cortex-update-block-page #adminmenumain {
+  display: none !important;
+}
+.cortex-create-block-page #footer-left,
+.cortex-create-block-page #footer-upgrade,
+.cortex-update-block-page #footer-left,
+.cortex-update-block-page #footer-upgrade {
+  display: none !important;
+}
+.cortex-create-block-page #screen-meta-links,
+.cortex-update-block-page #screen-meta-links {
+  display: none !important;
+}
+.cortex-create-block-page .wp-header-end,
+.cortex-update-block-page .wp-header-end {
+  display: none !important;
+}
+.cortex-create-block-page .wp-heading-inline,
+.cortex-update-block-page .wp-heading-inline {
+  display: none !important;
+}
+.cortex-create-block-page .update-nag,
+.cortex-update-block-page .update-nag {
+  display: none;
+}
+.cortex-create-block-page .page-title-action,
+.cortex-update-block-page .page-title-action {
+  display: none !important;
+}
+.cortex-create-block-page #postbox-container-1,
+.cortex-update-block-page #postbox-container-1 {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.cortex-create-block-page #poststuff,
+.cortex-update-block-page #poststuff {
+  margin: 0px !important;
+  padding: 0px !important;
+}
+.cortex-create-block-page #post-body.columns-1,
+.cortex-create-block-page #post-body.columns-2,
+.cortex-create-block-page #post-body.columns-3,
+.cortex-update-block-page #post-body.columns-1,
+.cortex-update-block-page #post-body.columns-2,
+.cortex-update-block-page #post-body.columns-3 {
+  margin: 0px !important;
+}
+.cortex-create-block-page #submitdiv,
+.cortex-update-block-page #submitdiv {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  box-shadow: none;
+  margin: 0px;
+  z-index: 1000000;
+}
+.cortex-create-block-page #submitdiv h2,
+.cortex-create-block-page #submitdiv h3,
+.cortex-create-block-page #submitdiv .handlediv,
+.cortex-create-block-page #submitdiv #minor-publishing,
+.cortex-update-block-page #submitdiv h2,
+.cortex-update-block-page #submitdiv h3,
+.cortex-update-block-page #submitdiv .handlediv,
+.cortex-update-block-page #submitdiv #minor-publishing {
+  display: none;
+}
+.cortex-create-block-page #submitdiv #major-publishing-actions,
+.cortex-update-block-page #submitdiv #major-publishing-actions {
+  border: none;
+  background: #fff;
+}
+.cortex-create-block-page #delete-action,
+.cortex-update-block-page #delete-action {
+  display: none;
+}
+.cortex-create-block-page #acf-field-group-locations,
+.cortex-create-block-page #acf-field-group-options,
+.cortex-create-block-page #commentstatusdiv,
+.cortex-create-block-page #commentsdiv,
+.cortex-update-block-page #acf-field-group-locations,
+.cortex-update-block-page #acf-field-group-options,
+.cortex-update-block-page #commentstatusdiv,
+.cortex-update-block-page #commentsdiv {
+  display: none !important;
+}
+
+.cortex-update-block-page {
+  /* ACF 6 */
+}
+.cortex-update-block-page #delete-action {
+  display: none;
+}
+.cortex-update-block-page .page-title-action {
+  display: none;
+}
+.cortex-update-block-page .acf-headerbar {
+  position: fixed;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.cortex-update-block-page .acf-headerbar-content {
+  visibility: hidden;
+}
+.cortex-update-block-page .acf-headerbar-actions .acf-btn:not(.acf-publish) {
+  display: none;
+}
+.cortex-update-block-page .post-type-acf-field-group .metabox-holder.columns-1 .meta-box-sortables.ui-sortable {
+  max-width: none;
+}
+
+/* Preview */
+.cortex-preview {
+  position: relative;
+  min-height: 100px;
+  max-height: 500px;
+}
+.cortex-preview .cortex-preview-image, .cortex-preview canvas {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  max-width: none;
+  max-height: none;
+  height: auto;
+  width: 100%;
+}
+
+.cortex-preview-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: url(../images/spinner.gif) no-repeat;
+  background-size: 20px 20px;
+  content: "";
+  display: block;
+  margin-top: -10px;
+  margin-left: -10px;
+  height: 20px;
+  width: 20px;
+}
+
+/* Gutenberg */
+.edit-post-layout__content {
+  background: #F5F5F5;
+}
+
+.edit-post-layout__metaboxes {
+  background: #FFFFFF;
+}
+
+.edit-post-layout__metaboxes .edit-post-meta-boxes-area {
+  margin: 0px !important;
+}
+
+.edit-post-layout__metaboxes .acf-postbox > .inside {
+  padding: 8px 6px !important;
+}
+
+.editor-block-list__breadcrumb {
+  display: none !important;
+}
+
+.block-editor-block-list__layout .block-editor-block-list__block.is-focus-mode {
+  opacity: 1;
+}
+
+.wp-block {
+  max-width: 960px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+.wp-block .wp-block {
+  padding-left: 72px;
+  padding-right: 72px;
+}
+
+.wp-block .block-list-appender {
+  padding-left: 46px;
+  padding-right: 46px;
+}
+
+.acf-block-preview {
+  background: #FFFFFF;
+  border: 1px solid #EEEEEE;
+  padding: 16px 20px;
+}
+
+.acf-block-title {
+  font-weight: bold;
+  font-size: 13px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #EEEEEE;
+  user-select: none;
+}
+
 .acf-field .acf-label label {
-	font-size: 13px;
+  font-size: 13px;
 }

@@ -117,4 +117,4 @@
 		element.on('dismiss', onDismiss)
 	})
 
-})(jQuery);
+})(jQuery)

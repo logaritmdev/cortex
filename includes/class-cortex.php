@@ -114,9 +114,11 @@ class Cortex {
 			return;
 		}
 
+		$post_id = isset($post->ID) ? $post->ID : 0;
+
 		$block->enqueue_styles();
 		$block->enqueue_scripts();
-		$block->display(0, $post->ID, $data);
+		$block->display(0, $post_id, $data);
 	}
 
 	/**
@@ -722,10 +724,22 @@ class Cortex {
 					$preview = is_admin();
 				}
 
+				/**
+				 * Sometime, for unknown reasons, get_fields will return false
+				 * until the post is saved again. We have the data in the block data
+				 * so this is kind of a backup plan.
+				 */
+
+				$data = get_fields();
+
+				if ($data == null) {
+					$data = $block_data['data'];
+				}
+
 				if ($preview) {
-					$block->preview($block_data['id'], $post, get_fields());
+					$block->preview($block_data['id'], $post, $data);
 				} else {
-					$block->display($block_data['id'], $post, get_fields());
+					$block->display($block_data['id'], $post, $data);
 				}
 
 			};

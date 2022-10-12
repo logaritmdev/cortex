@@ -1,104 +1,103 @@
-(function($) {
-"use strict"
+(function ($) {
 
-//------------------------------------------------------------------------------
-// Variables
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
+	// Variables
+	//------------------------------------------------------------------------------
 
-/**
- * The attached element ids.
- * @var selectors
- * @since 1.1.0
- */
-var ids = 1
+	/**
+	 * The attached element ids.
+	 * @var selectors
+	 * @since 1.1.0
+	 */
+	var ids = 1
 
-/**
- * The selector bounds to callbacks.
- * @var selectors
- * @since 0.1.0
- */
-var selectors = []
+	/**
+	 * The selector bounds to callbacks.
+	 * @var selectors
+	 * @since 0.1.0
+	 */
+	var selectors = []
 
-//------------------------------------------------------------------------------
-// Functions
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
+	// Functions
+	//------------------------------------------------------------------------------
 
-/**
- * Attach a callback to a selector.
- * @function attach
- * @since 0.1.0
- */
-$.attach = function(selector, callback) {
+	/**
+	 * Attach a callback to a selector.
+	 * @function attach
+	 * @since 0.1.0
+	 */
+	$.attach = function (selector, callback) {
 
-	var element = {
-		selector: selector,
-		callback: callback
+		var element = {
+			selector: selector,
+			callback: callback
+		}
+
+		selectors.push(element)
 	}
 
-	selectors.push(element)
-}
+	/**
+	 * Executes all callbacks from a specific element.
+	 * @function attach.refresh
+	 * @since 0.1.0
+	 */
+	$.attach.refresh = function (root) {
 
-/**
- * Executes all callbacks from a specific element.
- * @function attach.refresh
- * @since 0.1.0
- */
-$.attach.refresh = function(root) {
+		var element = $(root || document.body)
 
-	var element = $(root || document.body)
+		var process = function (elements) {
 
-	var process = function(elements) {
+			elements.each(function (i, element) {
 
-		elements.each(function(i, element) {
+				element = $(element)
 
-			element = $(element)
-
-			$.each(selectors, function(i, builder) {
-				var selector = builder.selector
-				var callback = builder.callback
-				if (selector && callback) {
-					if (element.is(selector)) {
-						element.attr('data-attach-id', ids++)
-						callback(i, element)
+				$.each(selectors, function (i, builder) {
+					var selector = builder.selector
+					var callback = builder.callback
+					if (selector && callback) {
+						if (element.is(selector)) {
+							element.attr('data-attach-id', ids++)
+							callback(i, element)
+						}
 					}
-				}
+				})
+
+				process(element.children())
 			})
+		}
 
-			process(element.children())
-		})
+		process(element)
 	}
 
-	process(element)
-}
+	/**
+	 * Triggers the detach listener on all attached element.
+	 * @function detach
+	 * @since 0.1.0
+	 */
+	$.detach = function (root) {
 
-/**
- * Triggers the detach listener on all attached element.
- * @function detach
- * @since 0.1.0
- */
-$.detach = function(root) {
+		var element = $(root || document.body)
 
-	var element = $(root || document.body)
+		var process = function (elements) {
 
-	var process = function(elements) {
+			elements.each(function (i, element) {
 
-		elements.each(function(i, element) {
+				element = $(element)
 
-			element = $(element)
+				if (element.is('[data-attach-id]')) {
+					element.trigger('detach')
+				}
 
-			if (element.is('[data-attach-id]')) {
-				element.trigger('detach')
-			}
+				process(element.children())
+			})
+		}
 
-			process(element.children())
-		})
+		process(element)
 	}
 
-	process(element)
-}
+	$(document).ready(function () {
+		$.attach.refresh()
+	})
 
-$(document).ready(function() {
-	$.attach.refresh()
-})
-
-})(jQuery);
+})(jQuery)

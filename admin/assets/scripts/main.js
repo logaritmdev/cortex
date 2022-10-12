@@ -1,6 +1,11 @@
+import './vendors/dom-to-image.min'
+import './plugins/jquery-attach'
+import './components/cortex-admin-blocks-page'
+import './components/cortex-admin-settings-page'
+import './components/cortex-modal'
+
 (function ($) {
 
-	"use strict"
 
 	var Cortex = window.Cortex = {
 
@@ -238,4 +243,4 @@
 		})
 	})
 
-})(jQuery);
+})(jQuery)

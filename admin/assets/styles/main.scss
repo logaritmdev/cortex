@@ -204,6 +204,31 @@
 	.page-title-action {
 		display: none;
 	}
+
+	/* ACF 6 */
+
+	.acf-headerbar {
+		@include fixed(
+			top    auto
+			left   0
+			right  0
+			bottom 0
+		);
+	}
+
+	.acf-headerbar-content {
+		visibility: hidden;
+	}
+
+	.acf-headerbar-actions {
+		.acf-btn:not(.acf-publish) {
+			display: none;
+		}
+	}
+
+	.post-type-acf-field-group .metabox-holder.columns-1 .meta-box-sortables.ui-sortable {
+		max-width: none;
+	}
 }
 
 /* Preview */
