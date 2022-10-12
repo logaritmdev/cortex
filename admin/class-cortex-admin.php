@@ -334,6 +334,10 @@ class Cortex_Admin {
 					continue;
 				}
 
+				if (isset($entry['attrs']['id']) == false) {
+					continue;
+				}
+
 				if ($entry['attrs']['id'] == $block_id) {
 					$block = acf_get_block_type($entry['blockName']);
 				}
