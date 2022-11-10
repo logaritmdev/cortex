@@ -365,6 +365,8 @@ class Cortex_Admin {
 			return;
 		}
 
+		$id = str_replace('block_', '', $id);
+
 		$target = null;
 		$blocks = parse_blocks(get_post($post)->post_content);
 

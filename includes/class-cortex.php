@@ -377,6 +377,7 @@ class Cortex {
 		$this->define_twig_hooks();
 
 		$this->loader->add_action('acf/init', $this, 'load');
+		$this->loader->add_action('acf/pre_save_block', $this, 'generate_block_id');
 		$this->loader->add_action('acf/get_field_groups', $this, 'load_field_groups', 30);
 		$this->loader->add_filter('block_categories_all', $this, 'register_categories', 10, 2);
 	}
@@ -782,6 +783,20 @@ class Cortex {
 				'render_callback' => $render,
 			));
 		}
+	}
+
+	/**
+	 * Generates an id since ACF does not do it since 6.0
+	 * @method generate_block_id
+	 * @since 2.1.6
+	 */
+	public function generate_block_id($attributes) {
+
+		if (empty($attributes['id'])) {
+			$attributes['id'] = uniqid();
+		}
+
+		return $attributes;
 	}
 
 	/**
