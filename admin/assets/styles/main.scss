@@ -40,19 +40,25 @@
 	}
 }
 
-#cortex_create_block {
+#cortex_create_block,
+#cortex_update_block {
+
 	.inside {
 		padding: 0px;
 		margin: 0px;
+	}
+
+	.acf-label {
+		@include flex-box;
+		@include flex-col(flex-start, flex-start);
+	}
+
+	.acf-bl > li {
+		@include flex-box;
+		@include flex-row(center, flex-start);
 	}
 }
 
-#cortex_update_block {
-	.inside {
-		padding: 0px;
-		margin: 0px;
-	}
-}
 
 @keyframes cortex-reload-rotate {
 	from {
@@ -193,17 +199,6 @@
 	#commentsdiv {
 		display: none !important;
 	}
-}
-
-.cortex-update-block-page {
-
-	#delete-action {
-		display: none;
-	}
-
-	.page-title-action {
-		display: none;
-	}
 
 	/* ACF 6 */
 
@@ -216,8 +211,32 @@
 		);
 	}
 
-	.acf-headerbar-content {
-		visibility: hidden;
+	.acf-headerbar-actions {
+		.acf-btn:not(.acf-publish) {
+			display: none;
+		}
+	}
+
+	/* ACF 6 */
+
+	.acf-headerbar {
+
+		@include fixed(
+			top    auto
+			left   0
+			right  0
+			bottom 0
+		);
+
+		border-top: 1px solid #EAECF0;
+
+		.acf-headerbar-inner {
+			max-width: none;
+		}
+	}
+
+	.acf-headerbar-field-editor .acf-page-title {
+		display: none
 	}
 
 	.acf-headerbar-actions {
@@ -226,8 +245,20 @@
 		}
 	}
 
-	.post-type-acf-field-group .metabox-holder.columns-1 .meta-box-sortables.ui-sortable {
+	&.post-type-acf-field-group .metabox-holder.columns-1 .meta-box-sortables.ui-sortable,
+	&.post-type-acf-field-group .metabox-holder.columns-1 #acf-field-group-fields {
 		max-width: none;
+	}
+}
+
+.cortex-update-block-page {
+
+	#delete-action {
+		display: none;
+	}
+
+	.page-title-action {
+		display: none;
 	}
 }
 

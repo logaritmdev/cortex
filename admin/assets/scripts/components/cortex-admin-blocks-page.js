@@ -103,6 +103,10 @@
 
 			var contents = content.contents()
 
+			contents.find('.acf-btn.acf-publish').on('click', function () {
+				element.toggleClass('cortex-modal-loading', true)
+			})
+
 			var message = contents.find('#message.notice.notice-success.updated')
 			if (message.length) {
 				location.reload()
