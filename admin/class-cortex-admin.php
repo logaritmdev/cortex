@@ -322,7 +322,7 @@ class Cortex_Admin {
 			$block = json_decode($block, true);
 			$block = acf_prepare_block($block);
 
-		} else {
+		} else if ($post !== null) {
 
 			if ($blocks == null) {
 				$blocks = parse_blocks($post->post_content);
