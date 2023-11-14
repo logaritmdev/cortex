@@ -323,8 +323,10 @@
 .wp-block {
 
 	max-width: 960px;
-	padding-top: 24px;
-	padding-bottom: 24px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 48px;
+	margin-bottom: 48px;
 
 	.wp-block & {
 		padding-left: 72px;

@@ -362,7 +362,11 @@ class Cortex {
 	 */
 	public function __construct() {
 
-		@session_start();
+		if (session_id() == '') {
+			session_start([
+				'read_and_close' => true,
+			]);
+		}
 
 		$this->plugin_name = 'cortex';
 		$this->plugin_version = CORTEX_PLUGIN_VERSION;
@@ -434,8 +438,8 @@ class Cortex {
 
 		$this->loader->add_action('wp_ajax_get_block_file_date', $plugin_admin, 'get_block_file_date');
 		$this->loader->add_action('wp_ajax_get_block_file_data', $plugin_admin, 'get_block_file_data');
-		$this->loader->add_action('wp_ajax_render_block', $plugin_admin, 'render_block');
 		$this->loader->add_action('wp_ajax_save_preview', $plugin_admin, 'save_preview');
+		$this->loader->add_action('wp_ajax_render_block', $plugin_admin, 'render_block');
 		$this->loader->add_action('wp_ajax_nopriv_render_block', $plugin_admin, 'render_block');
 
 		$this->loader->add_action('acf/pre_render_fields', $plugin_admin, 'render_fields', 10, 2);
@@ -479,7 +483,9 @@ class Cortex {
 		add_filter('get_twig', function($twig) {
 
 			$twig->addFunction(new \Twig_SimpleFunction('render_block', function($type, $data) {
+
 				self::render_block($type, $data);
+
 			}));
 
 			$twig->addFilter(new \Twig_SimpleFilter('resized', function($image, $resizeW = null, $resizeH = null, $format = null) {

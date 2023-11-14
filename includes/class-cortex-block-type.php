@@ -561,10 +561,27 @@ class CortexBlockType {
 	 */
 	public function enqueue_styles() {
 
-		$url = apply_filters('cortex/enqueued_style_url', $this->get_style_file_url(), $this);
+		$inline = apply_filters('cortex/inline_style', $this);
 
-		if ($url) {
-			wp_enqueue_style('cortex/' . $this->type, $url, array(), $this->version , 'all');
+		if ($inline) {
+
+			$src = apply_filters('cortex/inline_style_src', $this->get_style_file_path(), $this);
+
+			if ($src) {
+				wp_register_style('cortex/' . $this->type, false);
+				wp_enqueue_style('cortex/' . $this->type);
+				wp_add_inline_style('cortex/' . $this->type, file_get_contents($src));
+			}
+
+		} else {
+
+			$url = apply_filters('cortex/enqueued_style_url', $this->get_style_file_url(), $this);
+			$ver = apply_filters('cortex/enqueued_style_ver', $this->version, $this);
+
+			if ($url) {
+				wp_enqueue_style('cortex/' . $this->type, $url, array(), $ver, 'all');
+			}
+
 		}
 
 		call_user_func(array($this->class, 'enqueue_styles'));
@@ -577,10 +594,27 @@ class CortexBlockType {
 	 */
 	public function enqueue_scripts() {
 
-		$url = apply_filters('cortex/enqueued_script_url', $this->get_script_file_url(), $this);
+		$inline = apply_filters('cortex/inline_script', $this);
 
-		if ($url) {
-			wp_enqueue_script('cortex/' . $this->type,  $url, array(), $this->version, true);
+		if ($inline) {
+
+			$src = apply_filters('cortex/inline_script_src', $this->get_script_file_path(), $this);
+
+			if ($src) {
+				wp_register_script('cortex/' . $this->type, false);
+				wp_enqueue_script('cortex/' . $this->type);
+				wp_add_inline_script('cortex/' . $this->type, file_get_contents($src));
+			}
+
+		} else {
+
+			$url = apply_filters('cortex/enqueued_script_url', $this->get_script_file_url(), $this);
+			$ver = apply_filters('cortex/enqueued_script_ver', $this->version, $this);
+
+			if ($url) {
+				wp_enqueue_script('cortex/' . $this->type, $url, array(), $ver, true);
+			}
+
 		}
 
 		call_user_func(array($this->class, 'enqueue_scripts'));
