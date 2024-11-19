@@ -725,6 +725,12 @@ class Cortex {
 
 			$render = function($block_data, $content, $preview, $post) use($block, $enqueue_style, $enqueue_script) {
 
+				if (isset($block_data['data']['__block_preview_image__']) &&
+					empty($block_data['data']['__block_preview_image__']) == false) {
+					echo '<img src="' . $block_data['data']['__block_preview_image__'] . '" style="width: 100%; height: auto">';
+					return;
+				}
+
 				// https://support.advancedcustomfields.com/forums/topic/preview-parm-on-acf_register_block_type-callback-fn/
 
 				if (is_object($preview)) {
@@ -753,6 +759,43 @@ class Cortex {
 
 			$category = sanitize_title($block->get_group());
 
+			$preview = null;
+			$options = [
+				'block.png',
+				'block.jpg',
+				'block.jpeg'
+			];
+
+			foreach ($options as $value) {
+
+				$path = (
+					$block->get_path() . '/' .
+					$value
+				);
+
+				$link = (
+					$block->get_link() . '/' .
+					$value
+				);
+
+				if (is_readable($path)) {
+					$preview = $link;
+					break;
+				}
+
+			}
+
+			$example = $preview ? array(
+
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'__block_preview_image__' => $preview
+					)
+				)
+
+			) : null;
+
 			acf_register_block(array(
 
 				'name'        => $block->get_type(),
@@ -765,6 +808,8 @@ class Cortex {
 				'supports'	=> array(
 					'align' => false,
 				),
+
+				'example' => $example,
 
 				'enqueue_style'  => '',
 				'enquele_script' => '',

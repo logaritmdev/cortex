@@ -3,14 +3,14 @@
  * Plugin Name:       Cortex
  * Plugin URI:        http://logaritm.ca/cortex
  * Description:       Page builder aimed at developpers that leverages the power of Advanced Custom Fields and Timber.
- * Version:           2.1.10
+ * Version:           2.1.11
  * Author:            Jean-Philippe Dery
  * Author URI:        http://logaritm.ca
  * Text Domain:       cortex
  * Domain Path:       /languages
  */
 
-define('CORTEX_PLUGIN_VERSION', '2.1.10');
+define('CORTEX_PLUGIN_VERSION', '2.1.11');
 
 // If this file is called directly, abort.
 if (defined('WPINC') == false) {

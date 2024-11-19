@@ -13,6 +13,13 @@ class CortexBlockType {
 	const SASS_FILE_PATH = 'assets/styles.scss';
 
 	//--------------------------------------------------------------------------
+	// Static
+	//--------------------------------------------------------------------------
+
+	static $inlined_styles = [];
+	static $inlined_scripts = [];
+
+	//--------------------------------------------------------------------------
 	// Properties
 	//--------------------------------------------------------------------------
 
@@ -568,9 +575,11 @@ class CortexBlockType {
 			$src = apply_filters('cortex/inline_style_src', $this->get_style_file_path(), $this);
 
 			if ($src) {
-				wp_register_style('cortex/' . $this->type, false);
-				wp_enqueue_style('cortex/' . $this->type);
-				wp_add_inline_style('cortex/' . $this->type, file_get_contents($src));
+
+				if ($this->has_inline_style() == false) {
+					$this->add_inline_style($src);
+				}
+
 			}
 
 		} else {
@@ -601,9 +610,11 @@ class CortexBlockType {
 			$src = apply_filters('cortex/inline_script_src', $this->get_script_file_path(), $this);
 
 			if ($src) {
-				wp_register_script('cortex/' . $this->type, false);
-				wp_enqueue_script('cortex/' . $this->type);
-				wp_add_inline_script('cortex/' . $this->type, file_get_contents($src));
+
+				if ($this->has_inline_script() == false) {
+					$this->add_inline_script($src);
+				}
+
 			}
 
 		} else {
@@ -618,6 +629,53 @@ class CortexBlockType {
 		}
 
 		call_user_func(array($this->class, 'enqueue_scripts'));
+	}
+
+	/**
+	 * @method has_inline_style.
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	private function has_inline_style() {
+		return in_array($this->type, self::$inlined_styles);
+	}
+
+	/**
+	 * @method add_inline_style.
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	private function add_inline_style($src) {
+
+		wp_register_style('cortex/' . $this->type, false);
+		wp_enqueue_style('cortex/' . $this->type);
+
+		wp_add_inline_style('cortex/' . $this->type, file_get_contents($src));
+
+		self::$inlined_styles[] = $this->type;
+	}
+
+	/**
+	 * @method has_inline_script.
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	private function has_inline_script() {
+		return in_array($this->type, self::$inlined_scripts);
+	}
+
+	/**
+	 * @method add_inline_script.
+	 * @since 2.0.0
+	 * @hidden
+	 */
+	private function add_inline_script($src) {
+
+		wp_register_script('cortex/' . $this->type, false);
+		wp_enqueue_script('cortex/' . $this->type);
+		wp_add_inline_script('cortex/' . $this->type, file_get_contents($src));
+
+		self::$inlined_scripts[] = $this->type;
 	}
 
 	/**
