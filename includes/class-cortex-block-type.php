@@ -570,7 +570,7 @@ class CortexBlockType {
 
 		$inline = apply_filters('cortex/inline_style', $this);
 
-		if ($inline) {
+		if ($inline === true) {
 
 			$src = apply_filters('cortex/inline_style_src', $this->get_style_file_path(), $this);
 
@@ -605,7 +605,7 @@ class CortexBlockType {
 
 		$inline = apply_filters('cortex/inline_script', $this);
 
-		if ($inline) {
+		if ($inline === true) {
 
 			$src = apply_filters('cortex/inline_script_src', $this->get_script_file_path(), $this);
 
