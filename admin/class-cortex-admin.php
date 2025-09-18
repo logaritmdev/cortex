@@ -320,6 +320,15 @@ class Cortex_Admin {
 
 			$block = wp_unslash($block);
 			$block = json_decode($block, true);
+
+			/**
+			 * Sets the ID key to prevent warnings. The ID is only used when
+			 * ACF uses the post meta storage for block, which this plugin
+			 * does not use.
+			 */
+
+			$block['id'] = '';
+
 			$block = acf_prepare_block($block);
 
 		} else if ($post !== null) {
