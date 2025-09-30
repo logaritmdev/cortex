@@ -138,7 +138,7 @@ class Number extends Node implements \ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         if ($offset === -3) {
             return $this->sourceColumn !== null;
@@ -162,7 +162,7 @@ class Number extends Node implements \ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         switch ($offset) {
             case -3:
@@ -188,7 +188,7 @@ class Number extends Node implements \ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         if ($offset === 1) {
             $this->dimension = $value;
@@ -206,7 +206,7 @@ class Number extends Node implements \ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if ($offset === 1) {
             $this->dimension = null;
