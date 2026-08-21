@@ -396,6 +396,7 @@ class Cortex {
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-loader.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-i18n.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-settings.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cortex-block-asset.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-cortex-admin.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-cortex-public.php';
 
@@ -425,8 +426,10 @@ class Cortex {
 
 		$plugin_admin = new Cortex_Admin($this, $this->get_plugin_name(), $this->get_plugin_version());
 
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+		$this->loader->add_action('enqueue_block_assets', $plugin_admin, 'enqueue_styles');
+		$this->loader->add_action('enqueue_block_assets', $plugin_admin, 'enqueue_scripts');
+		$this->loader->add_action('enqueue_block_assets', 'CortexBlockAsset', 'enqueue');
+
 		$this->loader->add_action('admin_init', $plugin_admin, 'validate_dependencies');
 		$this->loader->add_action('admin_init', $plugin_admin, 'synchronize');
 		$this->loader->add_action('admin_init', $plugin_admin, 'configure_meta_box');
@@ -459,8 +462,7 @@ class Cortex {
 			return;
 		}
 
-		$plugin_public = new Cortex_Public($this, $this->get_plugin_name(), $this->get_plugin_version());
-		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_block_assets', 10);
+		$this->loader->add_action('wp_enqueue_scripts', 'CortexBlockAsset', 'enqueue', 20);
 	}
 
 	/**
@@ -715,7 +717,7 @@ class Cortex {
 	public function register_blocks() {
 
 		$enqueue_style = get_option('cortex_enqueue_style_admin');
-		$enqueue_script = get_option('cortex_enqueue_style_admin');
+		$enqueue_script = get_option('cortex_enqueue_script_admin');
 
 		foreach (self::get_blocks() as $block) {
 
@@ -796,13 +798,15 @@ class Cortex {
 
 			) : null;
 
-			acf_register_block(array(
+			acf_register_block_type(array(
 
 				'name'        => $block->get_type(),
 				'title'       => $block->get_name(),
 				'description' => $block->get_hint(),
 				'icon'        => $block->get_icon(),
 				'category'    => $category,
+
+				'acf_block_version' => 3,
 
 				'align'		=> 'wide',
 				'supports'	=> array(
@@ -812,22 +816,26 @@ class Cortex {
 				'example' => $example,
 
 				'enqueue_style'  => '',
-				'enquele_script' => '',
+				'enqueue_script' => '',
 				'enqueue_assets' => function() use ($block, $enqueue_style, $enqueue_script) {
 
 					/*
 					 * Unless I'm doing something wrong, it seems that blocks styles and scripts
 					 * are included in the footer. On non-admin page that can be problematic so the public
 					 * class enqueue_block_assets method, will handle the assets instead of this one.
+					 *
+					 * Note: this can't be gated on is_admin(), because Gutenberg previews blocks
+					 * through the core block-renderer REST endpoint, which is not an admin context.
+					 * The custom admin-ajax preview (action=render_block) is excluded below since it
+					 * already enqueues these manually.
 					 */
 
-					if (is_admin() && (isset($_REQUEST['action']) === false || $_REQUEST['action'] != 'render_block')) {
-
-						if ($enqueue_style) $block->enqueue_styles();
-						if ($enqueue_script) $block->enqueue_scripts();
-
+					if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'render_block') {
 						return;
 					}
+
+					if ($enqueue_style) $block->enqueue_styles();
+					if ($enqueue_script) $block->enqueue_scripts();
 
 				},
 

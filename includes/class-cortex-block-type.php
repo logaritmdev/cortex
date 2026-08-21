@@ -568,7 +568,7 @@ class CortexBlockType {
 	 */
 	public function enqueue_styles() {
 
-		$inline = apply_filters('cortex/inline_style', $this);
+		$inline = apply_filters('cortex/inline_style', $this) && is_admin() == false;
 
 		if ($inline === true) {
 
@@ -603,7 +603,7 @@ class CortexBlockType {
 	 */
 	public function enqueue_scripts() {
 
-		$inline = apply_filters('cortex/inline_script', $this);
+		$inline = apply_filters('cortex/inline_script', $this) && is_admin() == false;
 
 		if ($inline === true) {
 
