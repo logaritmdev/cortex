@@ -353,10 +353,6 @@ class Cortex_Admin {
 			}
 		}
 
-		if ($block) {
-			echo '<div class="acf-block-title">' . $block['title'] . '</div>';
-		}
-
 		return $fields;
 	}
 

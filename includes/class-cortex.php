@@ -384,6 +384,7 @@ class Cortex {
 		$this->loader->add_action('acf/pre_save_block', $this, 'generate_block_id');
 		$this->loader->add_action('acf/get_field_groups', $this, 'load_field_groups', 30);
 		$this->loader->add_filter('block_categories_all', $this, 'register_categories', 10, 2);
+		$this->loader->add_filter('register_block_type_args', $this, 'register_block_id_attribute', 10, 2);
 	}
 
 	/**
@@ -856,6 +857,31 @@ class Cortex {
 		}
 
 		return $attributes;
+	}
+
+	/**
+	 * Registers "id" as a real client-side block attribute.
+	 * @method register_block_id_attribute
+	 * @since 2.1.7
+	 */
+	public function register_block_id_attribute($args, $name) {
+
+		if (strpos($name, 'acf/') !== 0) {
+			return $args;
+		}
+
+		if (isset($args['attributes']) === false) {
+			$args['attributes'] = array();
+		}
+
+		if (isset($args['attributes']['id']) === false) {
+			$args['attributes']['id'] = array(
+				'type'    => 'string',
+				'default' => ''
+			);
+		}
+
+		return $args;
 	}
 
 	/**

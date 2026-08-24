@@ -671,7 +671,7 @@ class CortexBlockType {
 	 */
 	private function add_inline_script($src) {
 
-		wp_register_script('cortex/' . $this->type, false);
+		wp_register_script('cortex/' . $this->type, false, array(), false, true);
 		wp_enqueue_script('cortex/' . $this->type);
 		wp_add_inline_script('cortex/' . $this->type, file_get_contents($src));
 
